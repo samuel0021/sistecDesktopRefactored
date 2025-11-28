@@ -47,23 +47,14 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Prism, Version=9.0.537.60525, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
-      <HintPath>packages\Prism.Core.9.0.537\lib\net47\Prism.dll</HintPath>
+    <Reference Include="Prism, Version=8.1.97.5141, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>packages\Prism.Core.8.1.97\lib\net47\Prism.dll</HintPath>
     </Reference>
-    <Reference Include="Prism.Container.Abstractions, Version=9.0.106.9543, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
-      <HintPath>packages\Prism.Container.Abstractions.9.0.106\lib\net47\Prism.Container.Abstractions.dll</HintPath>
+    <Reference Include="Prism.Unity.Wpf, Version=8.1.97.5141, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>packages\Prism.Unity.8.1.97\lib\net47\Prism.Unity.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="Prism.Container.Unity, Version=9.0.106.9543, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
-      <HintPath>packages\Prism.Container.Unity.9.0.106\lib\net462\Prism.Container.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="Prism.Events, Version=9.0.537.60525, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
-      <HintPath>packages\Prism.Events.9.0.537\lib\net47\Prism.Events.dll</HintPath>
-    </Reference>
-    <Reference Include="Prism.Unity.Wpf, Version=9.0.537.60525, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
-      <HintPath>packages\Prism.Unity.9.0.537\lib\net47\Prism.Unity.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="Prism.Wpf, Version=9.0.537.60525, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
-      <HintPath>packages\Prism.Wpf.9.0.537\lib\net47\Prism.Wpf.dll</HintPath>
+    <Reference Include="Prism.Wpf, Version=8.1.97.5141, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>packages\Prism.Wpf.8.1.97\lib\net47\Prism.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -112,6 +103,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Styles\Colors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Controls.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -136,9 +135,46 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".gitignore" />
+    <Resource Include="Images\017c4b98-ca4c-4dc8-9af2-1691a6894253.png" />
+    <Resource Include="Images\428d43c3-4a57-4e21-9ee5-d6164dfcb628.png" />
+    <Resource Include="Images\c30e975a-8c4f-4949-af74-f6601fbd846e.png" />
+    <Resource Include="Images\check.png" />
+    <Resource Include="Images\circle-check-green.png" />
+    <Resource Include="Images\circle-check.png" />
+    <Resource Include="Images\circle-question-mark.png" />
+    <Resource Include="Images\delete-button.png" />
+    <Resource Include="Images\edit-button.png" />
+    <Resource Include="Images\eye.png" />
+    <Resource Include="Images\house.png" />
+    <Resource Include="Images\layout-grid.png" />
+    <Resource Include="Images\log-out.png" />
+    <Resource Include="Images\logo-purple.ico" />
+    <Resource Include="Images\logo-purple.png" />
+    <Resource Include="Images\logo-white.png" />
+    <Resource Include="Images\plus.png" />
+    <Resource Include="Images\restore-icon.png" />
+    <Resource Include="Images\rotate-ccw-green.png" />
+    <Resource Include="Images\rotate-ccw.png" />
+    <Resource Include="Images\sistec-purple.png" />
+    <Resource Include="Images\sistec-white.png" />
+    <Resource Include="Images\trending-up.png" />
+    <Resource Include="Images\triangle-alert.png" />
+    <Resource Include="Images\user-orange.png" />
+    <Resource Include="Images\user-plus-purple.png" />
+    <Resource Include="Images\user-plus.png" />
+    <Resource Include="Images\user.png" />
+    <Resource Include="Images\x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+    <Folder Include="Views\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

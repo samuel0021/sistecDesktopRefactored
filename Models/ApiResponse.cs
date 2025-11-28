@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace sistecDesktopRefactored.Models
 {
+    /// <summary>
+    /// Represents the response from an API call, including the success status, HTTP status code, and a message.
+    /// </summary>
     public class ApiResponse
     {
         public bool Success { get; set; }
@@ -14,18 +17,31 @@ namespace sistecDesktopRefactored.Models
         public string Message { get; set; }
     }
 
+    /// <summary>
+    /// Represents the response received after a login attempt.
+    /// </summary>
+    /// <remarks>This class extends <see cref="ApiResponse"/> and contains the login-specific data.</remarks>
     public class LoginResponse : ApiResponse
     {
         [JsonProperty("data")]
         public LoginData Data { get; set; }
     }
 
+    /// <summary>
+    /// Represents the login data containing user information.
+    /// </summary>
+    /// <remarks>This class is used to deserialize JSON data related to user login.</remarks>
     public class LoginData
     {
         [JsonProperty("user")]
         public User User { get; set; }
     }
 
+    /// <summary>
+    /// Represents the response containing a list of user data from an API call.
+    /// </summary>
+    /// <remarks>This class extends <see cref="ApiResponse"/> to include a collection of user
+    /// information.</remarks>
     public class UsersResponse : ApiResponse
     {
         public List<UserDatabase> Data { get; set; }
@@ -35,6 +51,7 @@ namespace sistecDesktopRefactored.Models
     {
         public UserDatabase Data { get; set; }
     }
+
 
     public class ChamadosResponse : ApiResponse
     {
@@ -47,9 +64,12 @@ namespace sistecDesktopRefactored.Models
     }
 
 
+
     #region User
 
     // Modelo para login (campos limpos)
+
+
     public class User
     {
         [JsonProperty("id")]
@@ -195,6 +215,12 @@ namespace sistecDesktopRefactored.Models
         public List<PerfilUsuario> Data { get; set; }
     }
 
+    /// <summary>
+    /// Represents a backup of a deleted user, containing all relevant information needed for potential restoration.
+    /// </summary>
+    /// <remarks>This class provides properties to access the details of a deleted user, such as their
+    /// original ID, name,  and the reason for deletion. It also includes metadata about the backup status and
+    /// restoration details.</remarks>
     public class DeletedUserBackup
     {
         public bool CanRestore => StatusBackup == "ATIVO";

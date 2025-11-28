@@ -23,8 +23,13 @@ namespace sistecDesktopRefactored.Services
             DateFormatHandling = DateFormatHandling.IsoDateFormat
         };
 
-        // Inicializa a instância da classe
         #region Construtor
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApiClient"/> class.
+        /// </summary>
+        /// <remarks>This constructor sets up the <see cref="HttpClient"/> with a default configuration
+        /// that includes a <see cref="CookieContainer"/> for managing cookies and sets the default request headers to
+        /// accept JSON responses. The default timeout for requests is set to 30 seconds.</remarks>
         public ApiClient()
         {
             _cookieContainer = new CookieContainer();
@@ -45,8 +50,16 @@ namespace sistecDesktopRefactored.Services
         }
         #endregion
 
-        // Método pra testar conexão, caso necessário
         #region Teste de Conexão
+        /// <summary>
+        /// Tests the connection to the configured base URL by sending a GET request.
+        /// </summary>
+        /// <remarks>This method attempts to connect to the base URL using an HTTP GET request and returns
+        /// an <see cref="ApiResponse"/> indicating the success or failure of the connection attempt.</remarks>
+        /// <returns>An <see cref="ApiResponse"/> object containing the result of the connection test. The <see
+        /// cref="ApiResponse.Success"/> property is <see langword="true"/> if the connection is successful; otherwise,
+        /// <see langword="false"/>. The <see cref="ApiResponse.Message"/> property contains a message describing the
+        /// result.</returns>
         public async Task<ApiResponse> TestConnection()
         {
             try
@@ -76,8 +89,16 @@ namespace sistecDesktopRefactored.Services
         }
         #endregion
 
-        // Métodos e Tasks
         #region Login e Logout
+        /// <summary>
+        /// Attempts to log in a user asynchronously using the provided login request data.
+        /// </summary>
+        /// <remarks>This method sends a POST request to the authentication endpoint with the login
+        /// details serialized as JSON. It handles HTTP response codes to determine the success of the login attempt and
+        /// captures any exceptions that occur during the process.</remarks>
+        /// <param name="loginRequest">The login request containing user credentials and other necessary information.</param>
+        /// <returns>A <see cref="LoginResponse"/> object indicating the success or failure of the login attempt. If successful,
+        /// it contains user data and authentication details; otherwise, it includes an error message.</returns>
         public async Task<LoginResponse> LoginAsync(LoginRequest loginRequest)
         {
             try
@@ -146,6 +167,15 @@ namespace sistecDesktopRefactored.Services
             }
         }
 
+        /// <summary>
+        /// Asynchronously logs out the current user by sending a POST request to the logout endpoint.
+        /// </summary>
+        /// <remarks>This method sends a POST request to the configured logout URL. If the request is
+        /// successful, it returns an <see cref="ApiResponse"/> indicating success. If the request fails or an exception
+        /// occurs, it returns an <see cref="ApiResponse"/> with a success status of <see langword="false"/> and an
+        /// appropriate error message.</remarks>
+        /// <returns>An <see cref="ApiResponse"/> object containing the result of the logout operation. The <c>Success</c>
+        /// property is <see langword="true"/> if the logout was successful; otherwise, <see langword="false"/>.</returns>
         public async Task<ApiResponse> LogoutAsync()
         {
             try
@@ -185,6 +215,12 @@ namespace sistecDesktopRefactored.Services
             }
         }
 
+        /// <summary>
+        /// Logs the user out by expiring all cookies associated with the current session.
+        /// </summary>
+        /// <remarks>This method marks all cookies for the current base URL as expired, effectively
+        /// logging the user out from the local session. It does not communicate with the server to invalidate the
+        /// session on the server side.</remarks>
         public void Logout()
         {
             var uri = new Uri(_baseUrl);
@@ -194,11 +230,18 @@ namespace sistecDesktopRefactored.Services
             }
             Console.WriteLine("Cookies locais removidos");
         }
-
         #endregion
 
-        // Métodos e Tasks do Usuário
         #region Usuário
+        /// <summary>
+        /// Asynchronously creates a new user in the database by sending a POST request to the API.
+        /// </summary>
+        /// <remarks>This method serializes the provided user object to JSON and sends it to the API
+        /// endpoint for user creation. If the API call is successful, the response is deserialized to obtain the
+        /// created user object.</remarks>
+        /// <param name="user">The <see cref="UserDatabase"/> object representing the user to be created. Cannot be null.</param>
+        /// <returns>The created <see cref="UserDatabase"/> object as returned by the API.</returns>
+        /// <exception cref="Exception">Thrown if there is an error during the request or if the API returns an unsuccessful status code.</exception>
         public async Task<UserDatabase> CreateUserAsync(UserDatabase user)
         {
             try
@@ -234,6 +277,13 @@ namespace sistecDesktopRefactored.Services
             }
         }
 
+        /// <summary>
+        /// Asynchronously retrieves a list of user profiles from the access profiles API.
+        /// </summary>
+        /// <remarks>This method sends a GET request to the configured API endpoint to fetch user
+        /// profiles. The response is deserialized into a list of <see cref="PerfilUsuario"/> objects.</remarks>
+        /// <returns>A task representing the asynchronous operation. The task result contains a list of <see
+        /// cref="PerfilUsuario"/> objects representing the user profiles.</returns>
         public async Task<List<PerfilUsuario>> GetPerfisAcessoAsync()
         {
             // Consulta endpoint de perfis de acesso
@@ -244,7 +294,15 @@ namespace sistecDesktopRefactored.Services
             return perfis.Data;
         }
 
-
+        /// <summary>
+        /// Asynchronously retrieves a list of users from the remote API.
+        /// </summary>
+        /// <remarks>This method sends a GET request to the users endpoint of the configured base URL. It
+        /// deserializes the response into a list of <see cref="UserDatabase"/> objects if the request is
+        /// successful.</remarks>
+        /// <returns>A task representing the asynchronous operation. The task result contains a list of <see
+        /// cref="UserDatabase"/> objects.</returns>
+        /// <exception cref="Exception">Thrown if there is an error in the request or if the response cannot be deserialized.</exception>
         public async Task<List<UserDatabase>> GetUsersAsync()
         {
             try
@@ -293,6 +351,15 @@ namespace sistecDesktopRefactored.Services
             }
         }
 
+        /// <summary>
+        /// Asynchronously updates the user information for the specified user ID.
+        /// </summary>
+        /// <remarks>This method sends a PUT request to the server to update the user details. Ensure that
+        /// the <paramref name="user"/> object contains valid data before calling this method.</remarks>
+        /// <param name="id">The unique identifier of the user to be updated.</param>
+        /// <param name="user">The <see cref="UserDatabase"/> object containing the updated user information.</param>
+        /// <returns>An <see cref="ApiResponse"/> indicating the success or failure of the update operation, along with any
+        /// response message from the server.</returns>
         public async Task<ApiResponse> UpdateUserAsync(int id, UserDatabase user)
         {
             // Monta a URL do usuário a ser atualizado pelo id
@@ -310,6 +377,7 @@ namespace sistecDesktopRefactored.Services
             };
         }
 
+        // /
         public async Task<bool> DeleteUserAsync(int idUsuario, string motivo)
         {
             try
@@ -352,11 +420,26 @@ namespace sistecDesktopRefactored.Services
             }
         }
 
+        /// <summary>
+        /// Represents the response received after requesting the deletion of users.
+        /// </summary>
+        /// <remarks>This response contains a list of backups for the users that were deleted.</remarks>
         public class DeletedUsersResponse : ApiResponse
         {
             public List<DeletedUserBackup> Data { get; set; }
         }
 
+        /// <summary>
+        /// Asynchronously retrieves a list of deleted users from the server.
+        /// </summary>
+        /// <remarks>This method sends a GET request to the server to fetch deleted user data. If the
+        /// request is successful, it returns a list of <see cref="DeletedUserBackup"/> objects. If the server responds
+        /// with an unauthorized status, an <see cref="UnauthorizedAccessException"/> is thrown. Any other unsuccessful
+        /// response results in a generic exception being thrown.</remarks>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a list of <see
+        /// cref="DeletedUserBackup"/> objects representing the deleted users. If no users are deleted, the list will be
+        /// empty.</returns>
+        /// <exception cref="Exception">Thrown if the request fails for any other reason, including network issues or server errors.</exception>
         public async Task<List<DeletedUserBackup>> GetDeletedUsersAsync()
         {
             try
@@ -394,7 +477,12 @@ namespace sistecDesktopRefactored.Services
             }
         }
 
-
+        /// <summary>
+        /// Restores a user from a specified backup asynchronously.
+        /// </summary>
+        /// <param name="backupId">The identifier of the backup from which to restore the user. Must be a valid backup ID.</param>
+        /// <returns><see langword="true"/> if the user is successfully restored; otherwise, <see langword="false"/>.</returns>
+        /// <exception cref="Exception">Thrown if an error occurs during the restore request.</exception>
         public async Task<bool> RestoreUserAsync(int backupId)
         {
             try
@@ -423,12 +511,19 @@ namespace sistecDesktopRefactored.Services
                 throw new Exception($"Erro na requisição (restaurar usuário): {ex.Message}");
             }
         }
-
         #endregion
 
-        // Métodos e Tasks dos Chamados
         #region Chamados
-
+        /// <summary>
+        /// Asynchronously retrieves a list of support tickets from the server.
+        /// </summary>
+        /// <remarks>This method sends a GET request to the server to fetch support tickets. It
+        /// deserializes the response into a list of <see cref="Chamado"/> objects. If the server returns an
+        /// unauthorized status, an <see cref="UnauthorizedAccessException"/> is thrown. For other unsuccessful
+        /// responses, a generic <see cref="Exception"/> is thrown with the status code and response body.</remarks>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a list of <see cref="Chamado"/>
+        /// objects representing the support tickets retrieved from the server.</returns>
+        /// <exception cref="Exception">Thrown if there is an error in the request or if the server response is unsuccessful.</exception>
         public async Task<List<Chamado>> GetChamadosAsync()
         {
             try
@@ -485,6 +580,13 @@ namespace sistecDesktopRefactored.Services
             }
         }
 
+        /// <summary>
+        /// Asynchronously retrieves a <see cref="Chamado"/> by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the chamado to retrieve.</param>
+        /// <returns>A task representing the asynchronous operation. The task result contains the <see cref="Chamado"/> object if
+        /// found; otherwise, an exception is thrown.</returns>
+        /// <exception cref="Exception">Thrown if an error occurs during the request or if the chamado cannot be retrieved.</exception>
         public async Task<Chamado> GetChamadoByIdAsync(int id)
         {
             try
@@ -529,6 +631,15 @@ namespace sistecDesktopRefactored.Services
             }
         }
 
+        /// <summary>
+        /// Asynchronously creates a new support ticket (Chamado) using the specified request data.
+        /// </summary>
+        /// <remarks>This method sends a POST request to the configured API endpoint to create a new
+        /// support ticket. Ensure that the <paramref name="chamado"/> parameter is properly populated with the
+        /// necessary data.</remarks>
+        /// <param name="chamado">The request data for creating the support ticket. Cannot be null.</param>
+        /// <returns>A <see cref="Chamado"/> object representing the created support ticket.</returns>
+        /// <exception cref="Exception">Thrown if an error occurs during the request or if the response indicates failure.</exception>
         public async Task<Chamado> CreateChamadoAsync(CreateChamadoRequest chamado)
         {
             try

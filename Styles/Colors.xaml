@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--#region BRUSHES -->
+    <SolidColorBrush x:Key="brush-midnightNavy" Color="#000033"/>
+    <SolidColorBrush x:Key="brush-delftBlue" Color="#3E3D66"/>
+    <SolidColorBrush x:Key="brush-coolGray" Color="#7B7A99"/>
+    <SolidColorBrush x:Key="brush-frenchGray" Color="#B9B7CC"/>
+    <SolidColorBrush x:Key="brush-frenchGray-transparent" Color="#33808080"/>
+
+    <SolidColorBrush x:Key="brush-vibrantViolet" Color="#8564FF"/>
+    <SolidColorBrush x:Key="brush-tropicalIndigo" Color="#B09AFF"/>
+    <SolidColorBrush x:Key="brush-periwinkle" Color="#DCD3FF"/>
+    <SolidColorBrush x:Key="brush-lavenderWeb" Color="#EFEBFF"/>
+
+    <SolidColorBrush x:Key="brush-peachOrange" Color="#FF9966"/>
+    <SolidColorBrush x:Key="brush-atomicTangerine" Color="#FDB08D"/>
+    <SolidColorBrush x:Key="brush-apricot" Color="#FBC6B3"/>
+    <SolidColorBrush x:Key="brush-mistyRose" Color="#F9DDD9"/>
+    <SolidColorBrush x:Key="brush-peachOrange-transparent" Color="#66FF9966"/>
+
+    <SolidColorBrush x:Key="brush-lavenderMist" Color="#F6F3FF"/>
+    <SolidColorBrush x:Key="brush-White" Color="#FFFFF0"/>
+    <!--#endregion-->
+
+</ResourceDictionary>

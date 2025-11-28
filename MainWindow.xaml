@@ -7,6 +7,26 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <!--#region Row/Column Definitions-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <!--#endregion-->
+
+        <Border Grid.Row="0" Padding="15"
+                Background="{StaticResource brush-midnightNavy}"
+                BorderBrush="{StaticResource brush-White}"
+                BorderThickness="0 0 0 0.5">
+
+            <Image Source="/images/sistec-white.png" Margin="10"/>
+        </Border>
+
+        <Border Grid.Row="1" Padding="15"
+                Background="{StaticResource brush-midnightNavy}"/>
     </Grid>
 </Window>
