@@ -111,6 +111,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\Fonts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -130,6 +134,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Fonts\HvDTrial_Brandon_Grotesque_bold-BF64a625c9151d5.otf" />
+    <Resource Include="Fonts\HvDTrial_Brandon_Grotesque_regular-BF64a625c9311e1.otf" />
+    <Resource Include="Fonts\Montserrat-Bold.ttf" />
+    <Resource Include="Fonts\Montserrat-Regular.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

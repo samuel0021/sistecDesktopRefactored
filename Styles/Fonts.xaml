@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Montserrat Regular/Bold -->
+    <FontFamily x:Key="MontserratRegular">pack://application:,,,/Fonts/#Montserrat</FontFamily>
+    <FontFamily x:Key="MontserratBold">pack://application:,,,/Fonts/#Montserrat Bold</FontFamily>
+
+    <!-- Brandon Grotesque Regular/Bold -->
+    <FontFamily x:Key="BrandonGrotesqueRegular">pack://application:,,,/Fonts/#HvDTrial Brandon Grotesque Reg</FontFamily>
+    <FontFamily x:Key="BrandonGrotesqueBold">pack://application:,,,/Fonts/#HvDTrial Brandon Grotesque Bold</FontFamily>
+    <!--#endregion-->
+
+</ResourceDictionary>
