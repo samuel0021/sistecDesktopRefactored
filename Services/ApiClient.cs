@@ -861,7 +861,6 @@ namespace sistecDesktopRefactored.Services
 
         #endregion
 
-        // Solução IA
         #region SoluçãoIA
         public async Task<RespostaIA> GetSolucaoIaAsync(int idChamado)
         {
@@ -891,7 +890,6 @@ namespace sistecDesktopRefactored.Services
         }
         #endregion
 
-        // Métodos e Tasks do Dashboard
         #region Dashboard
 
         public async Task<DashboardStats> GetDashboardStatsAsync()
@@ -1014,7 +1012,6 @@ namespace sistecDesktopRefactored.Services
 
         #endregion
 
-        // Métodos não referenciados para debug, caso necessário
         #region Debug
         public bool IsAuthenticated()
         {
@@ -1053,3 +1050,6 @@ namespace sistecDesktopRefactored.Services
         #endregion
     }
 }
+
+
+    

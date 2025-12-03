@@ -3,34 +3,91 @@
     
     <!--#region Buttons-->
 
-    <Style x:Key="ButtonFullBackground" TargetType="Button">
-        <Setter Property="Background" Value="{Binding}"/>
-        <Setter Property="Foreground" Value="{Binding}"/>
+    <Style x:Key="ButtonBaseImage" TargetType="ButtonBase">
+        
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border CornerRadius="5" BorderThickness="1" 
-                            HorizontalAlignment="Center" VerticalAlignment="Center"
-                            Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}">
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
+                    <Border x:Name="borderButtonSolid"
+                        CornerRadius="5" BorderThickness="{TemplateBinding BorderThickness}" 
+                        HorizontalAlignment="Center" VerticalAlignment="Center" 
+                        Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}">
 
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Width="20" Height="20" Margin="5"/>
-                            <TextBlock Text="{TemplateBinding Content}" TextAlignment="Center" VerticalAlignment="Center" Foreground="{TemplateBinding BorderBrush}" 
-                                       FontFamily="{DynamicResource MontserratBold}"/>
+                            <Image Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Width="20" Height="20" Margin="15 0 0 0"/>
+                            
+                            <TextBlock Text="{TemplateBinding Content}" TextAlignment="Center" VerticalAlignment="Center" Margin="15"
+                                Foreground="{TemplateBinding Foreground}" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}"/>
                         </StackPanel>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Background" Value="#4DFFFFFF" TargetName="borderButtonSolid"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
+
+    <Style x:Key="ButtonImage"
+       TargetType="Button"
+       BasedOn="{StaticResource ButtonBaseImage}">
+    </Style>
+
+    <Style x:Key="ToggleButtonImage"
+       TargetType="ToggleButton"
+       BasedOn="{StaticResource ButtonBaseImage}">
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="Red"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <!--#endregion--> 
     
+    <!--#region Borders-->
+
+    <Style x:Key="BorderPanel" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource brush-lavenderMist}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource brush-frenchGray}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="Margin" Value="10"/>
+    </Style>
+
+    <Style x:Key="BorderShadow" TargetType="Border">
+        <Setter Property="Effect">
+            <Setter.Value >
+                <DropShadowEffect Color="#000033"
+                          BlurRadius="10"
+                          ShadowDepth="5"
+                          Direction="315"
+                          Opacity="0.5"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+
+    <!-- #region Hyperlink-->
+    
+    <Style x:Key="HyperlinkForgotPass" TargetType="Hyperlink">
+        <Setter Property="Foreground" Value="{DynamicResource brush-vibrantViolet}"/>
+        <Setter Property="TextDecorations" Value="None"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="TextDecorations" Value="Underline"/>
+            </Trigger>
+            <!--<Trigger Property="IsMouseCaptured" Value="True">
+            <Setter Property="Foreground" Value="{DynamicResource brush-tropicalIndigo}"/>
+        </Trigger>-->
+        </Style.Triggers>
+    </Style>
+    
+    <!--#endregion-->
 </ResourceDictionary>

@@ -6,7 +6,6 @@
     <SolidColorBrush x:Key="brush-delftBlue" Color="#3E3D66"/>
     <SolidColorBrush x:Key="brush-coolGray" Color="#7B7A99"/>
     <SolidColorBrush x:Key="brush-frenchGray" Color="#B9B7CC"/>
-    <SolidColorBrush x:Key="brush-frenchGray-transparent" Color="#33808080"/>
 
     <SolidColorBrush x:Key="brush-vibrantViolet" Color="#8564FF"/>
     <SolidColorBrush x:Key="brush-tropicalIndigo" Color="#B09AFF"/>
@@ -21,6 +20,11 @@
 
     <SolidColorBrush x:Key="brush-lavenderMist" Color="#F6F3FF"/>
     <SolidColorBrush x:Key="brush-White" Color="#FFFFF0"/>
+
+    <LinearGradientBrush x:Key="gradient-background" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#EFEBFF" Offset="0"/>
+        <GradientStop Color="#DCD3FF" Offset="1"/>
+    </LinearGradientBrush>
     <!--#endregion-->
 
 </ResourceDictionary>

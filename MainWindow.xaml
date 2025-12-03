@@ -4,9 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:sistecDesktopRefactored"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:viewModels="clr-namespace:sistecDesktopRefactored.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="800" Width="1400"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Background="{StaticResource brush-lavenderWeb}">
         <!--#region Row/Column Definitions-->
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -18,15 +22,88 @@
         </Grid.ColumnDefinitions>
         <!--#endregion-->
 
+        <!--#region Logo-->
         <Border Grid.Row="0" Padding="15"
-                Background="{StaticResource brush-midnightNavy}"
-                BorderBrush="{StaticResource brush-White}"
-                BorderThickness="0 0 0 0.5">
+            Background="{StaticResource brush-midnightNavy}"
+            BorderBrush="{StaticResource brush-White}"
+            BorderThickness="0 0 0 1">
 
-            <Image Source="/images/sistec-white.png" Margin="10"/>
+            <Image Source="/images/sistec-white.png"
+                Margin="10" HorizontalAlignment="Left"/>
         </Border>
+        <!--#endregion-->
 
-        <Border Grid.Row="1" Padding="15"
-                Background="{StaticResource brush-midnightNavy}"/>
+        <!--#region Header-->
+        <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4"
+            Background="{StaticResource brush-lavenderMist}"
+            BorderBrush="{StaticResource brush-frenchGray}"
+            BorderThickness="0 0 0 1">
+
+            <Button Content="Sair" HorizontalAlignment="Right" 
+                    Width="100" Margin="15"
+                    BorderThickness="0" FontSize="20"
+                    Tag="/Images/log-out.png"
+                    Foreground="{StaticResource brush-peachOrange}"
+                    Style="{StaticResource ButtonImage}"/>
+
+        </Border>
+        <!--#endregion-->
+
+        <!--#region Sidebar-->
+        <Border Grid.Row="1" Padding="15" HorizontalAlignment="Stretch"
+            Background="{StaticResource brush-midnightNavy}">
+
+            <StackPanel Width="auto"
+                HorizontalAlignment="Left" VerticalAlignment="Top">
+
+                <ToggleButton Content="Home"
+                    HorizontalAlignment="Left"
+                    FontSize="20" Width="200"
+                    BorderThickness="0"
+                    Tag="/Images/house.png"
+                    FontFamily="{StaticResource MontserratRegular}"
+                    Foreground="{StaticResource brush-White}"
+                    Style="{StaticResource ToggleButtonImage}"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="HomeView"/>
+
+                <ToggleButton Content="Dashboard"
+                    HorizontalAlignment="Left"
+                    FontSize="20" Width="200"
+                    BorderThickness="0"
+                    Tag="/Images/layout-grid.png"
+                    FontFamily="{StaticResource MontserratRegular}"
+                    Foreground="{StaticResource brush-White}"
+                    Style="{StaticResource ToggleButtonImage}"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="HomeView"/>
+
+                <ToggleButton Content="Chamados"
+                    HorizontalAlignment="Left"
+                    FontSize="20" Width="200"
+                    BorderThickness="0"
+                    Tag="/Images/circle-question-mark.png"
+                    FontFamily="{StaticResource MontserratRegular}"
+                    Foreground="{StaticResource brush-White}"
+                    Style="{StaticResource ToggleButtonImage}"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="TicketsView"/>
+
+                <ToggleButton Content="Usuários"
+                    HorizontalAlignment="Left"
+                    FontSize="20" Width="200"
+                    BorderThickness="0"
+                    Tag="/Images/user.png"
+                    FontFamily="{StaticResource MontserratRegular}"
+                    Foreground="{StaticResource brush-White}"
+                    Style="{StaticResource ToggleButtonImage}"/>
+            </StackPanel>
+        </Border>
+        <!--#endregion-->
+
+        <!--#region Content-->
+        <ContentControl Grid.Row="1" Grid.Column="1" Margin="10"
+            prism:RegionManager.RegionName="MainRegion"/>
+        <!--#endregion-->
     </Grid>
 </Window>

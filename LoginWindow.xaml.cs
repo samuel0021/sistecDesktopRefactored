@@ -11,20 +11,27 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 
 namespace sistecDesktopRefactored
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LoginWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LoginWindow : Window
     {
-        public MainWindow(MainWindowViewModel vm)
+        public LoginWindow()
         {
             InitializeComponent();
-            DataContext = vm;
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is LoginWindowViewModel vm)
+            {
+                vm.Password = ((PasswordBox)sender).Password;
+            }
         }
     }
 }
