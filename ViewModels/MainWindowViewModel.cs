@@ -12,24 +12,6 @@ namespace sistecDesktopRefactored.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
-        private readonly IRegionManager _regionManager;
-        public DelegateCommand<string> NavigateCommand { get; }
-
-        public MainWindowViewModel(IRegionManager regionManager)
-        {
-            _regionManager = regionManager;
-
-            NavigateCommand = new DelegateCommand<string>(OnNavigate);
-
-            _regionManager.RequestNavigate("MainRegion", "HomeView");
-        }
-
-        private void OnNavigate(string viewName)
-        {
-            if (string.IsNullOrEmpty(viewName))
-                return;
-
-            _regionManager.RequestNavigate("MainRegion", viewName);
-        }
+       
     }
 }

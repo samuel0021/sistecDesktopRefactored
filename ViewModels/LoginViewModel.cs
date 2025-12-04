@@ -13,8 +13,9 @@ using System.Windows.Input;
 
 namespace sistecDesktopRefactored.ViewModels
 {
-    public class LoginWindowViewModel : BindableBase
+    public class LoginViewModel : BindableBase
     {
+        private readonly IRegionManager _regionManager;
         private readonly ApiClient _apiClient;
 
         private string _email;
@@ -50,11 +51,10 @@ namespace sistecDesktopRefactored.ViewModels
         public ICommand LoginCommand { get; }
         #endregion
 
-        public event EventHandler<bool> LoginResult;
-
         #region Constructor
-        public LoginWindowViewModel(ApiClient apiClient)
+        public LoginViewModel(IRegionManager regionManager, ApiClient apiClient)
         {
+            _regionManager = regionManager;
             _apiClient = apiClient;
 
             LoginCommand = new DelegateCommand(async () => await ExecutarLoginAsync());
@@ -91,10 +91,8 @@ namespace sistecDesktopRefactored.ViewModels
                 {
                     App.LoggedUser = result.Data.User;
 
-                    // se quiser, pode logar/usar o perfil etc.
-                    // var perfil = App.LoggedUser.IdPerfilUsuario;
-
-                    LoginResult?.Invoke(this, true);
+                    // navega a ShellRegion para o layout principal
+                    _regionManager.RequestNavigate("ShellRegion", "MainLayoutView");
                 }
                 else
                 {

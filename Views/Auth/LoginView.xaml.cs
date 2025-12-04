@@ -1,5 +1,4 @@
-﻿using sistecDesktopRefactored.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,24 +10,27 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
+using sistecDesktopRefactored.ViewModels;
 
-
-namespace sistecDesktopRefactored
+namespace sistecDesktopRefactored.Views.Auth
 {
     /// <summary>
-    /// Interaction logic for LoginWindow.xaml
+    /// Interaction logic for LoginView.xaml
     /// </summary>
-    public partial class LoginWindow : Window
+    public partial class LoginView : UserControl
     {
-        public LoginWindow()
+        public LoginView()
         {
             InitializeComponent();
+
+            txtEmail.Focus();
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (DataContext is LoginWindowViewModel vm)
+            if (DataContext is LoginViewModel vm)
             {
                 vm.Password = ((PasswordBox)sender).Password;
             }
