@@ -23,17 +23,20 @@ Login como UserControl mostrado dentro da MainWindow
 HomeView como UserControl com Content Control dentro
 
 ```text
-sistecDesktopRefactored
-├─ MainWindow.xaml              (shell geral; contém ShellRegion)
-├─ Views
-│  ├─ Shell
-│  │  └─ MainLayoutView.xaml    (shell interna; sidebar + MainRegion)
-│  ├─ Auth
-│  │  └─ LoginView.xaml
-│  ├─ HomeView.xaml
-│  ├─ DashboardView.xaml
-│  ├─ TicketsView.xaml
-│  └─ UsersView.xaml
+Views
+├─ Shell
+│  ├─ MainWindow.xaml        (shell geral; contém ShellRegion)
+│  └─ MainLayoutView.xaml    (shell interna; sidebar + MainRegion)
+├─ Auth
+│  └─ LoginView.xaml
+├─ Home
+│  └─ HomeView.xaml
+├─ Dashboard
+│  └─ DashboardView.xaml
+├─ Tickets
+│  └─ TicketsView.xaml
+└─ Users
+   └─ UsersView.xaml
 
 ```
 
