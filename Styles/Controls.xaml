@@ -89,6 +89,65 @@
 
     <!--#endregion--> 
     
+    <!--#region TextInputs-->
+    <!-- Base -->
+    <Style x:Key="TextInputBase" TargetType="Control">
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Margin" Value="15 0 15 0"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Padding" Value="8 0 8 0"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="FontFamily" Value="{DynamicResource MontserratRegular}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource brush-frenchGray}"/>
+        <Setter Property="Foreground" Value="{DynamicResource brush-midnightNavy}"/>
+    </Style>
+
+    <!-- TextBox -->
+    <Style x:Key="TextBoxBase"
+       TargetType="TextBox"
+       BasedOn="{StaticResource TextInputBase}">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="border"
+                        CornerRadius="5"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                  Margin="{TemplateBinding Padding}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!-- PasswordBox -->
+    <Style x:Key="PasswordBoxBase" TargetType="PasswordBox"
+       BasedOn="{StaticResource TextInputBase}">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="PasswordChar" Value="●"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="PasswordBox">
+                    <Border x:Name="border"
+                        CornerRadius="5"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                            Margin="{TemplateBinding Padding}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!--#endregion--> 
+
     <!--#region Borders-->
 
     <Style x:Key="BorderPanel" TargetType="Border">
