@@ -13,6 +13,32 @@ Botões:
 
 - Botão só com imagem
 
+
+
+
+MainWindow com Content Control geral
+
+Login como UserControl mostrado dentro da MainWindow
+
+HomeView como UserControl com Content Control dentro
+
+```text
+sistecDesktopRefactored
+├─ MainWindow.xaml              (shell geral; contém ShellRegion)
+├─ Views
+│  ├─ Shell
+│  │  └─ MainLayoutView.xaml    (shell interna; sidebar + MainRegion)
+│  ├─ Auth
+│  │  └─ LoginView.xaml
+│  ├─ HomeView.xaml
+│  ├─ DashboardView.xaml
+│  ├─ TicketsView.xaml
+│  └─ UsersView.xaml
+
+```
+
+
+
 # ---------------------------------------
 
 # A Equipe
