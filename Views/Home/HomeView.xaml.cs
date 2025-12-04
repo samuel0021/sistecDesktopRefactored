@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace sistecDesktopRefactored.Views
+namespace sistecDesktopRefactored.Views.Home
 {
     /// <summary>
     /// Interaction logic for HomeView.xaml

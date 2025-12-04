@@ -7,6 +7,7 @@
 out/
 
 # Usuário e IDE
+*.env
 *.user
 *.suo
 .vscode/

@@ -25,7 +25,16 @@ namespace sistecDesktopRefactored.Views.Auth
         {
             InitializeComponent();
 
-            txtEmail.Focus();
+            Loaded += LoginView_Loaded;
+        }
+
+        private void LoginView_Loaded(object sender, RoutedEventArgs e)
+        {
+            //txtEmail.Focus();
+            //Keyboard.Focus(txtEmail);
+
+            txtEmail.Text = Environment.GetEnvironmentVariable("login");
+            passwordBox.Password = Environment.GetEnvironmentVariable("senha");
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)

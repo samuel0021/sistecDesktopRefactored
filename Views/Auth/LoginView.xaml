@@ -98,6 +98,7 @@
                 Foreground="{StaticResource brush-White}"
                 Background="{StaticResource brush-vibrantViolet}"
                 Style="{StaticResource ButtonImage}"
+                helpers:ButtonHelper.HoverBackground="#668564FF"
                 Command="{Binding LoginCommand}"/>
 
 

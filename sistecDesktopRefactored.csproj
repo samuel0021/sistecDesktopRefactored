@@ -41,6 +41,9 @@
     <StartupObject>sistecDesktopRefactored.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="dotenv.net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\dotenv.net.4.0.0\lib\netstandard2.0\dotenv.net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -63,10 +66,20 @@
       <HintPath>packages\Prism.Wpf.8.1.97\lib\net47\Prism.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
@@ -100,29 +113,29 @@
     <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\FileDialogService.cs" />
     <Compile Include="Services\ApiClient.cs" />
-    <Compile Include="ViewModels\DashboardViewModel.cs" />
-    <Compile Include="ViewModels\HomeViewModel.cs" />
-    <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\Dashboard\DashboardViewModel.cs" />
+    <Compile Include="ViewModels\Home\HomeViewModel.cs" />
+    <Compile Include="ViewModels\Auth\LoginViewModel.cs" />
+    <Compile Include="ViewModels\Shell\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Shell\MainLayoutViewModel.cs" />
-    <Compile Include="ViewModels\TicketsViewModel.cs" />
-    <Compile Include="ViewModels\UsersViewModel.cs" />
+    <Compile Include="ViewModels\Tickets\TicketsViewModel.cs" />
+    <Compile Include="ViewModels\Users\UsersViewModel.cs" />
     <Compile Include="Views\Auth\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DashboardView.xaml.cs">
+    <Compile Include="Views\Dashboard\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\HomeView.xaml.cs">
+    <Compile Include="Views\Home\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Shell\MainLayoutView.xaml.cs">
       <DependentUpon>MainLayoutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TicketsView.xaml.cs">
+    <Compile Include="Views\Tickets\TicketsView.xaml.cs">
       <DependentUpon>TicketsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UsersView.xaml.cs">
+    <Compile Include="Views\Users\UsersView.xaml.cs">
       <DependentUpon>UsersView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\Shell\MainWindow.xaml">
@@ -153,11 +166,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DashboardView.xaml">
+    <Page Include="Views\Dashboard\DashboardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\HomeView.xaml">
+    <Page Include="Views\Home\HomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -165,11 +178,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TicketsView.xaml">
+    <Page Include="Views\Tickets\TicketsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UsersView.xaml">
+    <Page Include="Views\Users\UsersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -196,6 +209,9 @@
     <Resource Include="Fonts\HvDTrial_Brandon_Grotesque_regular-BF64a625c9311e1.otf" />
     <Resource Include="Fonts\Montserrat-Bold.ttf" />
     <Resource Include="Fonts\Montserrat-Regular.ttf" />
+    <None Include=".env">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -241,11 +257,6 @@
     <Resource Include="Images\user.png" />
     <Resource Include="Images\x.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Dashboard\" />
-    <Folder Include="Views\Home\" />
-    <Folder Include="Views\Tickets\" />
-    <Folder Include="Views\Users\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

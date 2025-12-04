@@ -1,4 +1,5 @@
-﻿using Prism.Ioc;
+﻿using dotenv.net;
+using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Unity;
@@ -8,6 +9,7 @@ using sistecDesktopRefactored.Services;
 using sistecDesktopRefactored.ViewModels;
 using sistecDesktopRefactored.Views;
 using sistecDesktopRefactored.Views.Auth;
+using sistecDesktopRefactored.Views.Home;
 using sistecDesktopRefactored.Views.Shell;
 using System;
 using System.Collections.Generic;
@@ -25,6 +27,11 @@ namespace sistecDesktopRefactored
     public partial class App : PrismApplication
     {
         public static User LoggedUser { get; set; }
+
+        public App()
+        {
+            DotEnv.Load();
+        }
 
         protected override Window CreateShell()
         {

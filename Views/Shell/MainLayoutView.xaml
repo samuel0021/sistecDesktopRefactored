@@ -81,8 +81,9 @@
                 FontFamily="{StaticResource MontserratRegular}"
                 Foreground="{StaticResource brush-White}"
                 Style="{StaticResource ToggleButtonImage}"
+                helpers:ButtonHelper.HoverBackground="{StaticResource brush-frenchGray}"
                 Command="{Binding NavigateCommand}"
-                CommandParameter="HomeView"/>
+                CommandParameter="DashboardView"/>
 
                 <ToggleButton Content="Chamados"
                 HorizontalAlignment="Left"
@@ -94,6 +95,7 @@
                 FontFamily="{StaticResource MontserratRegular}"
                 Foreground="{StaticResource brush-White}"
                 Style="{StaticResource ToggleButtonImage}"
+                helpers:ButtonHelper.HoverBackground="{StaticResource brush-frenchGray}"
                 Command="{Binding NavigateCommand}"
                 CommandParameter="TicketsView"/>
 
@@ -106,7 +108,10 @@
                 Background="Transparent"
                 FontFamily="{StaticResource MontserratRegular}"
                 Foreground="{StaticResource brush-White}"
-                Style="{StaticResource ToggleButtonImage}"/>
+                Style="{StaticResource ToggleButtonImage}"
+                helpers:ButtonHelper.HoverBackground="{StaticResource brush-frenchGray}"
+                Command="{Binding NavigateCommand}"
+                CommandParameter="UsersView"/>
             </StackPanel>
         </Border>
         <!--#endregion-->

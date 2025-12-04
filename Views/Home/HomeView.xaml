@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="sistecDesktopRefactored.Views.HomeView"
+﻿<UserControl x:Class="sistecDesktopRefactored.Views.Home.HomeView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 

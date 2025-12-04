@@ -83,7 +83,6 @@ namespace sistecDesktopRefactored.ViewModels
 
                 var result = await _apiClient.LoginAsync(loginRequest);
 
-                // aqui é importante bater com o modelo real da sua API
                 if (result != null &&
                     result.Success &&
                     result.Data != null &&
