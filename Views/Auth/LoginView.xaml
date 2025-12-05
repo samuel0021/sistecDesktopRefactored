@@ -20,66 +20,67 @@
         <!--#endregion-->
 
         <Border Width="500" Height="500" CornerRadius="10"
-        HorizontalAlignment="Right" Margin="10"
-        Style="{StaticResource BorderShadow}"
-        Background="{StaticResource brush-vibrantViolet}">
+            HorizontalAlignment="Right" Margin="10"
+            Style="{StaticResource BorderShadow}"
+            Background="{StaticResource brush-vibrantViolet}">
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Image Source="/images/logo-white.png" 
-                Width="200" Height="200" Margin="0 0 0 0"/>
+                    Width="200" Height="200" Margin="0 0 0 0"/>
 
                 <TextBlock Text="Sistema de Chamados"
-                Margin="0 30 0 10"
-                TextAlignment="Center" FontSize="30"
-                FontFamily="{StaticResource MontserratBold}"
-                Foreground="{StaticResource brush-lavenderMist}"/>
+                    Margin="0 30 0 10"
+                    TextAlignment="Center" FontSize="30"
+                    FontFamily="{StaticResource MontserratBold}"
+                    Foreground="{StaticResource brush-lavenderMist}"/>
 
                 <TextBlock Text="Gerencie seus chamados técnicos de forma eficiente"
-                TextWrapping="Wrap" TextAlignment="Center"
-                FontSize="18"
-                Foreground="{StaticResource brush-lavenderMist}"/>
+                    TextWrapping="Wrap" TextAlignment="Center"
+                    FontSize="18"
+                    FontFamily="{StaticResource MontserratRegular}"
+                    Foreground="{StaticResource brush-lavenderMist}"/>
             </StackPanel>
         </Border>
 
         <Border Grid.Column="1" HorizontalAlignment="Left"
-        Width="500" Height="500" CornerRadius="10" Margin="10"
-        Tag="Login"
-        Style="{StaticResource BorderShadow}"
-        Background="{StaticResource brush-lavenderMist}">
+            Width="500" Height="500" CornerRadius="10" Margin="10"
+            Tag="Login"
+            Style="{StaticResource BorderShadow}"
+            Background="{StaticResource brush-lavenderMist}">
 
             <StackPanel>
                 <TextBlock Text="Entrar no Sistema"
-                TextAlignment="Center" FontSize="30"
-                Margin="0 40 0 10"
-                FontFamily="{StaticResource MontserratBold}"
-                Foreground="{StaticResource brush-midnightNavy}"/>
+                    TextAlignment="Center" FontSize="30"
+                    Margin="0 40 0 10"
+                    FontFamily="{StaticResource MontserratBold}"
+                    Foreground="{StaticResource brush-midnightNavy}"/>
 
                 <TextBlock Text="Digite suas credenciais para acessar"
-                TextAlignment="Center" FontSize="18"
-                Foreground="{StaticResource brush-coolGray}"/>
+                    TextAlignment="Center" FontSize="18"
+                    Foreground="{StaticResource brush-coolGray}"/>
 
 
                 <!-- Email -->
                 <Label Content="E-mail" FontSize="18" Margin="15 40 15 0"
-                Foreground="{StaticResource brush-midnightNavy}"/>
+                    Foreground="{StaticResource brush-midnightNavy}"/>
 
                 <TextBox x:Name="txtEmail"
-                Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
-                Height="40" Margin="15 0 15 0"/>
+                    BorderThickness="0.5"
+                    Style="{StaticResource TextBoxBase}"
+                    Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <!-- Senha -->
-                <Label Content="Senha" Margin="15 0 15 0" FontSize="18"
+                <Label Content="Senha" Margin="15 15 15 0" FontSize="18"
                 Foreground="{StaticResource brush-midnightNavy}"/>
 
                 <PasswordBox x:Name="passwordBox"
-                PasswordChar="●" 
-                Height="40"
-                Margin="15 0 15 0"
-                PasswordChanged="PasswordBox_PasswordChanged"/>
+                    BorderThickness="0.5"
+                    Style="{StaticResource PasswordBoxBase}"
+                    PasswordChanged="PasswordBox_PasswordChanged"/>
 
                 <TextBlock Margin="0 20 15 10"
-                HorizontalAlignment="Right"
-                FontSize="12">
+                    HorizontalAlignment="Right"
+                    FontSize="12">
             
             <Hyperlink Command="{Binding EsqueciSenhaCommand}" FontSize="18"
                 Style="{StaticResource HyperlinkForgotPass}">
@@ -89,25 +90,25 @@
 
                 <!-- Botão Entrar -->
                 <Button x:Name="btnEnter"
-                FontFamily="{StaticResource MontserratBold}"
-                Content="Entrar" FontSize="18" Margin="0 30 0 0"
-                Width="400" Height="45"
-                IsDefault="True"
-                BorderThickness="0"
-                Tag="/Images/log-in.png"
-                Foreground="{StaticResource brush-White}"
-                Background="{StaticResource brush-vibrantViolet}"
-                Style="{StaticResource ButtonImage}"
-                helpers:ButtonHelper.HoverBackground="#668564FF"
-                Command="{Binding LoginCommand}"/>
+                    FontFamily="{StaticResource MontserratBold}"
+                    Content="Entrar" FontSize="18" Margin="0 30 0 0"
+                    Width="400" Height="45"
+                    IsDefault="True"
+                    BorderThickness="0"
+                    Tag="/Images/log-in.png"
+                    Foreground="{StaticResource brush-White}"
+                    Background="{StaticResource brush-vibrantViolet}"
+                    Style="{StaticResource ButtonImage}"
+                    helpers:ButtonHelper.HoverBackground="#668564FF"
+                    Command="{Binding LoginCommand}"/>
 
 
                 <!-- Mensagem de Erro (sempre visível, mas só tem texto se der erro) -->
                 <TextBlock Text="{Binding ErrorMessage}"
-                Foreground="Red"
-                TextWrapping="Wrap"
-                TextAlignment="Center"
-                FontSize="18"/>
+                    Foreground="Red"
+                    TextWrapping="Wrap"
+                    TextAlignment="Center"
+                    FontSize="18"/>
             </StackPanel>
         </Border>
     </Grid>

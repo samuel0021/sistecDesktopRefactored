@@ -1,7 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:sistecDesktopRefactored.Converters"
                     xmlns:helpers="clr-namespace:sistecDesktopRefactored.Helpers">
-    
+
+    <converters:PriorityToTextConverter x:Key="PriorityToTextConverter"/>
+
     <!--#region Buttons-->
 
     <Style x:Key="ButtonBaseImage" TargetType="ButtonBase">
@@ -153,7 +156,7 @@
     <Style x:Key="BorderPanel" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource brush-lavenderMist}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource brush-frenchGray}"/>
-        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderThickness" Value="0.5"/>
         <Setter Property="CornerRadius" Value="5"/>
         <Setter Property="Margin" Value="10"/>
     </Style>
@@ -188,4 +191,251 @@
     </Style>
     
     <!--#endregion-->
+
+    <!--#region DataGrid -->
+
+    <!-- Style Base para DataGrid -->
+    <Style x:Key="ModernDataGridStyle" TargetType="DataGrid">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="BorderBrush" Value="#E5E7EB"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="GridLinesVisibility" Value="None"/>
+        <Setter Property="HeadersVisibility" Value="Column"/>
+        <Setter Property="RowBackground" Value="White"/>
+        <Setter Property="AlternatingRowBackground" Value="#F9FAFB"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="SelectionMode" Value="Single"/>
+        <Setter Property="CanUserResizeColumns" Value="True"/>
+        <Setter Property="CanUserSortColumns" Value="True"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+
+        <Setter Property="ColumnHeaderStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#F3F4F6"/>
+                    <Setter Property="Foreground" Value="#374151"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="Padding" Value="12,10"/>
+                    <Setter Property="BorderBrush" Value="#E5E7EB"/>
+                    <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="CellStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Padding" Value="12,10"/>
+                    <Setter Property="Foreground" Value="#374151"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="BorderBrush" Value="#F3F4F6"/>
+                    <Setter Property="BorderThickness" Value="0,0,1,0"/>
+                    <Setter Property="Background" Value="White"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#3B82F6"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#F3F4F6"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="RowStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#F9FAFB"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#EFF6FF"/>
+                            <Setter Property="Foreground" Value="#1E40AF"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Header das Colunas -->
+    <Style x:Key="ModernDataGridColumnHeaderStyle" TargetType="DataGridColumnHeader">
+        <Setter Property="Background" Value="#F3F4F6"/>
+        <Setter Property="Foreground" Value="#374151"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Padding" Value="12,10"/>
+        <Setter Property="BorderBrush" Value="#E5E7EB"/>
+        <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridColumnHeader">
+                    <Grid>
+                        <Border x:Name="HeaderBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"/>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                      RecognizesAccessKey="True"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="HeaderBorder" Property="Background" Value="#E5E7EB"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="HeaderBorder" Property="Background" Value="#D1D5DB"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Células -->
+    <Style TargetType="DataGridCell">
+        <Setter Property="Padding" Value="12,10"/>
+        <Setter Property="Foreground" Value="#374151"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="BorderBrush" Value="#F3F4F6"/>
+        <Setter Property="BorderThickness" Value="0,0,1,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridCell">
+                    <Border x:Name="CellBorder"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentPresenter VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="CellBorder" Property="Background" Value="#3B82F6"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="CellBorder" Property="Background" Value="#F3F4F6"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Linhas -->
+    <Style TargetType="DataGridRow">
+        <Setter Property="Background" Value="Transparent"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#F9FAFB"/>
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="#EFF6FF"/>
+                <Setter Property="Foreground" Value="#1E40AF"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <DataTemplate x:Key="PriorityCellTemplate">
+        <Border CornerRadius="5"
+            Padding="10 2"
+            HorizontalAlignment="Center"
+            BorderThickness="0">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Background" Value="#E5E7EB"/>
+                    <Setter Property="BorderBrush" Value="#D1D5DB"/>
+                    <Setter Property="TextElement.Foreground" Value="{DynamicResource brush-midnightNavy}"/>
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Prioridade}" Value="1">
+                            <Setter Property="Background" Value="#D1FFEC"/>
+                            <Setter Property="TextElement.Foreground" Value="#6EE7B7"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Prioridade}" Value="2">
+                            <Setter Property="Background" Value="#FEF3C7"/>
+                            <Setter Property="TextElement.Foreground" Value="#FBBF24"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Prioridade}" Value="3">
+                            <Setter Property="Background" Value="#FEE2E2"/>
+                            <Setter Property="TextElement.Foreground" Value="#F87171"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Prioridade}" Value="4">
+                            <Setter Property="Background" Value="#EFF6FF"/>
+                            <Setter Property="TextElement.Foreground" Value="#3B82F6"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <TextBlock Text="{Binding Prioridade,
+                                  Converter={StaticResource PriorityToTextConverter}}"
+                   FontSize="12"
+                   FontWeight="SemiBold"
+                   Foreground="#111827"/>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="StatusCellTemplate">
+        <Border CornerRadius="5"
+            Padding="10 2"
+            HorizontalAlignment="Center"
+            BorderThickness="0">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Background" Value="#E5E7EB"/>
+                    <Setter Property="BorderBrush" Value="#D1D5DB"/>
+                    <Setter Property="TextElement.Foreground" Value="{DynamicResource brush-midnightNavy}"/>
+
+                    <!-- Ajuste as strings para bater com seus Status reais -->
+                    <Style.Triggers>
+                        <!-- Exemplo: "Com Analista" (azul) -->
+                        <DataTrigger Binding="{Binding Status}" Value="Com Analista">
+                            <Setter Property="Background" Value="#DBEAFE"/>
+                            <Setter Property="TextElement.Foreground" Value="#3B82F6"/>
+                        </DataTrigger>
+
+                        <!-- "Escalado" (roxo) -->
+                        <DataTrigger Binding="{Binding Status}" Value="Escalado">
+                            <Setter Property="Background" Value="#EDE9FE"/>
+                            <Setter Property="TextElement.Foreground" Value="#8B5CF6"/>
+                        </DataTrigger>
+
+                        <!-- "Resolvido" (verde) -->
+                        <DataTrigger Binding="{Binding Status}" Value="Resolvido">
+                            <Setter Property="Background" Value="#ECFDF5"/>
+                            <Setter Property="TextElement.Foreground" Value="#22C55E"/>
+                        </DataTrigger>
+
+                        <!-- "Aguardando Resposta" (amarelo) -->
+                        <DataTrigger Binding="{Binding Status}" Value="Aguardando Resposta">
+                            <Setter Property="Background" Value="#FEF3C7"/>
+                            <Setter Property="TextElement.Foreground" Value="#FBBF24"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <TextBlock Text="{Binding Status}"
+                   FontSize="12"
+                   FontWeight="SemiBold"
+                   Foreground="{DynamicResource brush-midnightNavy}"/>
+        </Border>
+    </DataTemplate>
+
+    <!--#endregion-->
+    
 </ResourceDictionary>

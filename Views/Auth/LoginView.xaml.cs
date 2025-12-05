@@ -33,8 +33,8 @@ namespace sistecDesktopRefactored.Views.Auth
             //txtEmail.Focus();
             //Keyboard.Focus(txtEmail);
 
-            txtEmail.Text = Environment.GetEnvironmentVariable("login");
-            passwordBox.Password = Environment.GetEnvironmentVariable("senha");
+            txtEmail.Text = Environment.GetEnvironmentVariable("USER_ADM");
+            passwordBox.Password = Environment.GetEnvironmentVariable("PASS_ADM");
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)

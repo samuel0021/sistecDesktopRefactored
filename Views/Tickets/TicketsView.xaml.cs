@@ -24,5 +24,23 @@ namespace sistecDesktopRefactored.Views
         {
             InitializeComponent();
         }
+
+        private void txtSearch_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txtSearch.Text == "Pesquisar")
+            {
+                txtSearch.Text = "";
+                txtSearch.Foreground = Brushes.Black;
+            }
+        }
+
+        private void txtSearch_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtSearch.Text))
+            {
+                txtSearch.Text = "Pesquisar";
+                txtSearch.Foreground = Brushes.Gray;
+            }
+        }
     }
 }

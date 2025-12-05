@@ -4,13 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:sistecDesktopRefactored.Views"
+             xmlns:helpers="clr-namespace:sistecDesktopRefactored.Helpers"
              mc:Ignorable="d" 
              d:DesignHeight="650" d:DesignWidth="1000">
-
 
     <Grid>
         <!--#region Row Definitions-->
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -38,12 +39,48 @@
         </StackPanel>
         <!--#endregion-->
 
+        <!--#region Buttons -->
+        <Grid Grid.Row="1">
+            <!--#region Column Definitions-->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <!--#endregion-->
+
+            <Button Content="Abrir Novo Chamado" Grid.Column="0"
+                Height="70"
+                Margin="10"
+                FontFamily="{StaticResource MontserratBold}"
+                helpers:ButtonHelper.HoverBackground="#1AFF9966"
+                Background="{StaticResource brush-lavenderMist}"
+                Style="{StaticResource ButtonImage}"/>
+
+            <Button Content="Meus Chamados" Grid.Column="1"
+                Height="70"
+                Margin="10"
+                FontFamily="{StaticResource MontserratBold}"
+                helpers:ButtonHelper.HoverBackground="#1AFF9966"
+                Background="{StaticResource brush-lavenderMist}"
+                Style="{StaticResource ButtonImage}"/>
+
+            <Button Content="Aprovar Chamados" Grid.Column="2"
+                Height="70"
+                Margin="10"
+                FontFamily="{StaticResource MontserratBold}"
+                helpers:ButtonHelper.HoverBackground="#1AFF9966"
+                Background="{StaticResource brush-lavenderMist}"
+                Style="{StaticResource ButtonImage}"/>
+        </Grid>
+        <!--#endregion-->
+
         <!--#region DataGrid-->
-        <Border Grid.Row="1"
+        <Border Grid.Row="2"
             Style="{StaticResource BorderPanel}">
 
             <Grid>
-                <!--#region Row Definitions-->
+                <!--#region Row/Column Definitions-->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
@@ -62,9 +99,14 @@
                     Orientation="Horizontal" HorizontalAlignment="Right"
                     Margin="10">
 
-                    <TextBox Text="Pesquisar chamados" VerticalContentAlignment="Center"
+                    <TextBox x:Name="txtSearch" Text="Pesquisar"
+                        VerticalContentAlignment="Center"
+                        BorderThickness="0.5"
                         Margin="5" Width="150" Height="40"
-                        FontFamily="{StaticResource MontserratRegular}"/>
+                        Foreground="{StaticResource brush-frenchGray}"
+                        Style="{StaticResource TextBoxBase}"
+                        GotFocus="txtSearch_GotFocus"
+                        LostFocus="txtSearch_LostFocus"/>
 
                     <Button Content="Ver Escalados"
                         Margin="5" Height="40"
@@ -72,6 +114,9 @@
                         BorderBrush="{StaticResource brush-frenchGray}"
                         FontFamily="{StaticResource MontserratBold}"
                         Foreground="{StaticResource brush-vibrantViolet}"
+                        Background="Transparent"
+                        BorderThickness="0.5"
+                        helpers:ButtonHelper.HoverBackground="#1A8564FF"
                         Style="{StaticResource ButtonImage}"/>
 
                     <Button Content="Atualizar"
@@ -80,12 +125,46 @@
                         BorderBrush="{StaticResource brush-frenchGray}"
                         FontFamily="{StaticResource MontserratBold}"
                         Foreground="{StaticResource brush-peachOrange}"
+                        Background="Transparent"
+                        BorderThickness="0.5"
+                        helpers:ButtonHelper.HoverBackground="#1AFF9966"
                         Style="{StaticResource ButtonImage}"/>
 
                 </StackPanel>
 
-                <DataGrid Grid.Row="1" Grid.ColumnSpan="2">
+                <DataGrid Grid.Row="1" Grid.ColumnSpan="2" Margin="10"
+                    ItemsSource="{Binding Tickets}" 
+                    Style="{StaticResource ModernDataGridStyle}"
+                    AutoGenerateColumns="False">
 
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" 
+                            Binding="{Binding Id}" Width="50"/>
+
+                        <DataGridTextColumn Header="Categoria" 
+                            Binding="{Binding Categoria}" Width="120"/>
+
+                        <DataGridTextColumn Header="Usuário" 
+                            Binding="{Binding UsuarioAbertura}" Width="150"/>
+
+                        <DataGridTextColumn Header="Título" 
+                            Binding="{Binding Title}" Width="250"/>
+
+                        <DataGridTemplateColumn Header="Prioridade"
+                            Width="100"
+                            SortMemberPath="Prioridade"
+                            CellTemplate="{StaticResource PriorityCellTemplate}" />
+
+                        <DataGridTemplateColumn Header="Status"
+                            Width="130"
+                            SortMemberPath="Status"
+                            CellTemplate="{StaticResource StatusCellTemplate}" />
+
+                        <DataGridTextColumn Header="Abertura" 
+                            Binding="{Binding CreatedAt, 
+                                      StringFormat='dd/MM/yyyy HH:mm'}" 
+                            Width="130"/>
+                    </DataGrid.Columns>
                 </DataGrid>
             </Grid>
         </Border>

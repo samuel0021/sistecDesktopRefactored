@@ -108,6 +108,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\PriorityToTextConverter.cs" />
     <Compile Include="Helpers\ButtonHelper.cs" />
     <Compile Include="Interfaces\IFileDialogService.cs" />
     <Compile Include="Models\ApiResponse.cs" />

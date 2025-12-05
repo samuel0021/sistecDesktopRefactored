@@ -25,8 +25,8 @@
         <!--#region Logo-->
         <Border Grid.Row="0" Padding="15"
         Background="{StaticResource brush-midnightNavy}"
-        BorderBrush="{StaticResource brush-White}"
-        BorderThickness="0 0 0 1">
+        BorderBrush="{StaticResource brush-frenchGray}"
+        BorderThickness="0 0 0 0.5">
 
             <Image Source="/images/sistec-white.png"
             Margin="10" HorizontalAlignment="Left"/>
@@ -37,7 +37,7 @@
         <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4"
         Background="{StaticResource brush-lavenderMist}"
         BorderBrush="{StaticResource brush-frenchGray}"
-        BorderThickness="0 0 0 1">
+        BorderThickness="0 0 0 0.5">
 
             <Button Content="Sair" HorizontalAlignment="Right" 
                 Width="100" Margin="15"

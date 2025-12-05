@@ -68,8 +68,6 @@ namespace sistecDesktopRefactored.Models
     #region User
 
     // Modelo para login (campos limpos)
-
-
     public class User
     {
         [JsonProperty("id")]
