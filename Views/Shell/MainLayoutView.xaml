@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
         <!--#endregion-->
 
@@ -58,6 +58,7 @@
             HorizontalAlignment="Left" VerticalAlignment="Top">
 
                 <ToggleButton Content="Home"
+                              Margin="0 0 0 10"
                 HorizontalAlignment="Left"
                 HorizontalContentAlignment="Left"
                 FontSize="20" Width="200"
@@ -72,6 +73,7 @@
                 CommandParameter="HomeView"/>
 
                 <ToggleButton Content="Dashboard"
+                              Margin="0 0 0 10"
                 HorizontalAlignment="Left"
                 HorizontalContentAlignment="Left"
                 FontSize="20" Width="200"
@@ -86,6 +88,7 @@
                 CommandParameter="DashboardView"/>
 
                 <ToggleButton Content="Chamados"
+                              Margin="0 0 0 10"
                 HorizontalAlignment="Left"
                 HorizontalContentAlignment="Left"
                 FontSize="20" Width="200"
@@ -100,6 +103,7 @@
                 CommandParameter="TicketsView"/>
 
                 <ToggleButton Content="Usuários"
+                              Margin="0 0 0 10"
                 HorizontalAlignment="Left"
                 HorizontalContentAlignment="Left"
                 FontSize="20" Width="200"

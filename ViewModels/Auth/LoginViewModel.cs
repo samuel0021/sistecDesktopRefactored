@@ -92,6 +92,8 @@ namespace sistecDesktopRefactored.ViewModels
 
                     // navega a ShellRegion para o layout principal
                     _regionManager.RequestNavigate("ShellRegion", "MainLayoutView");
+                    _regionManager.RequestNavigate("MainRegion", "TicketsView");
+
                 }
                 else
                 {

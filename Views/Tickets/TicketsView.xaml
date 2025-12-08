@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:sistecDesktopRefactored.Views"
              xmlns:helpers="clr-namespace:sistecDesktopRefactored.Helpers"
              mc:Ignorable="d" 
-             d:DesignHeight="650" d:DesignWidth="1000">
+             d:DesignHeight="900" d:DesignWidth="1600">
 
     <Grid>
         <!--#region Row Definitions-->
@@ -50,28 +50,31 @@
             <!--#endregion-->
 
             <Button Content="Abrir Novo Chamado" Grid.Column="0"
-                Height="70"
-                Margin="10"
+                
+                
                 FontFamily="{StaticResource MontserratBold}"
+                Tag="/Images/plus.png"
                 helpers:ButtonHelper.HoverBackground="#1AFF9966"
                 Background="{StaticResource brush-lavenderMist}"
-                Style="{StaticResource ButtonImage}"/>
+                Style="{StaticResource TicketButtons}"/>
 
             <Button Content="Meus Chamados" Grid.Column="1"
-                Height="70"
-                Margin="10"
+                
+                
                 FontFamily="{StaticResource MontserratBold}"
+                Tag="/Images/user-orange.png"
                 helpers:ButtonHelper.HoverBackground="#1AFF9966"
                 Background="{StaticResource brush-lavenderMist}"
-                Style="{StaticResource ButtonImage}"/>
+                Style="{StaticResource TicketButtons}"/>
 
             <Button Content="Aprovar Chamados" Grid.Column="2"
-                Height="70"
-                Margin="10"
+                
+                
                 FontFamily="{StaticResource MontserratBold}"
+                Tag="/Images/check.png"
                 helpers:ButtonHelper.HoverBackground="#1AFF9966"
                 Background="{StaticResource brush-lavenderMist}"
-                Style="{StaticResource ButtonImage}"/>
+                Style="{StaticResource TicketButtons}"/>
         </Grid>
         <!--#endregion-->
 
@@ -164,6 +167,63 @@
                             Binding="{Binding CreatedAt, 
                                       StringFormat='dd/MM/yyyy HH:mm'}" 
                             Width="130"/>
+
+                        <DataGridTemplateColumn Header="Ações" Width="400">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+
+                                    <StackPanel Orientation="Horizontal">
+
+                                        <Button Style="{StaticResource IconButton}"
+                                            Tag="/Images/eye.png"
+                                            Background="Transparent"
+                                            BorderBrush="{StaticResource brush-frenchGray}"
+                                            BorderThickness="0.5"
+                                            helpers:ButtonHelper.HoverBackground="#1AFF9966"
+                                            Width="40" Height="40"/>
+
+                                        <Button Content="Resolver"
+                                            Background="#22C55E"
+                                            Height="40" Margin="10"
+                                            Tag="/Images/circle-check.png"
+                                            FontFamily="{StaticResource MontserratBold}"
+                                            Foreground="{StaticResource brush-White}"
+                                            BorderBrush="{StaticResource brush-White}"
+                                            helpers:ButtonHelper.HoverBackground="#22C560"
+                                            Style="{StaticResource ButtonImage}"/>
+
+                                        <Button Content="Escalar"
+                                            Tag="/Images/triangle-alert.png"
+                                            Background="Transparent"
+                                            FontFamily="{StaticResource MontserratBold}"
+                                            helpers:ButtonHelper.HoverBackground="#1AFF9966"
+                                            BorderBrush="{StaticResource brush-frenchGray}"
+                                            BorderThickness="0.5"
+                                            Foreground="{StaticResource brush-peachOrange}"
+                                            Style="{StaticResource ButtonImage}"/>
+
+                                        <Button Content="🤖 Ver Solução IA"
+                                            Margin="5,0,0,0"
+                                            Background="Transparent"
+                                            BorderBrush="{StaticResource brush-vibrantViolet}"
+                                            Foreground="{StaticResource brush-vibrantViolet}">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Aguardando Resposta">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

@@ -19,8 +19,6 @@ namespace sistecDesktopRefactored.ViewModels.Shell
             _regionManager = regionManager;
             NavigateCommand = new DelegateCommand<string>(OnNavigate);
 
-            // View inicial dentro do layout
-            _regionManager.RequestNavigate("MainRegion", "HomeView");
         }
 
         private void OnNavigate(string viewName)
