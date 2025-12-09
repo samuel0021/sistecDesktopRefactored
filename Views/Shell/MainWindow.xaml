@@ -7,12 +7,24 @@
         xmlns:prism="http://prismlibrary.com/"
         xmlns:viewModels="clr-namespace:sistecDesktopRefactored.ViewModels"
         xmlns:helpers="clr-namespace:sistecDesktopRefactored.Helpers"
+        xmlns:converters="clr-namespace:sistecDesktopRefactored.Converters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1600"
+        Title="Sistec" Height="900" Width="1600"
         WindowStartupLocation="CenterScreen">
+    
+    <Window.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Window.Resources>
+
 
     <Grid>
         <!-- Região raiz da aplicação -->
         <ContentControl prism:RegionManager.RegionName="ShellRegion" />
+
+        <!-- Loading Overlay -->
+        <Border Background="#80000000"
+        Visibility="{Binding BusyService.IsBusy,
+                     Converter={StaticResource BoolToVisibilityConverter}}"
+        Panel.ZIndex="999"/>
     </Grid>
 </Window>

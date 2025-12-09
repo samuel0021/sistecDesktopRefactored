@@ -7,10 +7,12 @@ using sistecDesktopRefactored.Interfaces;
 using sistecDesktopRefactored.Models;
 using sistecDesktopRefactored.Services;
 using sistecDesktopRefactored.ViewModels;
+using sistecDesktopRefactored.ViewModels.Tickets;
 using sistecDesktopRefactored.Views;
 using sistecDesktopRefactored.Views.Auth;
 using sistecDesktopRefactored.Views.Home;
 using sistecDesktopRefactored.Views.Shell;
+using sistecDesktopRefactored.Views.Tickets;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -61,7 +63,11 @@ namespace sistecDesktopRefactored
             containerRegistry.RegisterForNavigation<TicketsView>("TicketsView");
             containerRegistry.RegisterForNavigation<UsersView>("UsersView");
 
+            containerRegistry.RegisterDialog<TicketDetailsView, TicketDetailsViewModel>("TicketDetailsDialog");
+
             containerRegistry.Register<IFileDialogService, FileDialogService>();
+            containerRegistry.RegisterSingleton<IBusyService, BusyService>();
+
         }
 
         protected override void ConfigureViewModelLocator()
@@ -69,6 +75,7 @@ namespace sistecDesktopRefactored
             base.ConfigureViewModelLocator();
 
             ViewModelLocationProvider.Register<LoginView, LoginViewModel>();
+            ViewModelLocationProvider.Register<MainWindow, MainWindowViewModel>();
         }
     }
 }

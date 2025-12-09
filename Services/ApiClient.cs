@@ -587,7 +587,7 @@ namespace sistecDesktopRefactored.Services
         /// <returns>A task representing the asynchronous operation. The task result contains the <see cref="Chamado"/> object if
         /// found; otherwise, an exception is thrown.</returns>
         /// <exception cref="Exception">Thrown if an error occurs during the request or if the chamado cannot be retrieved.</exception>
-        public async Task<Chamado> GetChamadoByIdAsync(int id)
+        public async Task<Chamado> GetTicketByIdAsync(int id)
         {
             try
             {

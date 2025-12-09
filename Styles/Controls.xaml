@@ -69,6 +69,10 @@
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
                         </Trigger>
+
+                        <Trigger Property="helpers:ButtonHelper.SelectedTag" Value="Selected">
+                            <Setter TargetName="borderButtonSolid" Property="Background" Value="{DynamicResource brush-peachOrange}"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -432,8 +436,15 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="CellBorder" Property="Background" Value="#3B82F6"/>
-                            <Setter Property="Foreground" Value="White"/>
+                            <Setter TargetName="CellBorder" Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="Transparent" />
+                            <Setter Property="Foreground" Value="Black" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="CellBorder" Property="Background" Value="Transparent" />
+                            <Setter Property="BorderBrush" Value="Black" />
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="Foreground" Value="Black" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="CellBorder" Property="Background" Value="#F3F4F6"/>

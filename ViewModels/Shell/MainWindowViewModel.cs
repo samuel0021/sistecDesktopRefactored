@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
+using sistecDesktopRefactored.Interfaces;
 using sistecDesktopRefactored.Services;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,11 @@ namespace sistecDesktopRefactored.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
-       
+        public IBusyService BusyService { get; }
+
+        public MainWindowViewModel(IBusyService busyService)
+        {
+            BusyService = busyService;
+        }
     }
 }

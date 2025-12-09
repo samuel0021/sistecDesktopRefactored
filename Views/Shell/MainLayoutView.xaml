@@ -7,9 +7,14 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:viewModels="clr-namespace:sistecDesktopRefactored.ViewModels"
              xmlns:helpers="clr-namespace:sistecDesktopRefactored.Helpers"
+             xmlns:converters="clr-namespace:sistecDesktopRefactored.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1400">
-    
+
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+
     <Grid Background="{StaticResource brush-lavenderWeb}">
         <!--#region Row/Column Definitions-->
         <Grid.RowDefinitions>
@@ -45,7 +50,9 @@
                 Tag="/Images/log-out.png"
                 Background="Transparent"
                 Foreground="{StaticResource brush-peachOrange}"
-                Style="{StaticResource ButtonImage}"/>
+                Style="{StaticResource ButtonImage}"
+                helpers:ButtonHelper.HoverBackground="#91FBC6B3"
+                Command="{Binding LogoutCommand}"/>
 
         </Border>
         <!--#endregion-->
@@ -57,65 +64,69 @@
             <StackPanel Width="auto"
             HorizontalAlignment="Left" VerticalAlignment="Top">
 
-                <ToggleButton Content="Home"
-                              Margin="0 0 0 10"
-                HorizontalAlignment="Left"
-                HorizontalContentAlignment="Left"
-                FontSize="20" Width="200"
-                BorderThickness="0"
-                Tag="/Images/house.png"
-                Background="Transparent"
-                FontFamily="{StaticResource MontserratRegular}"
-                Foreground="{StaticResource brush-White}"
-                Style="{StaticResource ToggleButtonImage}"
-                helpers:ButtonHelper.HoverBackground="{StaticResource brush-frenchGray}"
-                Command="{Binding NavigateCommand}"
-                CommandParameter="HomeView"/>
+                <Button Content="Home"
+                    Margin="0 0 0 10"
+                    HorizontalAlignment="Left"
+                    HorizontalContentAlignment="Left"
+                    FontSize="20" Width="200"
+                    BorderThickness="0"
+                    Tag="/Images/house.png"
+                    Background="Transparent"
+                    FontFamily="{StaticResource MontserratRegular}"
+                    Foreground="{StaticResource brush-White}"
+                    Style="{StaticResource ButtonImage}"
+                    helpers:ButtonHelper.HoverBackground="{StaticResource brush-frenchGray}"
+                    helpers:ButtonHelper.SelectedTag="{Binding TagHome}"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="Home"/>
 
-                <ToggleButton Content="Dashboard"
-                              Margin="0 0 0 10"
-                HorizontalAlignment="Left"
-                HorizontalContentAlignment="Left"
-                FontSize="20" Width="200"
-                BorderThickness="0"
-                Tag="/Images/layout-grid.png"
-                Background="Transparent"
-                FontFamily="{StaticResource MontserratRegular}"
-                Foreground="{StaticResource brush-White}"
-                Style="{StaticResource ToggleButtonImage}"
-                helpers:ButtonHelper.HoverBackground="{StaticResource brush-frenchGray}"
-                Command="{Binding NavigateCommand}"
-                CommandParameter="DashboardView"/>
+                <Button Content="Dashboard"
+                    Margin="0 0 0 10"
+                    HorizontalAlignment="Left"
+                    HorizontalContentAlignment="Left"
+                    FontSize="20" Width="200"
+                    BorderThickness="0"
+                    Tag="/Images/layout-grid.png"
+                    Background="Transparent"
+                    FontFamily="{StaticResource MontserratRegular}"
+                    Foreground="{StaticResource brush-White}"
+                    Style="{StaticResource ButtonImage}"
+                    helpers:ButtonHelper.HoverBackground="{StaticResource brush-frenchGray}"
+                    helpers:ButtonHelper.SelectedTag="{Binding TagDashboard}"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="Dashboard"/>
 
-                <ToggleButton Content="Chamados"
-                              Margin="0 0 0 10"
-                HorizontalAlignment="Left"
-                HorizontalContentAlignment="Left"
-                FontSize="20" Width="200"
-                BorderThickness="0"
-                Tag="/Images/circle-question-mark.png"
-                Background="Transparent"
-                FontFamily="{StaticResource MontserratRegular}"
-                Foreground="{StaticResource brush-White}"
-                Style="{StaticResource ToggleButtonImage}"
-                helpers:ButtonHelper.HoverBackground="{StaticResource brush-frenchGray}"
-                Command="{Binding NavigateCommand}"
-                CommandParameter="TicketsView"/>
+                <Button Content="Chamados"
+                    Margin="0 0 0 10"
+                    HorizontalAlignment="Left"
+                    HorizontalContentAlignment="Left"
+                    FontSize="20" Width="200"
+                    BorderThickness="0"
+                    Tag="/Images/circle-question-mark.png"
+                    Background="Transparent"
+                    FontFamily="{StaticResource MontserratRegular}"
+                    Foreground="{StaticResource brush-White}"
+                    Style="{StaticResource ButtonImage}"
+                    helpers:ButtonHelper.HoverBackground="{StaticResource brush-frenchGray}"
+                    helpers:ButtonHelper.SelectedTag="{Binding TagTickets}"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="Tickets"/>
 
-                <ToggleButton Content="Usuários"
-                              Margin="0 0 0 10"
-                HorizontalAlignment="Left"
-                HorizontalContentAlignment="Left"
-                FontSize="20" Width="200"
-                BorderThickness="0"
-                Tag="/Images/user.png"
-                Background="Transparent"
-                FontFamily="{StaticResource MontserratRegular}"
-                Foreground="{StaticResource brush-White}"
-                Style="{StaticResource ToggleButtonImage}"
-                helpers:ButtonHelper.HoverBackground="{StaticResource brush-frenchGray}"
-                Command="{Binding NavigateCommand}"
-                CommandParameter="UsersView"/>
+                <Button Content="Usuários"
+                    Margin="0 0 0 10"
+                    HorizontalAlignment="Left"
+                    HorizontalContentAlignment="Left"
+                    FontSize="20" Width="200"
+                    BorderThickness="0"
+                    Tag="/Images/user.png"
+                    Background="Transparent"
+                    FontFamily="{StaticResource MontserratRegular}"
+                    Foreground="{StaticResource brush-White}"
+                    Style="{StaticResource ButtonImage}"
+                    helpers:ButtonHelper.HoverBackground="{StaticResource brush-frenchGray}"
+                    helpers:ButtonHelper.SelectedTag="{Binding TagUsers}"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="Users"/>
             </StackPanel>
         </Border>
         <!--#endregion-->

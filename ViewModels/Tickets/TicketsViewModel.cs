@@ -1,35 +1,42 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Services.Dialogs;
+using sistecDesktopRefactored.Interfaces;
 using sistecDesktopRefactored.Models;
 using sistecDesktopRefactored.Services;
+using sistecDesktopRefactored.ViewModels.Shell;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace sistecDesktopRefactored.ViewModels
 {
     public class TicketsViewModel : BindableBase
     {
         private readonly ApiClient _apiClient;
+        private readonly IDialogService _dialogService;
+        private IBusyService _busyService;
+
+        private string _title = "Detalhes do Chamado";
 
         private ObservableCollection<Chamado> _tickets;
-        private bool _isLoading;
         private string _errorMessage;
-
+        public Chamado SelectedTicket { get; set; }
 
         #region Encapsulations
+        public string Title
+        {
+            get => _title;
+            set => SetProperty(ref _title, value);
+        }
         public ObservableCollection<Chamado> Tickets
         {
             get => _tickets;
             set => SetProperty(ref _tickets, value);
-        }
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set => SetProperty(ref _isLoading, value);
         }
         public string ErrorMessage
         {
@@ -38,23 +45,30 @@ namespace sistecDesktopRefactored.ViewModels
         }
         #endregion
 
-        // Commands
+        #region Commands
         public DelegateCommand LoadTicketsCommand { get; }
+        public DelegateCommand<Chamado> ShowDetailsCommand { get; }
+
+        #endregion
 
         // Constructor
-        public TicketsViewModel(ApiClient apiClient)
+        public TicketsViewModel(ApiClient apiClient, IDialogService dialogService, IBusyService busyService)
         {
             _apiClient = apiClient;
+            _dialogService = dialogService;
+            _busyService = busyService;
 
             Tickets = new ObservableCollection<Chamado>();
+
             LoadTicketsCommand = new DelegateCommand(async () => await LoadTicketsAsync());
+            ShowDetailsCommand = new DelegateCommand<Chamado>(ShowDetails);
 
             _ = LoadTicketsAsync();
         }
 
         public async Task LoadTicketsAsync()
         {
-            IsLoading = true;
+            _busyService.IsBusy = true;
             ErrorMessage = string.Empty;
 
             try
@@ -69,8 +83,45 @@ namespace sistecDesktopRefactored.ViewModels
             }
             finally
             {
-                IsLoading = false;
+                _busyService.IsBusy = false;
             }
+        }
+
+        private async void ShowDetails(Chamado ticket)
+        {
+            if (ticket == null) return;
+            SelectedTicket = ticket;
+
+            _busyService.IsBusy = true;
+
+            try
+            {
+                var updatedTicket = await _apiClient.GetTicketByIdAsync(SelectedTicket.Id);
+                // se quiser, atualize SelectedTicket com updatedTicket
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // depois trocamos MessageBox por dialog Prism
+                MessageBox.Show("Sessão expirada. Faça login novamente.", "Erro de Autenticação",
+                                MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar detalhes do chamado: {ex.Message}", "Erro",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            
+
+            var parameters = new DialogParameters { { "ticket", SelectedTicket } };
+
+            _dialogService.ShowDialog("TicketDetailsDialog", parameters, r =>
+            {
+                // tratar resultado se precisar
+            });
+
+            _busyService.IsBusy = false;
         }
     }
 }

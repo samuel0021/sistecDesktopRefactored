@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
+using sistecDesktopRefactored.Interfaces;
 using sistecDesktopRefactored.Models;
 using sistecDesktopRefactored.Services;
 using System;
@@ -17,11 +18,11 @@ namespace sistecDesktopRefactored.ViewModels
     {
         private readonly IRegionManager _regionManager;
         private readonly ApiClient _apiClient;
+        private IBusyService _busyService;
 
         private string _email;
         private string _password;
         private string _errorMessage;
-        private bool _isLoading;
 
         #region Encapsulations
         public string Email
@@ -39,11 +40,6 @@ namespace sistecDesktopRefactored.ViewModels
             get => _errorMessage;
             set => SetProperty(ref _errorMessage, value);
         }
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set => SetProperty(ref _isLoading, value);
-        }
         #endregion
 
         #region Commands
@@ -52,10 +48,11 @@ namespace sistecDesktopRefactored.ViewModels
         #endregion
 
         #region Constructor
-        public LoginViewModel(IRegionManager regionManager, ApiClient apiClient)
+        public LoginViewModel( ApiClient apiClient, IRegionManager regionManager, IBusyService busyService)
         {
-            _regionManager = regionManager;
             _apiClient = apiClient;
+            _regionManager = regionManager;
+            _busyService = busyService;
 
             LoginCommand = new DelegateCommand(async () => await ExecutarLoginAsync());
         }
@@ -63,6 +60,8 @@ namespace sistecDesktopRefactored.ViewModels
 
         private async Task ExecutarLoginAsync()
         {
+            _busyService.IsBusy = true;
+
             ErrorMessage = string.Empty;
 
             if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
@@ -70,8 +69,6 @@ namespace sistecDesktopRefactored.ViewModels
                 ErrorMessage = "Email ou senha inválidos.";
                 return;
             }
-
-            IsLoading = true;
 
             try
             {
@@ -93,7 +90,6 @@ namespace sistecDesktopRefactored.ViewModels
                     // navega a ShellRegion para o layout principal
                     _regionManager.RequestNavigate("ShellRegion", "MainLayoutView");
                     _regionManager.RequestNavigate("MainRegion", "TicketsView");
-
                 }
                 else
                 {
@@ -106,7 +102,7 @@ namespace sistecDesktopRefactored.ViewModels
             }
             finally
             {
-                IsLoading = false;
+                _busyService.IsBusy = false;
             }
         }
     }

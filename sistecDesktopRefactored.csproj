@@ -108,8 +108,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\PriorityToTextConverter.cs" />
     <Compile Include="Helpers\ButtonHelper.cs" />
+    <Compile Include="Interfaces\IBusyService.cs" />
     <Compile Include="Interfaces\IFileDialogService.cs" />
     <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\FileDialogService.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="ViewModels\Auth\LoginViewModel.cs" />
     <Compile Include="ViewModels\Shell\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Shell\MainLayoutViewModel.cs" />
+    <Compile Include="ViewModels\Tickets\TicketDetailsViewModel.cs" />
     <Compile Include="ViewModels\Tickets\TicketsViewModel.cs" />
     <Compile Include="ViewModels\Users\UsersViewModel.cs" />
     <Compile Include="Views\Auth\LoginView.xaml.cs">
@@ -132,6 +135,9 @@
     </Compile>
     <Compile Include="Views\Shell\MainLayoutView.xaml.cs">
       <DependentUpon>MainLayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tickets\TicketDetailsView.xaml.cs">
+      <DependentUpon>TicketDetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Tickets\TicketsView.xaml.cs">
       <DependentUpon>TicketsView.xaml</DependentUpon>
@@ -176,6 +182,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Shell\MainLayoutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tickets\TicketDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

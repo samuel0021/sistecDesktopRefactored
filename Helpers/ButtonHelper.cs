@@ -9,7 +9,8 @@ using System.Windows.Media;
 namespace sistecDesktopRefactored.Helpers
 {
     public static class ButtonHelper
-    {   
+    {
+        // HoverBackground
         public static readonly DependencyProperty HoverBackgroundProperty =
             DependencyProperty.RegisterAttached(
                 "HoverBackground",
@@ -26,5 +27,19 @@ namespace sistecDesktopRefactored.Helpers
         {
             return (Brush)element.GetValue(HoverBackgroundProperty);
         }
+
+        // SelectedTag
+        public static readonly DependencyProperty SelectedTagProperty =
+            DependencyProperty.RegisterAttached(
+                "SelectedTag",
+                typeof(string),
+                typeof(ButtonHelper),
+                new PropertyMetadata(null));
+
+        public static void SetSelectedTag(DependencyObject element, string value) =>
+            element.SetValue(SelectedTagProperty, value);
+
+        public static string GetSelectedTag(DependencyObject element) => 
+            (string)element.GetValue(SelectedTagProperty);
     }
 }
