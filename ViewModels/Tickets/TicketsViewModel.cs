@@ -47,6 +47,7 @@ namespace sistecDesktopRefactored.ViewModels
 
         #region Commands
         public DelegateCommand LoadTicketsCommand { get; }
+        public DelegateCommand OpenCreateTicketCommand {  get; }
         public DelegateCommand<Chamado> ShowDetailsCommand { get; }
 
         #endregion
@@ -61,6 +62,7 @@ namespace sistecDesktopRefactored.ViewModels
             Tickets = new ObservableCollection<Chamado>();
 
             LoadTicketsCommand = new DelegateCommand(async () => await LoadTicketsAsync());
+            OpenCreateTicketCommand = new DelegateCommand(OpenCreateTicket);
             ShowDetailsCommand = new DelegateCommand<Chamado>(ShowDetails);
 
             _ = LoadTicketsAsync();
@@ -73,7 +75,7 @@ namespace sistecDesktopRefactored.ViewModels
 
             try
             {
-                List<Chamado> list = await _apiClient.GetChamadosAsync();
+                List<Chamado> list = await _apiClient.GetTicketsAsync();
 
                 Tickets = new ObservableCollection<Chamado>(list);
             }
@@ -85,6 +87,22 @@ namespace sistecDesktopRefactored.ViewModels
             {
                 _busyService.IsBusy = false;
             }
+        }
+
+        private void OpenCreateTicket()
+        {
+            _busyService.IsBusy = true;
+
+            _dialogService.ShowDialog("TicketCreateDialog", r =>
+            {
+                // opcional: só reagir se precisar recarregar lista
+                if (r.Result == ButtonResult.OK)
+                {
+                    // por exemplo:
+                    // _ = LoadTicketsAsync();
+                }
+                _busyService.IsBusy = false;
+            });
         }
 
         private async void ShowDetails(Chamado ticket)

@@ -64,8 +64,9 @@ namespace sistecDesktopRefactored
             containerRegistry.RegisterForNavigation<UsersView>("UsersView");
 
             containerRegistry.RegisterDialog<TicketDetailsView, TicketDetailsViewModel>("TicketDetailsDialog");
+            containerRegistry.RegisterDialog<TicketCreateView, TicketCreateViewModel>("TicketCreateDialog");
 
-            containerRegistry.Register<IFileDialogService, FileDialogService>();
+            containerRegistry.Register<IFileDialogService, FileDialog>();
             containerRegistry.RegisterSingleton<IBusyService, BusyService>();
 
         }

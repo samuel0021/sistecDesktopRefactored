@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace sistecDesktopRefactored.Models
 {
-    public class FileDialogService : IFileDialogService
+    public class FileDialog : IFileDialogService
     {
         public string OpenImageFile()
         {

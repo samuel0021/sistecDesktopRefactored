@@ -311,36 +311,32 @@ namespace sistecDesktopRefactored.Models
         [JsonProperty("id_chamado")]
         public int Id { get; set; }
 
-        // Ajustado para os nomes que o backend retornou
         [JsonProperty("titulo_chamado")]
         public string Title { get; set; }
 
         [JsonProperty("descricao_detalhada")]
         public string Description { get; set; }
 
-        // Se o backend retornar "status" ou "descricao_status_chamado"
         [JsonProperty("descricao_status_chamado")]
         public string Status { get; set; }
 
-        // Backend retornou "priority" e também "prioridade_chamado" em alguns pontos
-        // Para garantir compatibilidade
         [JsonProperty("prioridade_chamado")]
-        public int Prioridade { get; set; }
+        public int Priority { get; set; }
 
         [JsonProperty("descricao_categoria_chamado")]
-        public string Categoria { get; set; }
+        public string Category { get; set; }
 
         [JsonProperty("descricao_problema_chamado")]
-        public string Problema { get; set; }
+        public string Problem { get; set; }
 
         [JsonProperty("usuario_abertura")]
-        public string UsuarioAbertura { get; set; }
+        public string UserOpener { get; set; }
 
         [JsonProperty("email_usuario")]
-        public string EmailUsuario { get; set; }
+        public string EmailUser { get; set; }
 
         [JsonProperty("usuario_resolucao")]
-        public string UsuarioResolucao { get; set; }
+        public string ResolutionUser { get; set; }
 
         [JsonProperty("id_usuario_abertura")]
         public int UserId { get; set; }
@@ -349,7 +345,7 @@ namespace sistecDesktopRefactored.Models
         public DateTime CreatedAt { get; set; }
 
         [JsonProperty("data_resolucao")]
-        public DateTime? DataResolucao { get; set; }
+        public DateTime? ResulotionDate { get; set; }
     }
 
     // Modelo unificado para exibição
@@ -386,15 +382,15 @@ namespace sistecDesktopRefactored.Models
             Title = db.Title ?? "Sem título";
             Description = db.Description ?? "";
             Status = db.Status ?? "";
-            Prioridade = db.Prioridade;
-            Categoria = db.Categoria ?? "";
-            Problema = db.Problema ?? "";
-            UsuarioAbertura = db.UsuarioAbertura ?? "";
-            EmailUsuario = db.EmailUsuario ?? "";
-            UsuarioResolucao = db.UsuarioResolucao ?? "";
+            Prioridade = db.Priority;
+            Categoria = db.Category ?? "";
+            Problema = db.Problem ?? "";
+            UsuarioAbertura = db.UserOpener ?? "";
+            EmailUsuario = db.EmailUser ?? "";
+            UsuarioResolucao = db.ResolutionUser ?? "";
             UserId = db.UserId;
             CreatedAt = db.CreatedAt;
-            DataResolucao = db.DataResolucao;
+            DataResolucao = db.ResulotionDate;
         }
     }
 
@@ -451,7 +447,7 @@ namespace sistecDesktopRefactored.Models
         public string Label { get; set; }
     }
 
-    public class CreateChamadoRequest
+    public class CreateTicketRequest
     {
         [JsonProperty("title")]
         public string Title { get; set; }
@@ -465,7 +461,6 @@ namespace sistecDesktopRefactored.Models
         [JsonProperty("priority")]
         public int Priority { get; set; }
 
-        // não tava conseguindo achar a propriedade certa então coloquei várias
         [JsonProperty("category")]
         public string Category { get; set; }
 

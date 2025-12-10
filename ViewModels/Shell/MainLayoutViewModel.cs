@@ -20,7 +20,6 @@ namespace sistecDesktopRefactored.ViewModels.Shell
 
         private string _selectedTag;
 
-
         #region Tags
         public string TagHome => SelectedTag == "Home" ? "Selected" : null;
         public string TagDashboard => SelectedTag == "Dashboard" ? "Selected" : null;

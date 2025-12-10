@@ -69,6 +69,10 @@
     <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -114,13 +118,16 @@
     <Compile Include="Interfaces\IBusyService.cs" />
     <Compile Include="Interfaces\IFileDialogService.cs" />
     <Compile Include="Models\ApiResponse.cs" />
-    <Compile Include="Models\FileDialogService.cs" />
+    <Compile Include="Models\FileDialog.cs" />
+    <Compile Include="Models\TicketCategoryProvider.cs" />
+    <Compile Include="Models\TicketInputModel.cs" />
     <Compile Include="Services\ApiClient.cs" />
     <Compile Include="ViewModels\Dashboard\DashboardViewModel.cs" />
     <Compile Include="ViewModels\Home\HomeViewModel.cs" />
     <Compile Include="ViewModels\Auth\LoginViewModel.cs" />
     <Compile Include="ViewModels\Shell\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Shell\MainLayoutViewModel.cs" />
+    <Compile Include="ViewModels\Tickets\TicketCreateViewModel.cs" />
     <Compile Include="ViewModels\Tickets\TicketDetailsViewModel.cs" />
     <Compile Include="ViewModels\Tickets\TicketsViewModel.cs" />
     <Compile Include="ViewModels\Users\UsersViewModel.cs" />
@@ -135,6 +142,9 @@
     </Compile>
     <Compile Include="Views\Shell\MainLayoutView.xaml.cs">
       <DependentUpon>MainLayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tickets\TicketCreateView.xaml.cs">
+      <DependentUpon>TicketCreateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Tickets\TicketDetailsView.xaml.cs">
       <DependentUpon>TicketDetailsView.xaml</DependentUpon>
@@ -182,6 +192,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Shell\MainLayoutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tickets\TicketCreateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

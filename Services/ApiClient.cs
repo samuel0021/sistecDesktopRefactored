@@ -524,7 +524,7 @@ namespace sistecDesktopRefactored.Services
         /// <returns>A task that represents the asynchronous operation. The task result contains a list of <see cref="Chamado"/>
         /// objects representing the support tickets retrieved from the server.</returns>
         /// <exception cref="Exception">Thrown if there is an error in the request or if the server response is unsuccessful.</exception>
-        public async Task<List<Chamado>> GetChamadosAsync()
+        public async Task<List<Chamado>> GetTicketsAsync()
         {
             try
             {
@@ -640,7 +640,7 @@ namespace sistecDesktopRefactored.Services
         /// <param name="chamado">The request data for creating the support ticket. Cannot be null.</param>
         /// <returns>A <see cref="Chamado"/> object representing the created support ticket.</returns>
         /// <exception cref="Exception">Thrown if an error occurs during the request or if the response indicates failure.</exception>
-        public async Task<Chamado> CreateChamadoAsync(CreateChamadoRequest chamado)
+        public async Task<Chamado> CreateTicketAsync(CreateTicketRequest chamado)
         {
             try
             {
@@ -735,7 +735,7 @@ namespace sistecDesktopRefactored.Services
         }
 
         // Aprovar chamado
-        public async Task<bool> AprovarChamadoAsync(int idChamado)
+        public async Task<bool> ApproveTicketAsync(int idChamado)
         {
             try
             {
@@ -764,7 +764,7 @@ namespace sistecDesktopRefactored.Services
         }
 
         // Rejeitar chamado
-        public async Task<bool> RejeitarChamadoAsync(int idChamado, string motivo)
+        public async Task<bool> RejectTicketAsync(int idChamado, string motivo)
         {
             try
             {
@@ -800,7 +800,7 @@ namespace sistecDesktopRefactored.Services
 
         #region Escalonamento de Chamados
 
-        public async Task EscalarChamadoAsync(int idChamado, string motivo)
+        public async Task ScaleTicketAsync(int idChamado, string motivo)
         {
             var content = new StringContent(JsonConvert.SerializeObject(new { motivo }), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync($"{_baseUrl}/api/chamados/{idChamado}/escalar", content);
@@ -811,7 +811,7 @@ namespace sistecDesktopRefactored.Services
             }
         }
 
-        public async Task<List<ChamadoEscalado>> GetChamadosEscaladosAsync()
+        public async Task<List<ChamadoEscalado>> GetScaledTicketsAsync()
         {
             var response = await _httpClient.GetAsync($"{_baseUrl}/api/chamados/escalados");
             var json = await response.Content.ReadAsStringAsync();
@@ -823,7 +823,7 @@ namespace sistecDesktopRefactored.Services
         #region Resolução de Chamados
 
         // Resolve chamados comuns
-        public async Task ResolverChamadoAsync(int idChamado, string motivoResolucao)
+        public async Task ResolveTicketAsync(int idChamado, string motivoResolucao)
         {
             var body = new
             {
@@ -841,7 +841,7 @@ namespace sistecDesktopRefactored.Services
         }
 
         // Resolve chamados escalados
-        public async Task ResolverChamadoEscaladoAsync(int idChamado, string motivoResolucao)
+        public async Task ResolveScaledTicketAsync(int idChamado, string motivoResolucao)
         {
             var body = new
             {

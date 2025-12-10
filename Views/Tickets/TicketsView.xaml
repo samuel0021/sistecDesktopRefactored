@@ -61,7 +61,8 @@
                 Tag="/Images/plus.png"
                 helpers:ButtonHelper.HoverBackground="#1AFF9966"
                 Background="{StaticResource brush-lavenderMist}"
-                Style="{StaticResource TicketButtons}"/>
+                Style="{StaticResource TicketButtons}"
+                Command="{Binding OpenCreateTicketCommand}"/>
 
             <Button Content="Meus Chamados" Grid.Column="1"
                 
