@@ -1,62 +1,8 @@
 ﻿# SISTEC DESKTOP REFACTORED
 ## (Refatoração em andamento)
 
-Plano de Design
-
-Refatoração sistecDesktop
-
-Botões:
-
-- Botão com background cheio
-- Botão tranparente com borda
-- Botão tranparente sem borda
-
-- Botão só com imagem
-
-
-
-
-MainWindow com Content Control geral
-
-Login como UserControl mostrado dentro da MainWindow
-
-HomeView como UserControl com Content Control dentro
-
-```text
-Views
-├─ Shell
-│  ├─ MainWindow.xaml        (shell geral; contém ShellRegion)
-│  └─ MainLayoutView.xaml    (shell interna; sidebar + MainRegion)
-├─ Auth
-│  └─ LoginView.xaml
-├─ Home
-│  └─ HomeView.xaml
-├─ Dashboard
-│  └─ DashboardView.xaml
-├─ Tickets
-│  └─ TicketsView.xaml
-└─ Users
-   └─ UsersView.xaml
-
-```
-
-
-
 # ---------------------------------------
 
-# A Equipe
-
-**Product Owner**  
-Júlio Vasconcelos  
-
-**Scrum Master**  
-Thales Cotrim  
-
-**Dev Team**  
-- Samuel Parra  
-- Jaqueline Barbosa  
-- Lucas Alves
-- Kauã Bonafé
 
 # O Projeto
 ## Sistema Inteligente de Gestão de Chamados de Suporte
