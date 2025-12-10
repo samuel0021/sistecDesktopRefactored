@@ -152,10 +152,10 @@
                             Binding="{Binding Id}" Width="auto"/>
 
                         <DataGridTextColumn Header="Categoria" 
-                            Binding="{Binding Categoria}" Width="auto"/>
+                            Binding="{Binding Category}" Width="auto"/>
 
                         <DataGridTextColumn Header="Usuário" 
-                            Binding="{Binding UsuarioAbertura}" Width="150"/>
+                            Binding="{Binding UserOpener}" Width="150"/>
 
                         <DataGridTextColumn Header="Título" 
                             Binding="{Binding Title}" Width="250"/>

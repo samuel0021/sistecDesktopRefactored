@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using sistecDesktopRefactored.Interfaces;
 using sistecDesktopRefactored.Models;
+using sistecDesktopRefactored.Models.Tickets;
 using sistecDesktopRefactored.Services;
 using sistecDesktopRefactored.ViewModels.Shell;
 using System;
@@ -23,9 +24,9 @@ namespace sistecDesktopRefactored.ViewModels
 
         private string _title = "Detalhes do Chamado";
 
-        private ObservableCollection<Chamado> _tickets;
+        private ObservableCollection<Ticket> _tickets;
         private string _errorMessage;
-        public Chamado SelectedTicket { get; set; }
+        public Ticket SelectedTicket { get; set; }
 
         #region Encapsulations
         public string Title
@@ -33,7 +34,7 @@ namespace sistecDesktopRefactored.ViewModels
             get => _title;
             set => SetProperty(ref _title, value);
         }
-        public ObservableCollection<Chamado> Tickets
+        public ObservableCollection<Ticket> Tickets
         {
             get => _tickets;
             set => SetProperty(ref _tickets, value);
@@ -48,7 +49,7 @@ namespace sistecDesktopRefactored.ViewModels
         #region Commands
         public DelegateCommand LoadTicketsCommand { get; }
         public DelegateCommand OpenCreateTicketCommand {  get; }
-        public DelegateCommand<Chamado> ShowDetailsCommand { get; }
+        public DelegateCommand<Ticket> ShowDetailsCommand { get; }
 
         #endregion
 
@@ -59,11 +60,11 @@ namespace sistecDesktopRefactored.ViewModels
             _dialogService = dialogService;
             _busyService = busyService;
 
-            Tickets = new ObservableCollection<Chamado>();
+            Tickets = new ObservableCollection<Ticket>();
 
             LoadTicketsCommand = new DelegateCommand(async () => await LoadTicketsAsync());
             OpenCreateTicketCommand = new DelegateCommand(OpenCreateTicket);
-            ShowDetailsCommand = new DelegateCommand<Chamado>(ShowDetails);
+            ShowDetailsCommand = new DelegateCommand<Ticket>(ShowDetails);
 
             _ = LoadTicketsAsync();
         }
@@ -75,9 +76,9 @@ namespace sistecDesktopRefactored.ViewModels
 
             try
             {
-                List<Chamado> list = await _apiClient.GetTicketsAsync();
+                List<Ticket> list = await _apiClient.GetTicketsAsync();
 
-                Tickets = new ObservableCollection<Chamado>(list);
+                Tickets = new ObservableCollection<Ticket>(list);
             }
             catch (Exception ex)
             {
@@ -105,7 +106,7 @@ namespace sistecDesktopRefactored.ViewModels
             });
         }
 
-        private async void ShowDetails(Chamado ticket)
+        private async void ShowDetails(Ticket ticket)
         {
             if (ticket == null) return;
             SelectedTicket = ticket;

@@ -5,6 +5,7 @@ using Prism.Regions;
 using Prism.Unity;
 using sistecDesktopRefactored.Interfaces;
 using sistecDesktopRefactored.Models;
+using sistecDesktopRefactored.Models.Users;
 using sistecDesktopRefactored.Services;
 using sistecDesktopRefactored.ViewModels;
 using sistecDesktopRefactored.ViewModels.Tickets;

@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using sistecDesktopRefactored.Interfaces;
 using sistecDesktopRefactored.Models;
+using sistecDesktopRefactored.Models.Tickets;
 using sistecDesktopRefactored.Services;
 using System;
 using System.Collections.Generic;
@@ -27,8 +28,8 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
         private string _errorMessage;
         private int _priority;
         private string _selectedCategory;
-        private ProblemaItem _selectedProblem;
-        private ObservableCollection<ProblemaItem> _problemsList;
+        private ProblemItem _selectedProblem;
+        private ObservableCollection<ProblemItem> _problemsList;
 
         #region Encapsulations
         public string Title          // esta é a que o Prism usa no Window.Title
@@ -68,12 +69,12 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
                 }
             }
         }
-        public ProblemaItem SelectedProblem
+        public ProblemItem SelectedProblem
         {
             get => _selectedProblem;
             set => SetProperty(ref _selectedProblem, value);
         }
-        public ObservableCollection<ProblemaItem> ProblemsList
+        public ObservableCollection<ProblemItem> ProblemsList
         {
             get => _problemsList;
             set => SetProperty(ref _problemsList, value);
@@ -106,7 +107,7 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
 
             CancelCommand = new DelegateCommand(ExecuteCancel);
             CreateTicketCommand = new DelegateCommand(ExecuteCreate);
-            ProblemsList = new ObservableCollection<ProblemaItem>();
+            ProblemsList = new ObservableCollection<ProblemItem>();
         }
 
         private void ExecuteCancel()

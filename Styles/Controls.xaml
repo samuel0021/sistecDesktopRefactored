@@ -481,19 +481,19 @@
                     <Setter Property="TextElement.Foreground" Value="{DynamicResource brush-midnightNavy}"/>
 
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Prioridade}" Value="1">
+                        <DataTrigger Binding="{Binding Priority}" Value="1">
                             <Setter Property="Background" Value="#D1FFEC"/>
                             <Setter Property="TextElement.Foreground" Value="#6EE7B7"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Prioridade}" Value="2">
+                        <DataTrigger Binding="{Binding Priority}" Value="2">
                             <Setter Property="Background" Value="#FEF3C7"/>
                             <Setter Property="TextElement.Foreground" Value="#FBBF24"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Prioridade}" Value="3">
+                        <DataTrigger Binding="{Binding Priority}" Value="3">
                             <Setter Property="Background" Value="#FEE2E2"/>
                             <Setter Property="TextElement.Foreground" Value="#F87171"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Prioridade}" Value="4">
+                        <DataTrigger Binding="{Binding Priority}" Value="4">
                             <Setter Property="Background" Value="#EFF6FF"/>
                             <Setter Property="TextElement.Foreground" Value="#3B82F6"/>
                         </DataTrigger>
@@ -501,7 +501,7 @@
                 </Style>
             </Border.Style>
 
-            <TextBlock Text="{Binding Prioridade,
+            <TextBlock Text="{Binding Priority,
                                   Converter={StaticResource PriorityToTextConverter}}"
                    FontSize="12"
                    FontWeight="SemiBold"

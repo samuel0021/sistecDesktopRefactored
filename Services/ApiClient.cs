@@ -1,5 +1,10 @@
 ﻿using Newtonsoft.Json;
 using sistecDesktopRefactored.Models;
+using sistecDesktopRefactored.Models.Auth;
+using sistecDesktopRefactored.Models.Dashboard;
+using sistecDesktopRefactored.Models.IA;
+using sistecDesktopRefactored.Models.Tickets;
+using sistecDesktopRefactored.Models.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -284,13 +289,13 @@ namespace sistecDesktopRefactored.Services
         /// profiles. The response is deserialized into a list of <see cref="PerfilUsuario"/> objects.</remarks>
         /// <returns>A task representing the asynchronous operation. The task result contains a list of <see
         /// cref="PerfilUsuario"/> objects representing the user profiles.</returns>
-        public async Task<List<PerfilUsuario>> GetPerfisAcessoAsync()
+        public async Task<List<UserProfile>> GetPerfisAcessoAsync()
         {
             // Consulta endpoint de perfis de acesso
             var response = await _httpClient.GetAsync($"{_baseUrl}/api/perfis");
             var json = await response.Content.ReadAsStringAsync();
             // Desserializa resultado para objeto de resposta
-            var perfis = JsonConvert.DeserializeObject<PerfisApiResponse>(json);
+            var perfis = JsonConvert.DeserializeObject<ProfilesResponse>(json);
             return perfis.Data;
         }
 
@@ -518,13 +523,13 @@ namespace sistecDesktopRefactored.Services
         /// Asynchronously retrieves a list of support tickets from the server.
         /// </summary>
         /// <remarks>This method sends a GET request to the server to fetch support tickets. It
-        /// deserializes the response into a list of <see cref="Chamado"/> objects. If the server returns an
+        /// deserializes the response into a list of <see cref="Ticket"/> objects. If the server returns an
         /// unauthorized status, an <see cref="UnauthorizedAccessException"/> is thrown. For other unsuccessful
         /// responses, a generic <see cref="Exception"/> is thrown with the status code and response body.</remarks>
         /// <returns>A task that represents the asynchronous operation. The task result contains a list of <see cref="Chamado"/>
         /// objects representing the support tickets retrieved from the server.</returns>
         /// <exception cref="Exception">Thrown if there is an error in the request or if the server response is unsuccessful.</exception>
-        public async Task<List<Chamado>> GetTicketsAsync()
+        public async Task<List<Ticket>> GetTicketsAsync()
         {
             try
             {
@@ -545,12 +550,12 @@ namespace sistecDesktopRefactored.Services
                 {
                     try
                     {
-                        var apiResponse = JsonConvert.DeserializeObject<ChamadosResponse>(responseBody, _jsonSettings);
+                        var apiResponse = JsonConvert.DeserializeObject<TicketsResponse>(responseBody, _jsonSettings);
                         if (apiResponse?.Data != null)
                         {
                             Console.WriteLine($"DEBUG: Deserializado {apiResponse.Data.Count} chamados do banco");
 
-                            var chamados = apiResponse.Data.Select(chamadoDb => new Chamado(chamadoDb)).ToList();
+                            var chamados = apiResponse.Data.Select(chamadoDb => new Ticket(chamadoDb)).ToList();
 
                             Console.WriteLine($"DEBUG: Primeiro chamado - ID: {chamados.FirstOrDefault()?.Id}, Titulo: {chamados.FirstOrDefault()?.Title}");
 
@@ -587,7 +592,7 @@ namespace sistecDesktopRefactored.Services
         /// <returns>A task representing the asynchronous operation. The task result contains the <see cref="Chamado"/> object if
         /// found; otherwise, an exception is thrown.</returns>
         /// <exception cref="Exception">Thrown if an error occurs during the request or if the chamado cannot be retrieved.</exception>
-        public async Task<Chamado> GetTicketByIdAsync(int id)
+        public async Task<Ticket> GetTicketByIdAsync(int id)
         {
             try
             {
@@ -602,10 +607,10 @@ namespace sistecDesktopRefactored.Services
                 {
                     try
                     {
-                        var apiResponse = JsonConvert.DeserializeObject<ChamadoResponse>(responseBody, _jsonSettings);
+                        var apiResponse = JsonConvert.DeserializeObject<TicketResponse>(responseBody, _jsonSettings);
                         if (apiResponse?.Data != null)
                         {
-                            return new Chamado(apiResponse.Data);
+                            return new Ticket(apiResponse.Data);
                         }
                     }
                     catch (JsonException ex)
@@ -640,7 +645,7 @@ namespace sistecDesktopRefactored.Services
         /// <param name="chamado">The request data for creating the support ticket. Cannot be null.</param>
         /// <returns>A <see cref="Chamado"/> object representing the created support ticket.</returns>
         /// <exception cref="Exception">Thrown if an error occurs during the request or if the response indicates failure.</exception>
-        public async Task<Chamado> CreateTicketAsync(CreateTicketRequest chamado)
+        public async Task<Ticket> CreateTicketAsync(CreateTicketRequest chamado)
         {
             try
             {
@@ -661,10 +666,10 @@ namespace sistecDesktopRefactored.Services
                 {
                     try
                     {
-                        var apiResponse = JsonConvert.DeserializeObject<ChamadoResponse>(responseBody, _jsonSettings);
+                        var apiResponse = JsonConvert.DeserializeObject<TicketResponse>(responseBody, _jsonSettings);
                         if (apiResponse?.Data != null)
                         {
-                            var chamadoCriado = new Chamado(apiResponse.Data);
+                            var chamadoCriado = new Ticket(apiResponse.Data);
                             Console.WriteLine($"DEBUG: Chamado criado - ID: {chamadoCriado.Id}, Titulo: {chamadoCriado.Title}");
                             return chamadoCriado;
                         }
@@ -695,7 +700,7 @@ namespace sistecDesktopRefactored.Services
         #region Aprovação e rejeição de chamados
 
         // Buscar chamados pendentes de aprovação
-        public async Task<List<Chamado>> GetPendingTickets()
+        public async Task<List<Ticket>> GetPendingTickets()
         {
             try
             {
@@ -709,10 +714,10 @@ namespace sistecDesktopRefactored.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var apiResponse = JsonConvert.DeserializeObject<ChamadosResponse>(responseBody);
+                    var apiResponse = JsonConvert.DeserializeObject<TicketsResponse>(responseBody);
                     if (apiResponse?.Data != null)
                     {
-                        var chamados = apiResponse.Data.Select(c => new Chamado(c)).ToList();
+                        var chamados = apiResponse.Data.Select(c => new Ticket(c)).ToList();
                         return chamados;
                     }
                 }
@@ -811,12 +816,12 @@ namespace sistecDesktopRefactored.Services
             }
         }
 
-        public async Task<List<ChamadoEscalado>> GetScaledTicketsAsync()
+        public async Task<List<ScaledTicket>> GetScaledTicketsAsync()
         {
             var response = await _httpClient.GetAsync($"{_baseUrl}/api/chamados/escalados");
             var json = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<ChamadosEscaladosResponse>(json);
-            return result?.Data ?? new List<ChamadoEscalado>();
+            var result = JsonConvert.DeserializeObject<ScaledTicketsResponse>(json);
+            return result?.Data ?? new List<ScaledTicket>();
         }
         #endregion
 
@@ -862,7 +867,7 @@ namespace sistecDesktopRefactored.Services
         #endregion
 
         #region SoluçãoIA
-        public async Task<RespostaIA> GetSolucaoIaAsync(int idChamado)
+        public async Task<IaResults> GetSolucaoIaAsync(int idChamado)
         {
             var url = $"{_baseUrl}/api/chamados/{idChamado}/solucao-ia";
             var response = await _httpClient.GetAsync(url);
@@ -871,7 +876,7 @@ namespace sistecDesktopRefactored.Services
             if (!response.IsSuccessStatusCode)
                 throw new Exception($"Erro ao buscar solução IA: {response.StatusCode} - {responseBody}");
 
-            var apiResponse = JsonConvert.DeserializeObject<RespostaIaApiResponse>(responseBody, _jsonSettings);
+            var apiResponse = JsonConvert.DeserializeObject<IaResultsResponse>(responseBody, _jsonSettings);
             return apiResponse?.Data;
         }
 

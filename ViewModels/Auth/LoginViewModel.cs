@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using Prism.Regions;
 using sistecDesktopRefactored.Interfaces;
 using sistecDesktopRefactored.Models;
+using sistecDesktopRefactored.Models.Auth;
 using sistecDesktopRefactored.Services;
 using System;
 using System.Collections.Generic;

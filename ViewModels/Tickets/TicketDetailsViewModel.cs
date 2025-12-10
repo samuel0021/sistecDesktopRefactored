@@ -1,6 +1,7 @@
 ﻿using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using sistecDesktopRefactored.Models;
+using sistecDesktopRefactored.Models.Tickets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +19,8 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
             set => SetProperty(ref _title, value);
         }
 
-        private Chamado _ticket;
-        public Chamado Ticket
+        private Ticket _ticket;
+        public Ticket Ticket
         {
             get => _ticket;
             set => SetProperty(ref _ticket, value);
@@ -28,7 +29,7 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
         public event Action<IDialogResult> RequestClose;
         public void OnDialogOpened(IDialogParameters parameters)
         {
-            Ticket = parameters.GetValue<Chamado>("ticket");
+            Ticket = parameters.GetValue<Ticket>("ticket");
         }
 
         public bool CanCloseDialog() => true;
