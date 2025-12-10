@@ -19,7 +19,7 @@ namespace sistecDesktopRefactored.Services
     {
         private readonly HttpClient _httpClient;        // objeto para fazer as requisições HTTP
         private readonly CookieContainer _cookieContainer;      // gerencia os cookies para autenticar automaticamente
-        private readonly string _baseUrl = "http://localhost:3001";     // URL base da API
+        private readonly string _baseUrl = Environment.GetEnvironmentVariable("BASE_URL");     // URL base da API
 
         // Configurações para serialização/deserialização JSON (ignora nulos, datas no formato ISO)
         private readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
@@ -27,6 +27,100 @@ namespace sistecDesktopRefactored.Services
             NullValueHandling = NullValueHandling.Ignore,
             DateFormatHandling = DateFormatHandling.IsoDateFormat
         };
+
+        #region ApiRequestHelpers
+
+        private async Task<TResponse> GetApiAsync<TResponse>(string relativeUrl)
+        {
+            try
+            {
+                var url = $"{_baseUrl}{relativeUrl}";
+                Console.WriteLine($"DEBUG: GET {url}");
+
+                var response = await _httpClient.GetAsync(url);
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                Console.WriteLine($"Status: {response.StatusCode}");
+                Console.WriteLine("=== JSON COMPLETO ===");
+                Console.WriteLine(responseBody);
+                Console.WriteLine("=====================");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    try
+                    {
+                        return JsonConvert.DeserializeObject<TResponse>(responseBody, _jsonSettings);
+                    }
+                    catch (JsonException ex)
+                    {
+                        Console.WriteLine($"DEBUG: Falha ao deserializar {typeof(TResponse).Name}: {ex.Message}");
+                        throw new Exception($"Erro ao deserializar resposta: {ex.Message}");
+                    }
+                }
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException("Sessão expirada ou inválida. Faça login novamente.");
+                }
+                throw new Exception($"Erro na requisição: {response.StatusCode} - {responseBody}");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro na requisição: {ex.Message}");
+            }
+        }
+
+        private async Task<TResponse> PostApiAsync<TRequest, TResponse>(string relativeUrl, TRequest body)
+        {
+            try
+            {
+                var url = $"{_baseUrl}{relativeUrl}";
+                var json = JsonConvert.SerializeObject(body, _jsonSettings);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                Console.WriteLine($"DEBUG: POST {url}");
+                Console.WriteLine($"Body: {json}");
+
+                var response = await _httpClient.PostAsync(url, content);
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                Console.WriteLine($"Status: {response.StatusCode}");
+                Console.WriteLine("=== JSON COMPLETO ===");
+                Console.WriteLine(responseBody);
+                Console.WriteLine("=====================");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    try
+                    {
+                        return JsonConvert.DeserializeObject<TResponse>(responseBody, _jsonSettings);
+                    }
+                    catch (JsonException ex)
+                    {
+                        Console.WriteLine($"DEBUG: Falha ao deserializar {typeof(TResponse).Name}: {ex.Message}");
+                        throw new Exception($"Erro ao deserializar resposta: {ex.Message}");
+                    }
+                }
+
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    throw new UnauthorizedAccessException("Sessão expirada ou inválida. Faça login novamente.");
+
+                throw new Exception($"Erro na requisição: {response.StatusCode} - {responseBody}");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro na requisição: {ex.Message}");
+            }
+        }
+
+        #endregion
 
         #region Construtor
         /// <summary>
@@ -519,182 +613,47 @@ namespace sistecDesktopRefactored.Services
         #endregion
 
         #region Chamados
-        /// <summary>
-        /// Asynchronously retrieves a list of support tickets from the server.
-        /// </summary>
-        /// <remarks>This method sends a GET request to the server to fetch support tickets. It
-        /// deserializes the response into a list of <see cref="Ticket"/> objects. If the server returns an
-        /// unauthorized status, an <see cref="UnauthorizedAccessException"/> is thrown. For other unsuccessful
-        /// responses, a generic <see cref="Exception"/> is thrown with the status code and response body.</remarks>
-        /// <returns>A task that represents the asynchronous operation. The task result contains a list of <see cref="Chamado"/>
-        /// objects representing the support tickets retrieved from the server.</returns>
-        /// <exception cref="Exception">Thrown if there is an error in the request or if the server response is unsuccessful.</exception>
         public async Task<List<Ticket>> GetTicketsAsync()
         {
-            try
-            {
-                // Monta URL de busca
-                var chamadosUrl = $"{_baseUrl}/api/chamados";
-                Console.WriteLine($"DEBUG: Buscando chamados: {chamadosUrl}");
+            var apiResponse = await GetApiAsync<TicketsResponse>("/api/chamados");
 
-                var response = await _httpClient.GetAsync(chamadosUrl);
-                var responseBody = await response.Content.ReadAsStringAsync();
+            if (apiResponse?.Data == null)
+                return new List<Ticket>();
 
-                Console.WriteLine($"Chamados Status: {response.StatusCode}");
+            Console.WriteLine($"DEBUG: Deserializado {apiResponse.Data.Count} chamados do banco");
 
-                Console.WriteLine($"=== JSON COMPLETO DOS CHAMADOS ===");
-                Console.WriteLine(responseBody);
-                Console.WriteLine($"==================================");
+            var tickets = apiResponse.Data.Select(db => new Ticket(db)).ToList();
 
-                if (response.IsSuccessStatusCode)
-                {
-                    try
-                    {
-                        var apiResponse = JsonConvert.DeserializeObject<TicketsResponse>(responseBody, _jsonSettings);
-                        if (apiResponse?.Data != null)
-                        {
-                            Console.WriteLine($"DEBUG: Deserializado {apiResponse.Data.Count} chamados do banco");
+            Console.WriteLine($"DEBUG: Primeiro chamado - ID: {tickets.FirstOrDefault()?.Id}, Titulo: {tickets.FirstOrDefault()?.Title}");
 
-                            var chamados = apiResponse.Data.Select(chamadoDb => new Ticket(chamadoDb)).ToList();
-
-                            Console.WriteLine($"DEBUG: Primeiro chamado - ID: {chamados.FirstOrDefault()?.Id}, Titulo: {chamados.FirstOrDefault()?.Title}");
-
-                            return chamados;
-                        }
-                    }
-                    catch (JsonException ex)
-                    {
-                        Console.WriteLine($"DEBUG: Falha ao deserializar chamados: {ex.Message}");
-                    }
-                }
-
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    throw new UnauthorizedAccessException("Sessão expirada ou inválida. Faça login novamente.");
-                }
-
-                throw new Exception($"Erro ao buscar chamados: {response.StatusCode} - {responseBody}");
-            }
-            catch (UnauthorizedAccessException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Erro na requisição: {ex.Message}");
-            }
+            return tickets;
         }
 
-        /// <summary>
-        /// Asynchronously retrieves a <see cref="Chamado"/> by its unique identifier.
-        /// </summary>
-        /// <param name="id">The unique identifier of the chamado to retrieve.</param>
-        /// <returns>A task representing the asynchronous operation. The task result contains the <see cref="Chamado"/> object if
-        /// found; otherwise, an exception is thrown.</returns>
-        /// <exception cref="Exception">Thrown if an error occurs during the request or if the chamado cannot be retrieved.</exception>
         public async Task<Ticket> GetTicketByIdAsync(int id)
         {
-            try
-            {
-                // Monta URL de busca por ID
-                var chamadoUrl = $"{_baseUrl}/api/chamados/{id}";
-                var response = await _httpClient.GetAsync(chamadoUrl);
-                var responseBody = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"DEBUG: Buscando chamado por ID: {id}");
 
-                Console.WriteLine($"DEBUG: Chamado by ID response: {responseBody}");
+            var apiResponse = await GetApiAsync<TicketResponse>($"/api/chamados/{id}");
 
-                if (response.IsSuccessStatusCode)
-                {
-                    try
-                    {
-                        var apiResponse = JsonConvert.DeserializeObject<TicketResponse>(responseBody, _jsonSettings);
-                        if (apiResponse?.Data != null)
-                        {
-                            return new Ticket(apiResponse.Data);
-                        }
-                    }
-                    catch (JsonException ex)
-                    {
-                        Console.WriteLine($"DEBUG: Falha ao deserializar chamado: {ex.Message}");
-                    }
-                }
+            if (apiResponse?.Data == null)
+                throw new Exception("Chamado não encontrado ou resposta inválida da API.");
 
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    throw new UnauthorizedAccessException("Sessão expirada ou inválida. Faça login novamente.");
-                }
+            Console.WriteLine($"DEBUG: Chamado by ID response desserializado com sucesso.");
 
-                throw new Exception($"Erro ao buscar chamado: {response.StatusCode}");
-            }
-            catch (UnauthorizedAccessException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Erro na requisição: {ex.Message}");
-            }
+            return new Ticket(apiResponse.Data);
         }
 
-        /// <summary>
-        /// Asynchronously creates a new support ticket (Chamado) using the specified request data.
-        /// </summary>
-        /// <remarks>This method sends a POST request to the configured API endpoint to create a new
-        /// support ticket. Ensure that the <paramref name="chamado"/> parameter is properly populated with the
-        /// necessary data.</remarks>
-        /// <param name="chamado">The request data for creating the support ticket. Cannot be null.</param>
-        /// <returns>A <see cref="Chamado"/> object representing the created support ticket.</returns>
-        /// <exception cref="Exception">Thrown if an error occurs during the request or if the response indicates failure.</exception>
-        public async Task<Ticket> CreateTicketAsync(CreateTicketRequest chamado)
+        public async Task<Ticket> CreateTicketAsync(CreateTicketRequest ticket)
         {
-            try
-            {
-                // Serializa o objeto chamado para JSON
-                var json = JsonConvert.SerializeObject(chamado, _jsonSettings);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var apiResponse = await PostApiAsync<CreateTicketRequest, TicketResponse>("/api/chamados", ticket);
 
-                // Monta URL de POST do chamado
-                var chamadosUrl = $"{_baseUrl}/api/chamados";
-                var response = await _httpClient.PostAsync(chamadosUrl, content);
-                var responseBody = await response.Content.ReadAsStringAsync();
+            if (apiResponse?.Data == null)
+                throw new Exception("Resposta da API não contém dados do chamado criado.");
 
-                Console.WriteLine($"DEBUG: Criando chamado: {json}");
-                Console.WriteLine($"DEBUG: Status: {response.StatusCode}");
-                Console.WriteLine($"DEBUG: Create chamado response: {responseBody}");
+            var createdTicket = new Ticket(apiResponse.Data);
+            Console.WriteLine($"DEBUG: Chamado criado - ID: {createdTicket.Id}, Titulo: {createdTicket.Title}");
 
-                if (response.IsSuccessStatusCode)
-                {
-                    try
-                    {
-                        var apiResponse = JsonConvert.DeserializeObject<TicketResponse>(responseBody, _jsonSettings);
-                        if (apiResponse?.Data != null)
-                        {
-                            var chamadoCriado = new Ticket(apiResponse.Data);
-                            Console.WriteLine($"DEBUG: Chamado criado - ID: {chamadoCriado.Id}, Titulo: {chamadoCriado.Title}");
-                            return chamadoCriado;
-                        }
-                    }
-                    catch (JsonException ex)
-                    {
-                        Console.WriteLine($"DEBUG: Falha ao deserializar chamado criado: {ex.Message}");
-                    }
-                }
-
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    throw new UnauthorizedAccessException("Sessão expirada ou inválida. Faça login novamente.");
-                }
-
-                throw new Exception($"Erro ao criar chamado: {response.StatusCode} - {responseBody}");
-            }
-            catch (UnauthorizedAccessException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Erro na requisição: {ex.Message}");
-            }
+            return createdTicket;
         }
 
         #region Aprovação e rejeição de chamados
@@ -1055,6 +1014,3 @@ namespace sistecDesktopRefactored.Services
         #endregion
     }
 }
-
-
-    
