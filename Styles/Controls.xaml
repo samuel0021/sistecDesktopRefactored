@@ -5,6 +5,91 @@
 
     <converters:PriorityToTextConverter x:Key="PriorityToTextConverter"/>
 
+    <!--#region TextBlock -->
+    <Style x:Key="MyTextblock" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource MontserratBold}"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+    <!--#endregion-->
+
+    <!--#region Label -->
+    <!-- Base comum para qualquer "badge" -->
+    <Style x:Key="TicketBadgeBase" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource MontserratBold}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{DynamicResource brush-midnightNavy}"/>
+        <Setter Property="Background" Value="#E5E7EB"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Label">
+                    <Border CornerRadius="5"
+                        Padding="10 2"
+                        HorizontalAlignment="Center"
+                        Margin="0 0 0 5"
+                        BorderThickness="0"
+                        Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      RecognizesAccessKey="True"
+                                      TextElement.Foreground="{TemplateBinding Foreground}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Badge de Status -->
+    <Style x:Key="TicketStatusLabel"
+       TargetType="Label"
+       BasedOn="{StaticResource TicketBadgeBase}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Ticket.Status}" Value="Com Analista">
+                <Setter Property="Background" Value="#DBEAFE"/>
+                <Setter Property="Foreground" Value="#3B82F6"/>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding Ticket.Status}" Value="Escalado">
+                <Setter Property="Background" Value="#EDE9FE"/>
+                <Setter Property="Foreground" Value="#8B5CF6"/>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding Ticket.Status}" Value="Resolvido">
+                <Setter Property="Background" Value="#ECFDF5"/>
+                <Setter Property="Foreground" Value="#22C55E"/>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding Ticket.Status}" Value="Aguardando Resposta">
+                <Setter Property="Background" Value="#FEF3C7"/>
+                <Setter Property="Foreground" Value="#FBBF24"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <!-- Badge de Prioridade -->
+    <Style x:Key="TicketPriorityLabel"
+       TargetType="Label"
+       BasedOn="{StaticResource TicketBadgeBase}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Ticket.Priority}" Value="1">
+                <Setter Property="Background" Value="#D1FFEC"/>
+                <Setter Property="TextElement.Foreground" Value="#6EE7B7"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Ticket.Priority}" Value="2">
+                <Setter Property="Background" Value="#FEF3C7"/>
+                <Setter Property="TextElement.Foreground" Value="#FBBF24"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Ticket.Priority}" Value="3">
+                <Setter Property="Background" Value="#FEE2E2"/>
+                <Setter Property="TextElement.Foreground" Value="#F87171"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Ticket.Priority}" Value="4">
+                <Setter Property="Background" Value="#EFF6FF"/>
+                <Setter Property="TextElement.Foreground" Value="#3B82F6"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--#endregion-->
+
     <!--#region Buttons-->
 
     <Style x:Key="ButtonBaseImage" TargetType="ButtonBase">
@@ -13,7 +98,7 @@
             <Setter.Value>
                 <ScaleTransform ScaleX="1" ScaleY="1"/>
             </Setter.Value>
-        </Setter>        
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
@@ -29,10 +114,10 @@
 
                         <StackPanel Orientation="Horizontal" 
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
-                            
+
                             <Image Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"
                                 Width="20" Height="20" Margin="15 0 0 0"/>
-                            
+
                             <TextBlock Text="{TemplateBinding Content}"
                                 TextAlignment="Center" 
                                 VerticalAlignment="Center"
@@ -125,7 +210,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <!-- Ticket Buttons -->
     <Style x:Key="TicketButtons" TargetType="Button">
         <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
@@ -160,11 +245,11 @@
                                 Foreground="{DynamicResource brush-midnightNavy}"
                                 FontFamily="{DynamicResource MontserratBold}" 
                                 FontSize="16"/>
-                            
+
                             <Image Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"
                                 HorizontalAlignment="Right" Grid.Column="1"
                                 Width="40" Height="40"/>
-                            
+
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -175,7 +260,7 @@
                                         RelativeSource={RelativeSource TemplatedParent}}"/>
                             <Setter TargetName="borderTicketButtons" Property="BorderBrush" Value="{DynamicResource brush-peachOrange}"/>
                             <Setter TargetName="txtContent" Property="Foreground" Value="{DynamicResource brush-peachOrange}"/>
-                            
+
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
@@ -203,8 +288,8 @@
         </Setter>
     </Style>
 
-    <!--#endregion--> 
-    
+    <!--#endregion-->
+
     <!--#region TextInputs-->
     <!-- Base -->
     <Style x:Key="TextInputBase" TargetType="Control">
@@ -240,7 +325,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <!-- PasswordBox -->
     <Style x:Key="PasswordBoxBase" TargetType="PasswordBox"
        BasedOn="{StaticResource TextInputBase}">
@@ -261,8 +346,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <!--#endregion--> 
+
+    <!--#endregion-->
 
     <!--#region Borders-->
 
@@ -289,7 +374,7 @@
     <!--#endregion-->
 
     <!-- #region Hyperlink-->
-    
+
     <Style x:Key="HyperlinkForgotPass" TargetType="Hyperlink">
         <Setter Property="Foreground" Value="{DynamicResource brush-vibrantViolet}"/>
         <Setter Property="TextDecorations" Value="None"/>
@@ -302,7 +387,7 @@
         </Trigger>-->
         </Style.Triggers>
     </Style>
-    
+
     <!--#endregion-->
 
     <!--#region DataGrid -->
@@ -551,11 +636,10 @@
 
             <TextBlock Text="{Binding Status}"
                    FontSize="12"
-                   FontWeight="SemiBold"
-                   Foreground="{DynamicResource brush-midnightNavy}"/>
+                   FontWeight="SemiBold"/>
         </Border>
     </DataTemplate>
 
     <!--#endregion-->
-    
+
 </ResourceDictionary>

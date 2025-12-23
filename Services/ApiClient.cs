@@ -17,11 +17,10 @@ namespace sistecDesktopRefactored.Services
 {
     public class ApiClient : IDisposable
     {
-        private readonly HttpClient _httpClient;        // objeto para fazer as requisições HTTP
-        private readonly CookieContainer _cookieContainer;      // gerencia os cookies para autenticar automaticamente
-        private readonly string _baseUrl = Environment.GetEnvironmentVariable("BASE_URL");     // URL base da API
+        private readonly HttpClient _httpClient;
+        private readonly CookieContainer _cookieContainer;
+        private readonly string _baseUrl = Environment.GetEnvironmentVariable("BASE_URL");
 
-        // Configurações para serialização/deserialização JSON (ignora nulos, datas no formato ISO)
         private readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
         {
             NullValueHandling = NullValueHandling.Ignore,
@@ -30,6 +29,28 @@ namespace sistecDesktopRefactored.Services
 
         #region ApiRequestHelpers
 
+        /// <summary>
+        /// Sends an HTTP GET request to the API and deserializes the JSON response
+        /// into the specified response type.
+        /// </summary>
+        /// <typeparam name="TResponse">
+        /// The type to which the JSON response body will be deserialized.
+        /// </typeparam>
+        /// <param name="relativeUrl">
+        /// The relative URL of the endpoint (it will be combined with the base URL).
+        /// </param>
+        /// <returns>
+        /// A task that represents the asynchronous operation. The task result contains
+        /// an instance of <typeparamref name="TResponse"/> with the deserialized data.
+        /// </returns>
+        /// <exception cref="UnauthorizedAccessException">
+        /// Thrown when the server returns an Unauthorized (401) status code, indicating
+        /// that the session is expired or invalid.
+        /// </exception>
+        /// <exception cref="Exception">
+        /// Thrown when the request fails, the response status code is unsuccessful,
+        /// or when the response cannot be deserialized.
+        /// </exception>
         private async Task<TResponse> GetApiAsync<TResponse>(string relativeUrl)
         {
             try
@@ -73,6 +94,35 @@ namespace sistecDesktopRefactored.Services
             }
         }
 
+        /// <summary>
+        /// Sends an HTTP POST request to the API with a JSON body and deserializes the
+        /// JSON response into the specified response type.
+        /// </summary>
+        /// <typeparam name="TRequest">
+        /// The type of the request body object that will be serialized to JSON.
+        /// </typeparam>
+        /// <typeparam name="TResponse">
+        /// The type to which the JSON response body will be deserialized.
+        /// </typeparam>
+        /// <param name="relativeUrl">
+        /// The relative URL of the endpoint (it will be combined with the base URL).
+        /// </param>
+        /// <param name="body">
+        /// The request body object to be serialized and sent as JSON. Can be null if
+        /// the endpoint does not require a body.
+        /// </param>
+        /// <returns>
+        /// A task that represents the asynchronous operation. The task result contains
+        /// an instance of <typeparamref name="TResponse"/> with the deserialized data.
+        /// </returns>
+        /// <exception cref="UnauthorizedAccessException">
+        /// Thrown when the server returns an Unauthorized (401) status code, indicating
+        /// that the session is expired or invalid.
+        /// </exception>
+        /// <exception cref="Exception">
+        /// Thrown when the request fails, the response status code is unsuccessful,
+        /// or when the response cannot be deserialized.
+        /// </exception>
         private async Task<TResponse> PostApiAsync<TRequest, TResponse>(string relativeUrl, TRequest body)
         {
             try
@@ -119,7 +169,6 @@ namespace sistecDesktopRefactored.Services
                 throw new Exception($"Erro na requisição: {ex.Message}");
             }
         }
-
         #endregion
 
         #region Construtor
@@ -656,137 +705,63 @@ namespace sistecDesktopRefactored.Services
             return createdTicket;
         }
 
-        #region Aprovação e rejeição de chamados
-
-        // Buscar chamados pendentes de aprovação
         public async Task<List<Ticket>> GetPendingTickets()
         {
-            try
-            {
-                var url = $"{_baseUrl}/api/chamados/aprovacao";
-                Console.WriteLine($"DEBUG: Buscando chamados para aprovação: {url}");
+            Console.WriteLine("DEBUG: Buscando chamados para aprovação");
 
-                var response = await _httpClient.GetAsync(url);
-                var responseBody = await response.Content.ReadAsStringAsync();
+            var apiResponse = await GetApiAsync<TicketsResponse>($"/api/chamados/aprovacao");
 
-                Console.WriteLine($"Status: {response.StatusCode}");
+            if (apiResponse?.Data == null)
+                return new List<Ticket>();
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var apiResponse = JsonConvert.DeserializeObject<TicketsResponse>(responseBody);
-                    if (apiResponse?.Data != null)
-                    {
-                        var chamados = apiResponse.Data.Select(c => new Ticket(c)).ToList();
-                        return chamados;
-                    }
-                }
+            Console.WriteLine($"DEBUG: Chamados escalados response desserializado com sucesso.");
 
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    throw new UnauthorizedAccessException("Sessão expirada ou inválida.");
-                }
-
-                throw new Exception($"Erro ao buscar chamados: {response.StatusCode}");
-            }
-            catch (UnauthorizedAccessException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Erro na requisição: {ex.Message}");
-            }
+            var tickets = apiResponse.Data.Select(t => new Ticket(t)).ToList();
+            return tickets;            
         }
 
-        // Aprovar chamado
         public async Task<bool> ApproveTicketAsync(int idChamado)
         {
-            try
-            {
-                var url = $"{_baseUrl}/api/chamados/{idChamado}/aprovar";
-                Console.WriteLine($"DEBUG: Aprovando chamado: {url}");
+            Console.WriteLine($"DEBUG: Aprovando chamado: {idChamado}");
 
-                var response = await _httpClient.PostAsync(url, null);
+            var apiResponse = await PostApiAsync<object, ApiResponse>($"/api/chamados/{idChamado}/aprovar", null);
 
-                Console.WriteLine($"Status: {response.StatusCode}");
-
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    throw new UnauthorizedAccessException("Sessão expirada ou inválida.");
-                }
-
-                return response.IsSuccessStatusCode;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Erro na requisição: {ex.Message}");
-            }
+            return apiResponse.Success;            
         }
 
-        // Rejeitar chamado
         public async Task<bool> RejectTicketAsync(int idChamado, string motivo)
         {
-            try
-            {
-                var url = $"{_baseUrl}/api/chamados/{idChamado}/rejeitar";
-                Console.WriteLine($"DEBUG: Rejeitando chamado: {url}");
+            Console.WriteLine($"DEBUG: Rejeitando chamado: {idChamado}");
 
-                var body = new { motivo = motivo };
-                var json = JsonConvert.SerializeObject(body);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var body = new { motivo };
+            var apiResponse = await PostApiAsync<object, ApiResponse>($"/api/chamados/{idChamado}/rejeitar",body);
 
-                var response = await _httpClient.PostAsync(url, content);
-
-                Console.WriteLine($"Status: {response.StatusCode}");
-
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    throw new UnauthorizedAccessException("Sessão expirada ou inválida.");
-                }
-
-                return response.IsSuccessStatusCode;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Erro na requisição: {ex.Message}");
-            }
-        }
-
-        #endregion
-
-        #region Escalonamento de Chamados
-
-        public async Task ScaleTicketAsync(int idChamado, string motivo)
-        {
-            var content = new StringContent(JsonConvert.SerializeObject(new { motivo }), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{_baseUrl}/api/chamados/{idChamado}/escalar", content);
-            if (!response.IsSuccessStatusCode)
-            {
-                var msg = await response.Content.ReadAsStringAsync();
-                throw new Exception($"Erro ao escalar chamado: {msg}");
-            }
+            return apiResponse.Success;
         }
 
         public async Task<List<ScaledTicket>> GetScaledTicketsAsync()
         {
-            var response = await _httpClient.GetAsync($"{_baseUrl}/api/chamados/escalados");
-            var json = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<ScaledTicketsResponse>(json);
-            return result?.Data ?? new List<ScaledTicket>();
+            var apiResponse = await GetApiAsync<ScaledTicketsResponse>("/api/chamados/escalados");
+
+            return apiResponse?.Data ?? new List<ScaledTicket>();
         }
-        #endregion
 
-        #region Resolução de Chamados
+        public async Task ScaleTicketAsync(int idChamado, string motivo)
+        {
+            var body = new { motivo };
+            var json = JsonConvert.SerializeObject(body, _jsonSettings);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        // Resolve chamados comuns
+            var url = $"{_baseUrl}/api/chamados/{idChamado}/escalar";
+            Console.WriteLine($"DEBUG: Escalando chamado: {url}");
+
+            var response = await _httpClient.PostAsync(url, content);
+            var msg = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Erro ao escalar chamado: {msg}");
+        }
+
         public async Task ResolveTicketAsync(int idChamado, string motivoResolucao)
         {
             var body = new
@@ -794,17 +769,20 @@ namespace sistecDesktopRefactored.Services
                 id_chamado = idChamado,
                 relatorio_resposta = motivoResolucao
             };
-            var json = JsonConvert.SerializeObject(body);
+
+            var json = JsonConvert.SerializeObject(body, _jsonSettings);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{_baseUrl}/api/chamados/resolver-com-relatorio", content);
+
+            var url = $"{_baseUrl}/api/chamados/resolver-com-relatorio";
+            Console.WriteLine($"DEBUG: Resolvendo chamado: {url}");
+
+            var response = await _httpClient.PostAsync(url, content);
+            var msg = await response.Content.ReadAsStringAsync();
+
             if (!response.IsSuccessStatusCode)
-            {
-                var msg = await response.Content.ReadAsStringAsync();
                 throw new Exception($"Erro ao resolver chamado: {msg}");
-            }
         }
 
-        // Resolve chamados escalados
         public async Task ResolveScaledTicketAsync(int idChamado, string motivoResolucao)
         {
             var body = new
@@ -812,17 +790,19 @@ namespace sistecDesktopRefactored.Services
                 id_chamado = idChamado,
                 relatorio_resposta = motivoResolucao
             };
-            var json = JsonConvert.SerializeObject(body);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{_baseUrl}/api/chamados/{idChamado}/resolver-escalado", content);
-            if (!response.IsSuccessStatusCode)
-            {
-                var msg = await response.Content.ReadAsStringAsync();
-                throw new Exception($"Erro ao resolver chamado escalado: {msg}");
-            }
-        }
-        #endregion
 
+            var json = JsonConvert.SerializeObject(body, _jsonSettings);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var url = $"{_baseUrl}/api/chamados/{idChamado}/resolver-escalado";
+            Console.WriteLine($"DEBUG: Resolvendo chamado escalado: {url}");
+
+            var response = await _httpClient.PostAsync(url, content);
+            var msg = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Erro ao resolver chamado escalado: {msg}");
+        }
         #endregion
 
         #region SoluçãoIA

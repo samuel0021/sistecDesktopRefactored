@@ -4,10 +4,120 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:sistecDesktopRefactored.Views.Tickets"
+             xmlns:converters="clr-namespace:sistecDesktopRefactored.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             Width="800" Height="450">
-    <Grid>
-            
-    </Grid>
+             d:DesignHeight="600" d:DesignWidth="500"
+             Width="500" Height="600">
+    <!--#region Converters-->
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:PriorityToTextConverter x:Key="PriorityToTextConverter"/>
+    </UserControl.Resources>
+    <!--#endregion-->
+
+    <Border Background="{StaticResource brush-lavenderMist}">
+        <Grid>
+            <!--#region Definições de linhas-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!--#endregion-->
+
+            <!--#region Cabeçalho -->
+            <Border Background="{StaticResource brush-midnightNavy}"
+                Grid.Row="0" Padding="10">
+                <TextBlock Text="Detalhes do Chamado"
+                       FontSize="24"
+                       Foreground="{StaticResource brush-White}"
+                       Style="{StaticResource MyTextblock}"/>
+            </Border>
+            <!--#endregion-->
+
+            <!--#region Status / Prioridade -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Column="0" Margin="10">
+                    <TextBlock Text="Status: " Style="{StaticResource MyTextblock}"/>
+                    <Label Content="{Binding Ticket.Status}" 
+                           Style="{StaticResource TicketStatusLabel}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="10">
+                    <TextBlock Text="Prioridade: " Style="{StaticResource MyTextblock}"/>
+                    <Label Content="{Binding Ticket.Priority, 
+                               Converter={StaticResource PriorityToTextConverter}}" 
+                               Style="{StaticResource TicketPriorityLabel}"/>
+                </StackPanel>
+            </Grid>
+            <!--#endregion-->
+
+            <!--#region Usuário / Email-->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="0" Margin="10">
+                    <TextBlock Text="Usuário: " Style="{StaticResource MyTextblock}"/>
+                    <TextBlock Text="{Binding Ticket.UserOpener}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="10">
+                    <TextBlock Text="Email: "
+                       Style="{StaticResource MyTextblock}"/>
+                    <TextBlock Text="{Binding Ticket.EmailUser}" />
+                </StackPanel>
+            </Grid>
+            <!--#endregion-->
+
+            <!--#region Título -->
+            <StackPanel Grid.Row="3" Margin="10" Orientation="Horizontal">
+                <TextBlock Text="Título: " Style="{StaticResource MyTextblock}"/>
+                <TextBlock Text="{Binding Ticket.Title}" TextWrapping="Wrap"/>
+            </StackPanel>
+            <!--#endregion-->
+
+            <!--#region Categoria -->
+            <StackPanel Grid.Row="4" Margin="10" Orientation="Horizontal">
+
+                <TextBlock Text="Categoria: " Style="{StaticResource MyTextblock}"/>
+                <TextBlock Text="{Binding Ticket.Category}" TextWrapping="Wrap"/>
+            </StackPanel>
+            <!--#endregion-->
+
+            <!--#region Problema-->
+            <StackPanel Grid.Row="5" Margin="10" Orientation="Horizontal">
+                <TextBlock Text="Problema: " Style="{StaticResource MyTextblock}"/>
+                <TextBlock Text="{Binding Ticket.Problem}" />
+            </StackPanel>
+            <!--#endregion-->
+
+            <!--#region Descrição Detalhada-->
+            <StackPanel Grid.Row="6" Margin="10" Orientation="Vertical">
+                <TextBlock Text="Descrição Detalhada: " Style="{StaticResource MyTextblock}"/>
+                <TextBox Text="{Binding Ticket.Description}" Height="auto"
+                     IsEnabled="False"/>
+            </StackPanel>
+            <!--#endregion-->
+
+            <!--#region Abertura-->
+            <StackPanel Grid.Row="7" Margin="10" Orientation="Horizontal">
+                <TextBlock Text="Abertura: " Style="{StaticResource MyTextblock}"/>
+                <TextBlock Text="{Binding Ticket.CreatedAt, StringFormat='dd/MM/yyyy HH:mm'}" />
+            </StackPanel>
+            <!--#endregion-->
+        </Grid>
+    </Border>
+    
 </UserControl>

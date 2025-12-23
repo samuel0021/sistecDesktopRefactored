@@ -55,7 +55,7 @@ namespace sistecDesktopRefactored
         {
             containerRegistry.RegisterInstance(new ApiClient());
 
-            // views de navegação
+            // Navigation Views
             containerRegistry.RegisterForNavigation<LoginView>("LoginView");
 
             containerRegistry.RegisterForNavigation<MainLayoutView>("MainLayoutView");
@@ -64,8 +64,10 @@ namespace sistecDesktopRefactored
             containerRegistry.RegisterForNavigation<TicketsView>("TicketsView");
             containerRegistry.RegisterForNavigation<UsersView>("UsersView");
 
-            containerRegistry.RegisterDialog<TicketDetailsView, TicketDetailsViewModel>("TicketDetailsDialog");
+            // Dialog Views
+            containerRegistry.RegisterDialog<TicketDetailsView>("TicketDetailsDialog");
             containerRegistry.RegisterDialog<TicketCreateView, TicketCreateViewModel>("TicketCreateDialog");
+            containerRegistry.RegisterDialog<MessageDialogView>("MessageDialog");
 
             containerRegistry.Register<IFileDialogService, FileDialog>();
             containerRegistry.RegisterSingleton<IBusyService, BusyService>();

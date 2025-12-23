@@ -175,7 +175,7 @@
                                       StringFormat='dd/MM/yyyy HH:mm'}" 
                             Width="auto"/>
 
-                        <DataGridTemplateColumn Header="Ações" Width="400">
+                        <DataGridTemplateColumn Header="Ações" Width="700">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
 
