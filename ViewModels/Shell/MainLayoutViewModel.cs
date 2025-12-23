@@ -32,12 +32,12 @@ namespace sistecDesktopRefactored.ViewModels.Shell
         #endregion
 
         #region Encapsulations
-        public string SelectedTag 
-        { 
+        public string SelectedTag
+        {
             get => _selectedTag;
             set
             {
-                if(SetProperty(ref _selectedTag, value))
+                if (SetProperty(ref _selectedTag, value))
                 {
                     RaisePropertyChanged(nameof(TagHome));
                     RaisePropertyChanged(nameof(TagDashboard));
@@ -53,7 +53,7 @@ namespace sistecDesktopRefactored.ViewModels.Shell
         #region Commands
         public DelegateCommand<string> NavigateCommand { get; }
         public DelegateCommand LogoutConfirmationCommand { get; }
-        public DelegateCommand LogoutCommand {  get; }
+        public DelegateCommand LogoutCommand { get; }
 
         #endregion
 
@@ -67,7 +67,7 @@ namespace sistecDesktopRefactored.ViewModels.Shell
 
             NavigateCommand = new DelegateCommand<string>(OnNavigate);
             LogoutConfirmationCommand = new DelegateCommand(OpenLogoutConfirmation);
-            LogoutCommand = new DelegateCommand(LogoutAsync);
+            LogoutCommand = new DelegateCommand(async () => await LogoutAsync());
         }
 
         #region Navigation
@@ -96,31 +96,35 @@ namespace sistecDesktopRefactored.ViewModels.Shell
         private void OpenLogoutConfirmation()
         {
             _busyService.IsBusy = true;
-
-            _dialogService.ShowDialog("MessageDialog", r =>
+            _dialogService.ShowDialog("MessageDialog", async r =>
             {
-                // opcional: só reagir se precisar recarregar lista
-                if (r.Result == ButtonResult.OK)
+                if (r.Result != ButtonResult.OK)
                 {
-                    // por exemplo:
-                    // _ = LoadTicketsAsync();
+                    _busyService.IsBusy = false;
+                    return;
                 }
-                _busyService.IsBusy = false;
+
+                try
+                {
+                    await LogoutAsync();
+                }
+                finally
+                {
+                    _busyService.IsBusy = false;
+                }
             });
         }
 
-        public async void LogoutAsync()
+        public async Task LogoutAsync()
         {
             try
             {
                 await _apiClient.LogoutAsync();
-
                 _apiClient.Logout();
-
                 _regionManager.RequestNavigate("ShellRegion", "LoginView");
             }
             catch (Exception ex)
-            {                
+            {
                 System.Diagnostics.Debug.WriteLine($"Erro no logout: {ex.Message}");
             }
         }
