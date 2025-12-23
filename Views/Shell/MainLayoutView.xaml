@@ -52,7 +52,7 @@
                 Foreground="{StaticResource brush-peachOrange}"
                 Style="{StaticResource ButtonImage}"
                 helpers:ButtonHelper.HoverBackground="#91FBC6B3"
-                Command="{Binding LogoutCommand}"/>
+                Command="{Binding LogoutConfirmationCommand}"/>
 
         </Border>
         <!--#endregion-->

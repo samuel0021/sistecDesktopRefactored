@@ -280,6 +280,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <Resource Include="Images\undo-coolgray.png" />
+    <Resource Include="Images\undo-white.png" />
+    <Resource Include="Images\log-out-white.png" />
+    <Resource Include="Images\log-out-big.png" />
+    <Resource Include="Images\triangle-alert-white.png" />
     <Resource Include="Images\log-in.png" />
     <Resource Include="Images\rotate-ccw-orange.png" />
     <Resource Include="Images\list.png" />

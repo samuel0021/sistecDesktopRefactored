@@ -1,5 +1,8 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Commands;
+using Prism.Mvvm;
+using Prism.Regions;
 using Prism.Services.Dialogs;
+using sistecDesktopRefactored.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +12,7 @@ using System.Threading.Tasks;
 namespace sistecDesktopRefactored.ViewModels
 {
     public class MessageDialogViewModel : BindableBase, IDialogAware
-    {
+    {        
         private string _dialogTitle;
 
         #region Encapsulations
@@ -19,30 +22,38 @@ namespace sistecDesktopRefactored.ViewModels
             set => SetProperty(ref _dialogTitle, value);
         }
         #endregion
-        
+
+        // Commands
+        public DelegateCommand CancelCommand { get; }
+        public DelegateCommand ConfirmCommand { get; }
+
         // Constructor
         public MessageDialogViewModel()
         {
+            CancelCommand = new DelegateCommand(OnCancel);
+            ConfirmCommand = new DelegateCommand(OnConfirm);
         }
 
         // ====== IDialogAware ======
         #region Navigation
         public event Action<IDialogResult> RequestClose;
 
-        public bool CanCloseDialog()
-        {
-            throw new NotImplementedException();
-        }
+        public bool CanCloseDialog() => true;
 
-        public void OnDialogClosed()
-        {
-            throw new NotImplementedException();
-        }
+        public void OnDialogClosed() { }
 
-        public void OnDialogOpened(IDialogParameters parameters)
-        {
-            throw new NotImplementedException();
-        }
+        public void OnDialogOpened(IDialogParameters parameters) { }
         #endregion
+
+        // ==========================
+        private void OnCancel()
+        {
+            RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel));
+        }
+
+        private void OnConfirm()
+        {
+            RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+        }
     }
 }

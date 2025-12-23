@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 using sistecDesktopRefactored.Interfaces;
 using sistecDesktopRefactored.Services;
 using System;
@@ -16,6 +17,7 @@ namespace sistecDesktopRefactored.ViewModels.Shell
     {
         private readonly ApiClient _apiClient;
         private readonly IRegionManager _regionManager;
+        private readonly IDialogService _dialogService;
         private IBusyService _busyService;
 
         private string _selectedTag;
@@ -50,18 +52,21 @@ namespace sistecDesktopRefactored.ViewModels.Shell
 
         #region Commands
         public DelegateCommand<string> NavigateCommand { get; }
+        public DelegateCommand LogoutConfirmationCommand { get; }
         public DelegateCommand LogoutCommand {  get; }
 
         #endregion
 
         // Constructor
-        public MainLayoutViewModel(ApiClient apiClient, IRegionManager regionManager, IBusyService busyService)
+        public MainLayoutViewModel(ApiClient apiClient, IRegionManager regionManager, IDialogService dialogService, IBusyService busyService)
         {
             _apiClient = apiClient;
             _regionManager = regionManager;
+            _dialogService = dialogService;
             _busyService = busyService;
 
             NavigateCommand = new DelegateCommand<string>(OnNavigate);
+            LogoutConfirmationCommand = new DelegateCommand(OpenLogoutConfirmation);
             LogoutCommand = new DelegateCommand(LogoutAsync);
         }
 
@@ -79,7 +84,7 @@ namespace sistecDesktopRefactored.ViewModels.Shell
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            SelectedTag = "Tickets";
+            SelectedTag = "Home";
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext) => true;
@@ -87,6 +92,23 @@ namespace sistecDesktopRefactored.ViewModels.Shell
         #endregion
 
         #region Logout
+
+        private void OpenLogoutConfirmation()
+        {
+            _busyService.IsBusy = true;
+
+            _dialogService.ShowDialog("MessageDialog", r =>
+            {
+                // opcional: só reagir se precisar recarregar lista
+                if (r.Result == ButtonResult.OK)
+                {
+                    // por exemplo:
+                    // _ = LoadTicketsAsync();
+                }
+                _busyService.IsBusy = false;
+            });
+        }
+
         public async void LogoutAsync()
         {
             try

@@ -8,27 +8,31 @@
              xmlns:converters="clr-namespace:sistecDesktopRefactored.Converters"
              xmlns:helpers="clr-namespace:sistecDesktopRefactored.Helpers"
              mc:Ignorable="d" 
-             d:DesignWidth="400" d:DesignHeight="300"
-             Width="400" Height="300">
+             d:DesignWidth="500" d:DesignHeight="375"
+             Width="500" Height="375">
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
+            <Setter Property="WindowStyle" Value="None"/>
             <Setter Property="ResizeMode" Value="NoResize"/>
             <Setter Property="SizeToContent" Value="WidthAndHeight"/>
+            <Setter Property="AllowsTransparency" Value="True"/>
+            <Setter Property="Background" Value="Transparent"/>
         </Style>
     </prism:Dialog.WindowStyle>
 
-    <Grid Background="{StaticResource brush-lavenderMist}">
+
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--#region Header -->
         <Border Grid.Row="0" 
-            Background="{StaticResource brush-peachOrange}"
-            BorderBrush="Transparent">
+                Background="{StaticResource brush-peachOrange}"
+                BorderBrush="Transparent"
+                CornerRadius="10 10 0 0">
             <StackPanel Orientation="Horizontal">
                 <Image Source="/Images/triangle-alert-white.png" 
                     Width="24" Height="24"
@@ -43,48 +47,60 @@
         <!--#endregion -->
 
         <!--#region Image/Text -->
-        <StackPanel Grid.Row="1"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center">
-            <Border Margin="15"
-                Background="{StaticResource brush-mistyRose}"
-                Width="80" Height="80"
-                CornerRadius="50">
-                <Image Source="/Images/log-out-big.png"
-                    Width="48" Height="48"/>
-            </Border>
+        <Border Grid.Row="1" Background="{StaticResource brush-lavenderMist}"
+                BorderBrush="Transparent" CornerRadius="0 0 10 10">
 
-            <TextBlock Text="Tem certeza que deseja sair do sistema?"
-                FontFamily="{StaticResource MontserratBold}"
-                Foreground="{StaticResource brush-midnightNavy}"
-                TextAlignment="Center"/>
-            <TextBlock Text="Você precisará fazer login novamente para acessar."
-                FontFamily="{StaticResource MontserratRegular}"
-                Foreground="{StaticResource brush-coolGray}"
-                TextAlignment="Center"/>
-        </StackPanel>
-        <!--#endregion -->
+            <StackPanel Grid.Row="1" Margin="15"
+                HorizontalAlignment="Center">
+                <Border Margin="25"
+                    Background="{StaticResource brush-mistyRose}"
+                    Width="90" Height="90"
+                    CornerRadius="50">
+                    <Image Source="/Images/log-out-big.png"
+                        Width="58" Height="58"/>
+                </Border>
 
-        <!--#region Buttons -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center">
-            <Button Content="Cancelar"
-                Style="{StaticResource ButtonImage}"
-                Background="Transparent"
-                Foreground="{StaticResource brush-coolGray}"
-                BorderBrush="{StaticResource brush-frenchGray}"
-                Tag="/Images/undo-coolgray.png"
-                Margin="10"/>
-            <Button Content="Sim, sair"
-                Style="{StaticResource ButtonImage}"
-                Background="{StaticResource brush-peachOrange}"
-                FontFamily="{StaticResource MontserratRegular}"
-                Foreground="{StaticResource brush-White}"
-                BorderBrush="Transparent"
-                Tag="/Images/log-out-white.png"
-                Margin="10"/>
-        </StackPanel>
+                <TextBlock Text="Tem certeza que deseja sair do sistema?"
+                    FontFamily="{StaticResource MontserratBold}"
+                    FontSize="18" Margin="5"
+                    Foreground="{StaticResource brush-midnightNavy}"
+                    TextAlignment="Center"/>
+                <TextBlock Text="Você precisará fazer login novamente para acessar."
+                    FontFamily="{StaticResource MontserratRegular}"
+                    FontSize="16"
+                    Foreground="{StaticResource brush-coolGray}"
+                    TextAlignment="Center" Margin="0 0 0 20"/>
+
+                <StackPanel Grid.Row="2" Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <Button Content="Cancelar"
+                        Style="{StaticResource ButtonImage}"
+                        Background="Transparent"
+                        Foreground="{StaticResource brush-coolGray}"
+                        FontFamily="{StaticResource MontserratRegular}"
+                        FontSize="14"
+                        BorderBrush="{StaticResource brush-frenchGray}"
+                        helpers:ButtonHelper.HoverBackground="#49B9B7CC"
+                        Tag="/Images/undo-coolgray.png"
+                        Command="{Binding CancelCommand}"
+                        Width="200" Height="50"
+                        Margin="10"/>
+                    <Button Content="Sim, sair"
+                        Style="{StaticResource ButtonImage}"
+                        Background="{StaticResource brush-peachOrange}"
+                        Foreground="{StaticResource brush-White}"
+                        FontFamily="{StaticResource MontserratRegular}"
+                        FontSize="14"
+                        BorderBrush="Transparent"
+                        helpers:ButtonHelper.HoverBackground="{StaticResource brush-peachOrange-transparent}"
+                        Tag="/Images/log-out-white.png"
+                        Command="{Binding ConfirmCommand}"
+                        Width="200" Height="50"
+                        Margin="10"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
         <!--#endregion -->
     </Grid>
 </UserControl>
