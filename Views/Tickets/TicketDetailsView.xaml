@@ -163,8 +163,9 @@
                     <TextBlock Text="Descrição Detalhada: " Style="{StaticResource MyTextblock}"
                         Margin="0 0 0 5"/>
                     <TextBox Text="{Binding Ticket.Description}" Height="150"
-                        Style="{StaticResource TextBoxBase}" Margin="0"
+                        Style="{StaticResource TextBoxBase}" Margin="0 5 0 0"
                         IsEnabled="False"
+                        VerticalContentAlignment="Top"
                         FontFamily="{StaticResource BrandonGrotesqueRegular}"
                         FontSize="14"/>
                 </StackPanel>

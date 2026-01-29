@@ -50,7 +50,7 @@
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/images/user-orange.png" 
                             Width="20" Height="20" Margin="0 0 10 0"/>
-                    <TextBlock Text="Samuel Vieira" 
+                    <TextBlock Text="{Binding NameLoggedUser}" 
                         FontSize="20"
                         VerticalAlignment="Center" 
                         Foreground="{StaticResource brush-peachOrange}"

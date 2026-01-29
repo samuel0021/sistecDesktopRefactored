@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using Newtonsoft.Json;
+using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using sistecDesktopRefactored.Interfaces;
@@ -156,7 +157,7 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
                     Title = TicketTitle,
                     Description = Description,
                     UserId = App.LoggedUser.IdPerfilUsuario.Id,
-                    Priority = Priority,
+                    Priority = GetPrioridadeString(Priority),
                     Category = category,
                     DescricaoCategoria = category,
                     DescricaoCategoriaChamado = category,
@@ -164,6 +165,9 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
 
                     DescricaoDetalhada = Description
                 };
+
+                var json = JsonConvert.SerializeObject(request, Formatting.Indented);
+                Console.WriteLine("JSON enviado desktop: " + json);
 
                 var ticket = await _apiClient.CreateTicketAsync(request);
 
@@ -201,6 +205,15 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
                     ProblemsList.Add(problema);
                 }
             }
+        }
+
+        private string GetPrioridadeString(int priority)
+        {
+            if (priority == 1) return "Baixa";
+            if (priority == 2) return "Media";  // Note: "Media" sem acento como no React
+            if (priority == 3) return "Alta";
+            if (priority == 4) return "Urgente";
+            return "Media";  // Default como no backend
         }
     }
 }

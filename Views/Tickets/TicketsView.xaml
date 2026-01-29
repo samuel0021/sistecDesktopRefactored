@@ -137,7 +137,8 @@
                         Background="Transparent"
                         BorderThickness="0.5"
                         helpers:ButtonHelper.HoverBackground="#1AFF9966"
-                        Style="{StaticResource ButtonImage}"/>
+                        Style="{StaticResource ButtonImage}"
+                        Command="{Binding LoadTicketsCommand}"/>
 
                 </StackPanel>
 

@@ -18,8 +18,8 @@ namespace sistecDesktopRefactored.Models.Tickets
         [JsonProperty("user_id")]
         public int UserId { get; set; }
 
-        [JsonProperty("priority")]
-        public int Priority { get; set; }
+        [JsonProperty("prioridade_chamado")]
+        public string Priority { get; set; }
 
         [JsonProperty("category")]
         public string Category { get; set; }

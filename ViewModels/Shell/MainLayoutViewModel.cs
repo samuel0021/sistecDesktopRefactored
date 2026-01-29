@@ -22,6 +22,8 @@ namespace sistecDesktopRefactored.ViewModels.Shell
 
         private string _selectedTag;
 
+        public string NameLoggedUser => App.LoggedUser?.NomeUsuario ?? "Carregando...";
+
         #region Tags
         public string TagHome => SelectedTag == "Home" ? "Selected" : null;
         public string TagDashboard => SelectedTag == "Dashboard" ? "Selected" : null;
@@ -85,6 +87,8 @@ namespace sistecDesktopRefactored.ViewModels.Shell
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             SelectedTag = "Home";
+
+            RaisePropertyChanged(nameof(NameLoggedUser));
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext) => true;
