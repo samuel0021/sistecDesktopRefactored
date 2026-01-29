@@ -44,15 +44,29 @@
         BorderBrush="{StaticResource brush-frenchGray}"
         BorderThickness="0 0 0 0.5">
 
-            <Button Content="Sair" HorizontalAlignment="Right" 
-                Width="100" Margin="15"
-                BorderThickness="0" FontSize="20"
-                Tag="/Images/log-out.png"
-                Background="Transparent"
-                Foreground="{StaticResource brush-peachOrange}"
-                Style="{StaticResource ButtonImage}"
-                helpers:ButtonHelper.HoverBackground="#91FBC6B3"
-                Command="{Binding LogoutConfirmationCommand}"/>
+            <StackPanel Orientation="Horizontal"
+                HorizontalAlignment="Right">
+
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/images/user-orange.png" 
+                            Width="20" Height="20" Margin="0 0 10 0"/>
+                    <TextBlock Text="Samuel Vieira" 
+                        FontSize="20"
+                        VerticalAlignment="Center" 
+                        Foreground="{StaticResource brush-peachOrange}"
+                        FontFamily="{StaticResource MontserratRegular}"/>
+                </StackPanel>
+
+                <Button Content="Sair"  
+                    Width="100" Margin="15"
+                    BorderThickness="0" FontSize="20"
+                    Tag="/Images/log-out.png"
+                    Background="Transparent"
+                    Foreground="{StaticResource brush-peachOrange}"
+                    Style="{StaticResource ButtonImage}"
+                    helpers:ButtonHelper.HoverBackground="#91FBC6B3"
+                    Command="{Binding LogoutConfirmationCommand}"/>
+            </StackPanel>
 
         </Border>
         <!--#endregion-->

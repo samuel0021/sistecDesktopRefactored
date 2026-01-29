@@ -22,7 +22,7 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
         private readonly ApiClient _apiClient;
         private readonly IBusyService _busyService;
 
-        private string _dialogTitle = "Abertura de Chamado";
+        private string _dialogTitle = "Abrir Novo Chamado";
         private string _ticketTitle;
         private string _description;
         private string _errorMessage;
@@ -162,7 +162,7 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
                     DescricaoCategoriaChamado = category,
                     Problem = SelectedProblem?.Value,
 
-                    DescricaoDetalhada = $"Título: {TicketTitle}\n\nDescrição: {Description}"
+                    DescricaoDetalhada = Description
                 };
 
                 var ticket = await _apiClient.CreateTicketAsync(request);
@@ -175,7 +175,7 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
             }
             catch (Exception ex)
             {
-                ErrorMessage = $"Erro ao criar chamado: {ex.Message}";
+                ErrorMessage = $"Erro ao montar request: {ex.Message}";
             }
             finally
             {

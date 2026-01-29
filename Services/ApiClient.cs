@@ -74,7 +74,7 @@ namespace sistecDesktopRefactored.Services
                     }
                     catch (JsonException ex)
                     {
-                        Console.WriteLine($"DEBUG: Falha ao deserializar {typeof(TResponse).Name}: {ex.Message}");
+                        System.Diagnostics.Debug.WriteLine($"DEBUG: Falha ao deserializar {typeof(TResponse).Name}: {ex.Message}");
                         throw new Exception($"Erro ao deserializar resposta: {ex.Message}");
                     }
                 }

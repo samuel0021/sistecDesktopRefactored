@@ -16,18 +16,13 @@ using System.Windows.Shapes;
 namespace sistecDesktopRefactored.Views.Tickets
 {
     /// <summary>
-    /// Interaction logic for TicketCreateView.xaml
+    /// Interaction logic for TicketResolveView.xaml
     /// </summary>
-    public partial class TicketCreateView : UserControl
+    public partial class TicketResolveView : UserControl
     {
-        public TicketCreateView()
+        public TicketResolveView()
         {
             InitializeComponent();
-        }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }

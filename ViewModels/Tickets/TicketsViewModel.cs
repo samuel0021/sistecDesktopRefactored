@@ -48,7 +48,7 @@ namespace sistecDesktopRefactored.ViewModels
 
         #region Commands
         public DelegateCommand LoadTicketsCommand { get; }
-        public DelegateCommand OpenCreateTicketCommand {  get; }
+        public DelegateCommand OpenCreateTicketCommand { get; }
         public DelegateCommand<Ticket> ShowDetailsCommand { get; }
 
         #endregion
@@ -97,13 +97,11 @@ namespace sistecDesktopRefactored.ViewModels
             _dialogService.ShowDialog("TicketCreateDialog", r =>
             {
                 // opcional: só reagir se precisar recarregar lista
-                if (r.Result == ButtonResult.OK)
-                {
-                    // por exemplo:
-                    // _ = LoadTicketsAsync();
-                }
-                _busyService.IsBusy = false;
+                if (r.Result != ButtonResult.OK)
+                    return;
+
             });
+            _busyService.IsBusy = false;
         }
 
         private async void ShowDetails(Ticket ticket)
@@ -131,7 +129,7 @@ namespace sistecDesktopRefactored.ViewModels
                                 MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            
+
 
             var parameters = new DialogParameters { { "ticket", SelectedTicket } };
 

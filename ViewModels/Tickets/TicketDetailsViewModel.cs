@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Commands;
+using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using sistecDesktopRefactored.Models;
 using sistecDesktopRefactored.Models.Tickets;
@@ -13,17 +14,31 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
     public class TicketDetailsViewModel : BindableBase, IDialogAware
     {
         private string _title = "Detalhes do Chamado";
+        private Ticket _ticket;
+
+        #region Encapsulations
         public string Title
         {
             get => _title;
             set => SetProperty(ref _title, value);
         }
-
-        private Ticket _ticket;
         public Ticket Ticket
         {
             get => _ticket;
             set => SetProperty(ref _ticket, value);
+        }
+        #endregion
+
+        // Commands
+        public DelegateCommand CancelCommand { get; }
+        public TicketDetailsViewModel()
+        {
+            CancelCommand = new DelegateCommand(ExecuteCancel);
+        }
+
+        private void ExecuteCancel()
+        {
+            RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel));
         }
 
         public event Action<IDialogResult> RequestClose;

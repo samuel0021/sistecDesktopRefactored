@@ -13,9 +13,9 @@ namespace sistecDesktopRefactored.Models.Tickets
         public bool TicketScaled => Status == "Escalado";
 
         public bool CanResolve => (Status == "Com Analista" && App.LoggedUser.IdPerfilUsuario.Id >= 2)
-                                  || (Status == "Escalado" && App.LoggedUser.IdPerfilUsuario.Id >= 4);
+                                  || (Status == "Escalado" && App.LoggedUser.IdPerfilUsuario.Id >= 4);*/
 
-        public bool CanView => (App.LoggedUser.IdPerfilUsuario.Id >= 2) || (App.LoggedUser.Id == UserId);*/
+        public bool CanView => (App.LoggedUser.IdPerfilUsuario.Id >= 2) || (App.LoggedUser.Id == UserId);
 
         public int Id { get; set; }
         public string Title { get; set; }

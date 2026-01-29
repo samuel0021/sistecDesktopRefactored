@@ -190,7 +190,9 @@
                                             Width="40" Height="40"
                                             Command="{Binding DataContext.ShowDetailsCommand,
                                                       ElementName=TicketsControl}"
-                                            CommandParameter="{Binding}"/>
+                                            CommandParameter="{Binding}"
+                                            Visibility="{Binding CanResolve, 
+                            Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                         <Button Content="Resolver"
                                             Background="#22C55E"

@@ -20,6 +20,7 @@
 
     <SolidColorBrush x:Key="brush-lavenderMist" Color="#F6F3FF"/>
     <SolidColorBrush x:Key="brush-White" Color="#FFFFF0"/>
+    <SolidColorBrush x:Key="brush-green" Color="#1EB957"/>
 
     <LinearGradientBrush x:Key="gradient-background" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#EFEBFF" Offset="0"/>
