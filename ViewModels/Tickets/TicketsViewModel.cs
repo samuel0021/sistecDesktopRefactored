@@ -96,10 +96,17 @@ namespace sistecDesktopRefactored.ViewModels
 
             _dialogService.ShowDialog("TicketCreateDialog", r =>
             {
-                // opcional: só reagir se precisar recarregar lista
-                if (r.Result != ButtonResult.OK)
-                    return;
+                if (r.Result == ButtonResult.OK && r.Parameters.ContainsKey("ticketId"))
+                {
+                    var ticketId = r.Parameters.GetValue<int>("ticketId");
 
+                    var successParams = new DialogParameters { { "ticketId", ticketId } };
+                    
+                    _dialogService.ShowDialog("TicketCreatedMessage", successParams, result =>
+                    {                        
+                        _ = LoadTicketsAsync();
+                    });
+                }
             });
             _busyService.IsBusy = false;
         }

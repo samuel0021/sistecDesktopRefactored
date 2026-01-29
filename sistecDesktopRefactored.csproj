@@ -180,6 +180,7 @@
     <Compile Include="ViewModels\MessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Shell\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Shell\MainLayoutViewModel.cs" />
+    <Compile Include="ViewModels\TicketCreateMessageViewModel.cs" />
     <Compile Include="ViewModels\Tickets\TicketCreateViewModel.cs" />
     <Compile Include="ViewModels\Tickets\TicketDetailsViewModel.cs" />
     <Compile Include="ViewModels\Tickets\TicketsViewModel.cs" />
@@ -198,6 +199,9 @@
     </Compile>
     <Compile Include="Views\Shell\MainLayoutView.xaml.cs">
       <DependentUpon>MainLayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TicketCreatedMessageView.xaml.cs">
+      <DependentUpon>TicketCreatedMessageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Tickets\TicketCreateView.xaml.cs">
       <DependentUpon>TicketCreateView.xaml</DependentUpon>
@@ -255,6 +259,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Shell\MainLayoutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TicketCreatedMessageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -317,6 +325,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <Resource Include="Images\circle-check-big.png" />
     <Resource Include="Images\undo-coolgray.png" />
     <Resource Include="Images\undo-white.png" />
     <Resource Include="Images\log-out-white.png" />

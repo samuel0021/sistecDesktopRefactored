@@ -22,6 +22,7 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
     {
         private readonly ApiClient _apiClient;
         private readonly IBusyService _busyService;
+        private readonly IDialogService _dialogService;
 
         private string _dialogTitle = "Abrir Novo Chamado";
         private string _ticketTitle;
@@ -101,14 +102,16 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
         public DelegateCommand CreateTicketCommand { get; }
 
         // ====== Constructor ======
-        public TicketCreateViewModel(ApiClient apiClient, IBusyService busyService)
+        public TicketCreateViewModel(ApiClient apiClient, IBusyService busyService, IDialogService dialogService)
         {
             _apiClient = apiClient;
             _busyService = busyService;
+            _dialogService = dialogService;
 
             CancelCommand = new DelegateCommand(ExecuteCancel);
             CreateTicketCommand = new DelegateCommand(ExecuteCreate);
             ProblemsList = new ObservableCollection<ProblemItem>();
+            _dialogService = dialogService;
         }
 
         private void ExecuteCancel()
@@ -171,11 +174,11 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
 
                 var ticket = await _apiClient.CreateTicketAsync(request);
 
-                MessageBox.Show(
-                    $"Chamado #{ticket.Id} criado com sucesso!",
-                    "Sucesso",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
+                Console.WriteLine($"Chamado #{ticket.Id} criado!");
+
+                var result = new DialogResult(ButtonResult.OK);
+                result.Parameters.Add("ticketId", ticket.Id);
+                RequestClose?.Invoke(result);
             }
             catch (Exception ex)
             {
@@ -184,7 +187,6 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
             finally
             {
                 _busyService.IsBusy = false;
-                RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
             }
         }
 
