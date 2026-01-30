@@ -179,6 +179,7 @@
     <Compile Include="ViewModels\Home\HomeViewModel.cs" />
     <Compile Include="ViewModels\Auth\LoginViewModel.cs" />
     <Compile Include="ViewModels\MessageDialogViewModel.cs" />
+    <Compile Include="ViewModels\ResultDialogViewModel.cs" />
     <Compile Include="ViewModels\Shell\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Shell\MainLayoutViewModel.cs" />
     <Compile Include="ViewModels\TicketCreateMessageViewModel.cs" />

@@ -72,6 +72,7 @@ namespace sistecDesktopRefactored
             containerRegistry.RegisterDialog<MessageDialogView>("MessageDialog");
             containerRegistry.RegisterDialog<TicketCreatedMessageView, TicketCreateMessageViewModel>("TicketCreatedMessage");
             containerRegistry.RegisterDialog<ConfirmDialogView, ConfirmDialogViewModel>("ConfirmDialog");
+            containerRegistry.RegisterDialog<ResultDialogView, ResultDialogViewModel>("ResultDialog");
 
             containerRegistry.Register<IFileDialogService, FileDialog>();
             containerRegistry.RegisterSingleton<IBusyService, BusyService>();

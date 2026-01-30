@@ -8,8 +8,8 @@
              xmlns:converters="clr-namespace:sistecDesktopRefactored.Converters"
              xmlns:helpers="clr-namespace:sistecDesktopRefactored.Helpers"
              mc:Ignorable="d" 
-             d:DesignWidth="450" d:DesignHeight="325"
-             Width="450" Height="325">
+             d:DesignWidth="450" d:DesignHeight="375"
+             Width="450" Height="375">
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">

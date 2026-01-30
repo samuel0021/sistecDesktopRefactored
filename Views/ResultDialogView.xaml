@@ -8,8 +8,8 @@
              xmlns:converters="clr-namespace:sistecDesktopRefactored.Converters"
              xmlns:helpers="clr-namespace:sistecDesktopRefactored.Helpers"
              mc:Ignorable="d" 
-             d:DesignWidth="450" d:DesignHeight="325"
-             Width="500" Height="375">
+             d:DesignWidth="450" d:DesignHeight="375"
+             Width="450" Height="375">
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
             <Setter Property="WindowStyle" Value="None"/>
@@ -21,7 +21,7 @@
     </prism:Dialog.WindowStyle>
 
     <Border Background="{StaticResource brush-lavenderMist}"
-        BorderBrush="{StaticResource brush-peachOrange}"
+        BorderBrush="#22C560"
         BorderThickness="1"
         CornerRadius="10">
         <Grid>
@@ -29,71 +29,39 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" CornerRadius="10 10 0 0"
-            Background="{StaticResource brush-peachOrange}" BorderBrush="Transparent">
+            <TextBlock Text="Sucesso!" FontSize="26" Margin="20"
+               Style="{StaticResource MyTextblock}"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"/>
 
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="/Images/triangle-alert-white.png" 
-                    Width="24" Height="24"
-                    Margin="20 0 10 0"/>
+            <Image Grid.Row="1" Width="100"
+            Source="/Images/circle-check-big.png"/>
 
-                    <TextBlock Text="{Binding Title}"
-                FontFamily="{StaticResource MontserratBold}"
-                FontSize="24" Margin="0 15"
-                Foreground="{StaticResource brush-White}"
+
+            <TextBlock Grid.Row="2" Margin="20"
+                Text="{Binding Message}"
+                Style="{StaticResource MyTextblock}"
+                FontSize="20"
+                HorizontalAlignment="Center"
                 VerticalAlignment="Center"/>
-                </StackPanel>
-            </Border>
-
-            <StackPanel Grid.Row="1"
-            VerticalAlignment="Center">
-
-                <Border Background="#82FFFFF0"
-                    CornerRadius="100"
-                    Width="125" Height="125">
-                    <Image Source="/Images/triangle-alert-big.png"
-                    Width="100" Height="100"/>
-                </Border>
-
-                <TextBlock Text="{Binding Message}"
-                FontFamily="{StaticResource MontserratRegular}"
-                FontSize="18" Margin="15"
-                HorizontalAlignment="Center"/>
-            </StackPanel>
 
 
-            <StackPanel Grid.Row="2" Orientation="Horizontal"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center">
 
-                <Button Content="{Binding CancelText}"
-                Style="{StaticResource ButtonImage}"
-                Background="Transparent"
-                Foreground="{StaticResource brush-coolGray}"
-                FontFamily="{StaticResource MontserratRegular}"
-                FontSize="14"
-                BorderBrush="{StaticResource brush-frenchGray}"
-                helpers:ButtonHelper.HoverBackground="#49B9B7CC"
-                Tag="/Images/undo-coolgray.png"
-                Command="{Binding CancelCommand}"
-                Width="200" Height="50"
-                Margin="10"/>
-
-                <Button Content="{Binding ConfirmText}"
-                Style="{StaticResource ButtonImage}"
-                Background="{StaticResource brush-peachOrange}"
-                Foreground="{StaticResource brush-White}"
-                FontFamily="{StaticResource MontserratRegular}"
-                FontSize="14"
-                BorderBrush="Transparent"
-                helpers:ButtonHelper.HoverBackground="{StaticResource brush-peachOrange-transparent}"
-                Tag="/Images/circle-check.png"
-                Command="{Binding ConfirmCommand}"
-                Width="200" Height="50"
-                Margin="10"/>
-            </StackPanel>
+            <Button Grid.Row="3"
+            Content="Ok"
+            Background="#22C55E"
+            Height="50" Margin="10"
+            Tag="/Images/circle-check.png"
+            HorizontalAlignment="Right"
+            FontFamily="{StaticResource MontserratBold}"
+            Foreground="{StaticResource brush-White}"
+            BorderBrush="{StaticResource brush-White}"
+            helpers:ButtonHelper.HoverBackground="#22C560"
+            Style="{StaticResource ButtonImage}"
+            Command="{Binding OkCommand}"/>
         </Grid>
     </Border>
 </UserControl>
