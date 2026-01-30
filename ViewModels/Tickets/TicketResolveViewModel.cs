@@ -67,16 +67,28 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
 
         private async void ExecuteResolve()
         {
-            if (string.IsNullOrWhiteSpace(Motivo))
+            if (string.IsNullOrWhiteSpace(Motivo) || Motivo.Length < 20)
             {
-                // Validação simples
+                MessageBox.Show("Motivo deve ter pelo menos 20 caracteres!");
                 return;
             }
 
             _busyService.IsBusy = true;
+
             try
             {
-                await _apiClient.ResolveTicketAsync(TicketId, Motivo);
+                // objeto anônimo para relatório de resolução
+                // com as propriedades do backend pro json serializar
+                var reportBody = new
+                {
+                    id_chamado = TicketId,
+                    relatorio_resposta = Motivo,
+                    id_usuario_abertura = App.LoggedUser.IdPerfilUsuario.Id
+                };
+
+                await _apiClient.ResolveTicketWithReportAsync(reportBody);
+
+                await _apiClient.ResolveTicketAsync(TicketId);
 
                 // ← Fecha com OK (TicketsViewModel recarrega lista)
                 RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
@@ -108,14 +120,14 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
             if (parameters.ContainsKey("category"))
             {
                 TicketCategory = parameters.GetValue<string>("category");
-                Console.WriteLine($"DEBUG Category: '{TicketCategory}'");  // ← TESTE
+                Console.WriteLine($"DEBUG Category: '{TicketCategory}'");
             }
 
 
             if (parameters.ContainsKey("problem"))
             {
                 TicketProblem = parameters.GetValue<string>("problem");
-                Console.WriteLine($"DEBUG Problem: '{TicketProblem}'");  // ← TESTE
+                Console.WriteLine($"DEBUG Problem: '{TicketProblem}'");
             }
         }
     }

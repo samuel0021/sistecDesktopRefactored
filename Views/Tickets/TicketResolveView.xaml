@@ -136,7 +136,8 @@
 
                         <TextBox Text="{Binding Motivo, 
                             UpdateSourceTrigger=PropertyChanged}"
-                            Margin="0 5" Height="150"
+                            Margin="0 5" Height="150" Padding="5"
+                            VerticalContentAlignment="Top"
                             Style="{StaticResource TextBoxBase}"/>
 
                     </StackPanel>

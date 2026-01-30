@@ -762,25 +762,33 @@ namespace sistecDesktopRefactored.Services
                 throw new Exception($"Erro ao escalar chamado: {msg}");
         }
 
-        public async Task ResolveTicketAsync(int idChamado, string motivoResolucao)
+        public async Task ResolveTicketAsync(int idChamado)
         {
-            var body = new
-            {
-                id_chamado = idChamado,
-                relatorio_resposta = motivoResolucao
-            };
+            var url = $"{_baseUrl}/api/chamados/{idChamado}/resolver";
+            Console.WriteLine($"DEBUG: Resolvendo chamado: {url}");
 
+            var response = await _httpClient.PostAsync(url, null);
+            var msg = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Erro ao resolver chamado: {msg}");
+        }
+
+        public async Task ResolveTicketWithReportAsync(object body)
+        {
             var json = JsonConvert.SerializeObject(body, _jsonSettings);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var url = $"{_baseUrl}/api/chamados/resolver-com-relatorio";
-            Console.WriteLine($"DEBUG: Resolvendo chamado: {url}");
+            Console.WriteLine($"DEBUG Resolver relatório: {url}");
 
             var response = await _httpClient.PostAsync(url, content);
             var msg = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
-                throw new Exception($"Erro ao resolver chamado: {msg}");
+                throw new Exception($"Erro relatorio: {msg}");
+
+            Console.WriteLine("DEBUG Relatorio OK!");
         }
 
         public async Task ResolveScaledTicketAsync(int idChamado, string motivoResolucao)
