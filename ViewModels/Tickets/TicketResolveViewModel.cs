@@ -16,6 +16,8 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
     {
         private readonly ApiClient _apiClient;
         private readonly BusyService _busyService;
+        private readonly DialogService _dialogService;
+
         public string Title => "";
 
         private string _motivo;
@@ -51,13 +53,15 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
         public DelegateCommand CancelCommand { get; }
         public DelegateCommand ResolveTicketCommand { get; }
 
-        public TicketResolveViewModel(ApiClient apiClient, BusyService busyService)
+        public TicketResolveViewModel(ApiClient apiClient, BusyService busyService, DialogService dialogService)
         {
             _apiClient = apiClient;
             _busyService = busyService;
+            _dialogService = dialogService;
 
             CancelCommand = new DelegateCommand(ExecuteCancel);
             ResolveTicketCommand = new DelegateCommand(ExecuteResolve);
+            _dialogService = dialogService;
         }
 
         private void ExecuteCancel()
@@ -73,36 +77,51 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
                 return;
             }
 
+            // dialog confirmação
+            var confirmParams = new DialogParameters
+            {
+                { "message", $"Confirmar resolução do chamado #{TicketId}?\n\nMotivo: {Motivo}..." }
+            };
+
             _busyService.IsBusy = true;
 
-            try
+            _dialogService.ShowDialog("ConfirmDialog", confirmParams, async r =>
             {
-                // objeto anônimo para relatório de resolução
-                // com as propriedades do backend pro json serializar
-                var reportBody = new
+                if (r.Result == ButtonResult.OK)
                 {
-                    id_chamado = TicketId,
-                    relatorio_resposta = Motivo,
-                    id_usuario_abertura = App.LoggedUser.IdPerfilUsuario.Id
-                };
+                    _busyService.IsBusy = true;
 
-                await _apiClient.ResolveTicketWithReportAsync(reportBody);
+                    try
+                    {
+                        // objeto anônimo para relatório de resolução
+                        // com as propriedades do backend pro json serializar
+                        var reportBody = new
+                        {
+                            id_chamado = TicketId,
+                            relatorio_resposta = Motivo,
+                            id_usuario_abertura = App.LoggedUser.IdPerfilUsuario.Id
+                        };
 
-                await _apiClient.ResolveTicketAsync(TicketId);
+                        await _apiClient.ResolveTicketWithReportAsync(reportBody);
 
-                // ← Fecha com OK (TicketsViewModel recarrega lista)
-                RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
-                MessageBox.Show($"Chamado resolvido");
-            }
-            catch (Exception ex)
-            {
-                // Trate erro (MessageBox ou ErrorMessage)
-                MessageBox.Show($"Erro ao resolver: {ex.Message}");
-            }
-            finally
-            {
-                _busyService.IsBusy = false;
-            }
+                        await _apiClient.ResolveTicketAsync(TicketId);
+
+                        // fecha com OK (TicketsViewModel recarrega lista)
+                        RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+                        MessageBox.Show($"Chamado resolvido");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Erro ao resolver: {ex.Message}");
+                    }
+                    finally
+                    {
+                        _busyService.IsBusy = false;
+                    }
+                }
+            });
+
+
         }
 
 

@@ -8,8 +8,8 @@
              xmlns:converters="clr-namespace:sistecDesktopRefactored.Converters"
              xmlns:helpers="clr-namespace:sistecDesktopRefactored.Helpers"
              mc:Ignorable="d" 
-             d:DesignWidth="500" d:DesignHeight="375"
-             Width="500" Height="375">
+             d:DesignWidth="450" d:DesignHeight="325"
+             Width="450" Height="325">
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
@@ -22,6 +22,8 @@
     </prism:Dialog.WindowStyle>
 
     <Border Background="{StaticResource brush-lavenderMist}"
+            BorderBrush="#22C560"
+            BorderThickness="1"
             CornerRadius="10">
         <Grid>
             <Grid.RowDefinitions>

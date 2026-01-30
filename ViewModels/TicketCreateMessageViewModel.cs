@@ -49,11 +49,10 @@ namespace sistecDesktopRefactored.ViewModels
 
         public void OnDialogOpened(IDialogParameters parameters) 
         {
+            if (parameters.ContainsKey("message"))
+                TicketMessage = parameters.GetValue<string>("message");
             if (parameters.ContainsKey("ticketId"))
-            {
                 _ticketId = parameters.GetValue<int>("ticketId");
-                TicketMessage = $"Chamado #{_ticketId} criado com sucesso!";
-            }
         }
         #endregion
     }

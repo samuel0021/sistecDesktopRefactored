@@ -101,20 +101,11 @@ namespace sistecDesktopRefactored.ViewModels
             // abre dialog de criar chamado
             _dialogService.ShowDialog("TicketCreateDialog", r =>
             {
-                // se o dialog fechou e trouxe um parâmetro do id, 
                 if (r.Result == ButtonResult.OK && r.Parameters.ContainsKey("ticketId"))
                 {
-                    // salva o valor numa variável
                     var ticketId = r.Parameters.GetValue<int>("ticketId");
-
-                    // transforma o valor no tipo DialogParameters porque só aceita assim
-                    var successParams = new DialogParameters { { "ticketId", ticketId } };
-
-                    // abre o dialogo de conclusao passando o parametro 
-                    _dialogService.ShowDialog("TicketCreatedMessage", successParams, result =>
-                    {
-                        _ = LoadTicketsAsync();
-                    });
+                    Console.WriteLine($"Novo chamado #{ticketId} → Recarregando...");
+                    _ = LoadTicketsAsync();  // Atualiza lista
                 }
             });
             _busyService.IsBusy = false;

@@ -152,44 +152,65 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
             var category = SelectedCategory?.ToLower();
 
             _busyService.IsBusy = true;
+            ErrorMessage = string.Empty;
 
-            try
+            var confirmParams = new DialogParameters
             {
-                var request = new CreateTicketRequest
+                { "title", "Confirmar Abertura" },
+                { "message", $"Confirmar abertura do chamado?" }
+            };
+
+            _dialogService.ShowDialog("ConfirmDialog", confirmParams, async r =>
+            {
+                if (r.Result == ButtonResult.OK)  // Confirm OK
                 {
-                    Title = TicketTitle,
-                    Description = Description,
-                    UserId = App.LoggedUser.IdPerfilUsuario.Id,
-                    Priority = GetPrioridadeString(Priority),
-                    Category = category,
-                    DescricaoCategoria = category,
-                    DescricaoCategoriaChamado = category,
-                    Problem = SelectedProblem?.Value,
+                    try
+                    {
+                        var request = new CreateTicketRequest
+                        {
+                            Title = TicketTitle,
+                            Description = Description,
+                            UserId = App.LoggedUser.IdPerfilUsuario.Id,
+                            Priority = GetPrioridadeString(Priority),
+                            Category = category,
+                            DescricaoCategoria = category,
+                            DescricaoCategoriaChamado = category,
+                            Problem = SelectedProblem?.Value,
+                            DescricaoDetalhada = Description
+                        };
 
-                    DescricaoDetalhada = Description
-                };
+                        Console.WriteLine("JSON enviado: " + JsonConvert.SerializeObject(request, Formatting.Indented));
 
-                var json = JsonConvert.SerializeObject(request, Formatting.Indented);
-                Console.WriteLine("JSON enviado desktop: " + json);
+                        var ticket = await _apiClient.CreateTicketAsync(request);
+                        Console.WriteLine($" Chamado #{ticket.Id} criado!");
 
-                var ticket = await _apiClient.CreateTicketAsync(request);
+                        // Success dialog (fecha tudo)
+                        var successParams = new DialogParameters
+                        {
+                            { "message", $"Chamado #{ticket.Id} criado com sucesso!" },
+                            { "ticketId", ticket.Id }
+                        };
 
-                Console.WriteLine($"Chamado #{ticket.Id} criado!");
+                        _dialogService.ShowDialog("TicketCreatedMessage", successParams, res =>  // res = SUCCESS!
+                        {
+                            // Success OK → Fecha CreateDialog + passa ticketId pra principal
+                            if (res.Result == ButtonResult.OK)
+                            {
+                                var result = new DialogResult(ButtonResult.OK,
+                                    new DialogParameters { { "ticketId", ticket.Id } });
+                                RequestClose?.Invoke(result);
+                            }
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorMessage = $"Erro ao criar chamado: {ex.Message}";
+                        Console.WriteLine($" Erro: {ex}");
+                    }
+                }
+            });
 
-                
-                var result = new DialogResult(ButtonResult.OK);
-                // passa o id do ticket aberto pra tela que abriu essa
-                result.Parameters.Add("ticketId", ticket.Id);
-                RequestClose?.Invoke(result);
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = $"Erro ao montar request: {ex.Message}";
-            }
-            finally
-            {
-                _busyService.IsBusy = false;
-            }
+            _busyService.IsBusy = false;
         }
 
         // Atualizar problemas quando categoria mudar

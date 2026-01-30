@@ -1,0 +1,99 @@
+﻿<UserControl x:Class="sistecDesktopRefactored.Views.ResultDialogView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:sistecDesktopRefactored.Views"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:converters="clr-namespace:sistecDesktopRefactored.Converters"
+             xmlns:helpers="clr-namespace:sistecDesktopRefactored.Helpers"
+             mc:Ignorable="d" 
+             d:DesignWidth="450" d:DesignHeight="325"
+             Width="500" Height="375">
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <Setter Property="WindowStyle" Value="None"/>
+            <Setter Property="ResizeMode" Value="NoResize"/>
+            <Setter Property="SizeToContent" Value="WidthAndHeight"/>
+            <Setter Property="AllowsTransparency" Value="True"/>
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+    </prism:Dialog.WindowStyle>
+
+    <Border Background="{StaticResource brush-lavenderMist}"
+        BorderBrush="{StaticResource brush-peachOrange}"
+        BorderThickness="1"
+        CornerRadius="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" CornerRadius="10 10 0 0"
+            Background="{StaticResource brush-peachOrange}" BorderBrush="Transparent">
+
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Images/triangle-alert-white.png" 
+                    Width="24" Height="24"
+                    Margin="20 0 10 0"/>
+
+                    <TextBlock Text="{Binding Title}"
+                FontFamily="{StaticResource MontserratBold}"
+                FontSize="24" Margin="0 15"
+                Foreground="{StaticResource brush-White}"
+                VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Grid.Row="1"
+            VerticalAlignment="Center">
+
+                <Border Background="#82FFFFF0"
+                    CornerRadius="100"
+                    Width="125" Height="125">
+                    <Image Source="/Images/triangle-alert-big.png"
+                    Width="100" Height="100"/>
+                </Border>
+
+                <TextBlock Text="{Binding Message}"
+                FontFamily="{StaticResource MontserratRegular}"
+                FontSize="18" Margin="15"
+                HorizontalAlignment="Center"/>
+            </StackPanel>
+
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+
+                <Button Content="{Binding CancelText}"
+                Style="{StaticResource ButtonImage}"
+                Background="Transparent"
+                Foreground="{StaticResource brush-coolGray}"
+                FontFamily="{StaticResource MontserratRegular}"
+                FontSize="14"
+                BorderBrush="{StaticResource brush-frenchGray}"
+                helpers:ButtonHelper.HoverBackground="#49B9B7CC"
+                Tag="/Images/undo-coolgray.png"
+                Command="{Binding CancelCommand}"
+                Width="200" Height="50"
+                Margin="10"/>
+
+                <Button Content="{Binding ConfirmText}"
+                Style="{StaticResource ButtonImage}"
+                Background="{StaticResource brush-peachOrange}"
+                Foreground="{StaticResource brush-White}"
+                FontFamily="{StaticResource MontserratRegular}"
+                FontSize="14"
+                BorderBrush="Transparent"
+                helpers:ButtonHelper.HoverBackground="{StaticResource brush-peachOrange-transparent}"
+                Tag="/Images/circle-check.png"
+                Command="{Binding ConfirmCommand}"
+                Width="200" Height="50"
+                Margin="10"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>
