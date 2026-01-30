@@ -67,6 +67,8 @@ namespace sistecDesktopRefactored
             // Dialog Views
             containerRegistry.RegisterDialog<TicketDetailsView>("TicketDetailsDialog");
             containerRegistry.RegisterDialog<TicketCreateView, TicketCreateViewModel>("TicketCreateDialog");
+            containerRegistry.RegisterDialog<TicketResolveView, TicketResolveViewModel>("TicketResolveDialog");
+
             containerRegistry.RegisterDialog<MessageDialogView>("MessageDialog");
             containerRegistry.RegisterDialog<TicketCreatedMessageView, TicketCreateMessageViewModel>("TicketCreatedMessage");
 

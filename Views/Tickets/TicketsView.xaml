@@ -192,8 +192,8 @@
                                             Command="{Binding DataContext.ShowDetailsCommand,
                                                       ElementName=TicketsControl}"
                                             CommandParameter="{Binding}"
-                                            Visibility="{Binding CanResolve, 
-                            Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            Visibility="{Binding CanView, 
+                                            Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                         <Button Content="Resolver"
                                             Background="#22C55E"
@@ -203,11 +203,17 @@
                                             Foreground="{StaticResource brush-White}"
                                             BorderBrush="{StaticResource brush-White}"
                                             helpers:ButtonHelper.HoverBackground="#22C560"
-                                            Style="{StaticResource ButtonImage}"/>
+                                            Style="{StaticResource ButtonImage}"
+                                            Command="{Binding DataContext.OpenResolveTicketCommand, 
+                                            RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Visibility="{Binding CanResolve, 
+                                            Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                         <Button Content="Escalar"
                                             Tag="/Images/triangle-alert.png"
                                             Background="Transparent"
+                                            Margin="5"
                                             FontFamily="{StaticResource MontserratBold}"
                                             helpers:ButtonHelper.HoverBackground="#1AFF9966"
                                             BorderBrush="{StaticResource brush-frenchGray}"

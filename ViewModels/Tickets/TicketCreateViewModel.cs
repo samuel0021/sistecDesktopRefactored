@@ -176,7 +176,9 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
 
                 Console.WriteLine($"Chamado #{ticket.Id} criado!");
 
+                
                 var result = new DialogResult(ButtonResult.OK);
+                // passa o id do ticket aberto pra tela que abriu essa
                 result.Parameters.Add("ticketId", ticket.Id);
                 RequestClose?.Invoke(result);
             }

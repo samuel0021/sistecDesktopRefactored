@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 
 namespace sistecDesktopRefactored.ViewModels
 {
@@ -49,6 +50,7 @@ namespace sistecDesktopRefactored.ViewModels
         #region Commands
         public DelegateCommand LoadTicketsCommand { get; }
         public DelegateCommand OpenCreateTicketCommand { get; }
+        public DelegateCommand<object> OpenResolveTicketCommand { get; }
         public DelegateCommand<Ticket> ShowDetailsCommand { get; }
 
         #endregion
@@ -64,6 +66,7 @@ namespace sistecDesktopRefactored.ViewModels
 
             LoadTicketsCommand = new DelegateCommand(async () => await LoadTicketsAsync());
             OpenCreateTicketCommand = new DelegateCommand(OpenCreateTicket);
+            OpenResolveTicketCommand = new DelegateCommand<object>(OpenResolveTicket);
             ShowDetailsCommand = new DelegateCommand<Ticket>(ShowDetails);
 
             _ = LoadTicketsAsync();
@@ -90,25 +93,57 @@ namespace sistecDesktopRefactored.ViewModels
             }
         }
 
+
         private void OpenCreateTicket()
         {
             _busyService.IsBusy = true;
 
+            // abre dialog de criar chamado
             _dialogService.ShowDialog("TicketCreateDialog", r =>
             {
+                // se o dialog fechou e trouxe um parâmetro do id, 
                 if (r.Result == ButtonResult.OK && r.Parameters.ContainsKey("ticketId"))
                 {
+                    // salva o valor numa variável
                     var ticketId = r.Parameters.GetValue<int>("ticketId");
 
+                    // transforma o valor no tipo DialogParameters porque só aceita assim
                     var successParams = new DialogParameters { { "ticketId", ticketId } };
-                    
+
+                    // abre o dialogo de conclusao passando o parametro 
                     _dialogService.ShowDialog("TicketCreatedMessage", successParams, result =>
-                    {                        
+                    {
                         _ = LoadTicketsAsync();
                     });
                 }
             });
             _busyService.IsBusy = false;
+        }
+
+        private void OpenResolveTicket(object parameter)
+        {
+            
+
+            _busyService.IsBusy = true;
+
+            if (parameter is Ticket ticket)  // ← Extrai Ticket da linha
+            {
+                SelectedTicket = ticket;  // ← Salva pra usar
+
+                var parameters = new DialogParameters
+                {
+                    { "ticketId", ticket.Id },
+                    { "category", ticket.Category },
+                    { "problem", ticket.Problem }
+                };
+
+                _dialogService.ShowDialog("TicketResolveDialog", parameters, r =>
+                {
+                    _ = LoadTicketsAsync();
+                });
+
+                _busyService.IsBusy = false;
+            }
         }
 
         private async void ShowDetails(Ticket ticket)

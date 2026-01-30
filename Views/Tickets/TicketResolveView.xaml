@@ -7,7 +7,7 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:helpers="clr-namespace:sistecDesktopRefactored.Helpers"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="550"
+             d:DesignHeight="500" d:DesignWidth="550"
              Width="550" Height="600">
 
     <!--#region Prism Window Styles-->
@@ -33,7 +33,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <!--#endregion-->
-                
+
                 <!--#region Cabeçalho-->
                 <Border Background="{StaticResource brush-green}" 
                     Grid.Row="0" Padding="10"
@@ -79,8 +79,8 @@
                     <!--#region Definições do grid-->
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <!--#endregion-->
 
@@ -91,8 +91,84 @@
                             <TextBlock Text="Informações do Chamado"
                                 FontSize="12"
                                 Style="{StaticResource MyTextblock}"/>
+
+                            <StackPanel Orientation="Horizontal"  
+                                Margin="0 10 0 0">
+
+                                <TextBlock Text="ID: "
+                                    FontSize="12"
+                                    FontFamily="{StaticResource MontserratRegular}"
+                                    Style="{StaticResource MyTextblock}"/>
+
+                                <TextBlock Text="{Binding TicketId}"
+                                    FontSize="12"
+                                    Style="{StaticResource MyTextblock}"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Categoria: "
+                                    FontSize="12"
+                                    FontFamily="{StaticResource MontserratRegular}"
+                                    Style="{StaticResource MyTextblock}"/>
+
+                                <TextBlock Text="{Binding TicketCategory}"
+                                    FontSize="12"
+                                    Style="{StaticResource MyTextblock}"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Problema: "
+                                    FontSize="12"
+                                    FontFamily="{StaticResource MontserratRegular}"
+                                    Style="{StaticResource MyTextblock}"/>
+
+                                <TextBlock Text="{Binding TicketProblem}"
+                                    FontSize="12"
+                                    Style="{StaticResource MyTextblock}"/>
+                            </StackPanel>
                         </StackPanel>
                     </Border>
+
+                    <StackPanel Grid.Row="1" Margin="10">
+                        <TextBlock Text="Relatório da Resolução"
+                            Style="{StaticResource MyTextblock}"/>
+
+
+                        <TextBox Text="{Binding Motivo, 
+                            UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0 5" Height="150"
+                            Style="{StaticResource TextBoxBase}"/>
+
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" 
+                        HorizontalAlignment="Right" Margin="10">
+                        
+                        <Button Content="Cancelar" 
+                            Width="auto" 
+                            Height="40"
+                            Margin="0,0,10,0"
+                            BorderThickness="0"
+                            Tag="/Images/x.png"
+                            helpers:ButtonHelper.HoverBackground="#4FEC0000"
+                            Foreground="{StaticResource brush-midnightNavy}"
+                            FontFamily="{StaticResource MontserratBold}"
+                            Command="{Binding CancelCommand}"
+                            Style="{StaticResource ButtonImage}"/>
+                        
+                        <Button Content="Resolver Chamado" 
+                            Width="auto" 
+                            Height="40"
+                            Background="#4CAF50"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Tag="/Images/circle-check.png"
+                            helpers:ButtonHelper.HoverBackground="#BC4CAF50"
+                            FontFamily="{StaticResource MontserratBold}"
+                            Command="{Binding ResolveTicketCommand}"
+                            Style="{StaticResource ButtonImage}"/>
+
+                    </StackPanel>
                 </Grid>
             </Grid>
         </Border>
