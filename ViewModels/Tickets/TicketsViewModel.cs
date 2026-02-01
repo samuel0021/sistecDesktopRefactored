@@ -52,6 +52,7 @@ namespace sistecDesktopRefactored.ViewModels
         public DelegateCommand OpenCreateTicketCommand { get; }
         public DelegateCommand<object> OpenResolveTicketCommand { get; }
         public DelegateCommand<Ticket> ShowDetailsCommand { get; }
+        public DelegateCommand<object> OpenScaleTicketCommand { get; }
 
         #endregion
 
@@ -68,6 +69,7 @@ namespace sistecDesktopRefactored.ViewModels
             OpenCreateTicketCommand = new DelegateCommand(OpenCreateTicket);
             OpenResolveTicketCommand = new DelegateCommand<object>(OpenResolveTicket);
             ShowDetailsCommand = new DelegateCommand<Ticket>(ShowDetails);
+            OpenScaleTicketCommand = new DelegateCommand<object>(OpenScaleTicket);
 
             _ = LoadTicketsAsync();
         }
@@ -113,8 +115,6 @@ namespace sistecDesktopRefactored.ViewModels
 
         private void OpenResolveTicket(object parameter)
         {
-            
-
             _busyService.IsBusy = true;
 
             if (parameter is Ticket ticket)  // ← Extrai Ticket da linha
@@ -133,6 +133,29 @@ namespace sistecDesktopRefactored.ViewModels
                     _ = LoadTicketsAsync();
                 });
 
+                _busyService.IsBusy = false;
+            }
+        }
+
+        private void OpenScaleTicket(object parameter)
+        {
+            _busyService.IsBusy = true;
+
+            if (parameter is Ticket ticket)
+            {
+                SelectedTicket = ticket;
+
+                var parameters = new DialogParameters
+                {
+                    { "title", $"Escalar chamado #{ticket.Id}" },
+                    { "ticketId", ticket.Id }
+                };
+
+                _dialogService.ShowDialog("TicketScaleDialog", parameters, r =>
+                {
+                    _ = LoadTicketsAsync();
+                });
+                
                 _busyService.IsBusy = false;
             }
         }

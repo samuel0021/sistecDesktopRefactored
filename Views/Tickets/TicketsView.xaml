@@ -219,7 +219,12 @@
                                             BorderBrush="{StaticResource brush-frenchGray}"
                                             BorderThickness="0.5"
                                             Foreground="{StaticResource brush-peachOrange}"
-                                            Style="{StaticResource ButtonImage}"/>
+                                            Style="{StaticResource ButtonImage}"
+                                            Command="{Binding DataContext.OpenScaleTicketCommand,
+                                            RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Visibility="{Binding CanScale,
+                                            Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                         <Button Content="🤖 Ver Solução IA"
                                             Margin="5,0,0,0"

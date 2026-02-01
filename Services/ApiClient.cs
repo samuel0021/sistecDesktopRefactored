@@ -21,6 +21,8 @@ namespace sistecDesktopRefactored.Services
         private readonly CookieContainer _cookieContainer;
         private readonly string _baseUrl = Environment.GetEnvironmentVariable("BASE_URL");
 
+        public static bool UseFakeMode { get; set; } = false;
+
         private readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
         {
             NullValueHandling = NullValueHandling.Ignore,
@@ -249,6 +251,27 @@ namespace sistecDesktopRefactored.Services
         /// it contains user data and authentication details; otherwise, it includes an error message.</returns>
         public async Task<LoginResponse> LoginAsync(LoginRequest loginRequest)
         {
+            if (UseFakeMode)
+            {
+                return new LoginResponse
+                {
+                    Success = true,
+
+                    Data = new LoginData
+                    {
+                        User = new User
+                        {
+                            
+                            NomeUsuario = "Fake User",
+                            Email = "email",
+                            Senha = "senha",
+                            IdAprovador = 4
+                        }
+                    }
+
+                };
+            }
+
             try
             {
                 // Serializa o objeto loginRequest pra JSON

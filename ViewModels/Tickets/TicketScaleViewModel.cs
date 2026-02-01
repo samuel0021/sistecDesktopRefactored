@@ -12,21 +12,23 @@ using System.Windows;
 
 namespace sistecDesktopRefactored.ViewModels.Tickets
 {
-    public class TicketResolveViewModel : BindableBase, IDialogAware
+    public class TicketScaleViewModel : BindableBase, IDialogAware
     {
         private readonly ApiClient _apiClient;
         private readonly BusyService _busyService;
         private readonly DialogService _dialogService;
 
-        public string Title => "";
-
+        private string _title;
         private string _motivo;
-
         private int _ticketId;
-        private string _ticketCategory;
-        private string _ticketProblem;
+
 
         #region Encapsulations
+        public string Title
+        {
+            get => _title;
+            set => SetProperty(ref _title, value);
+        }
         public string Motivo
         {
             get => _motivo;
@@ -37,31 +39,21 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
             get => _ticketId;
             set => SetProperty(ref _ticketId, value);
         }
-        public string TicketCategory
-        {
-            get => _ticketCategory;
-            set => SetProperty(ref _ticketCategory, value);
-        }
-        public string TicketProblem
-        {
-            get => _ticketProblem;
-            set => SetProperty(ref _ticketProblem, value);
-        }
         #endregion
 
-        // ====== Comands ======
-        public DelegateCommand CancelCommand { get; }
-        public DelegateCommand ResolveTicketCommand { get; }
+        // Commands
 
-        public TicketResolveViewModel(ApiClient apiClient, BusyService busyService, DialogService dialogService)
+        public DelegateCommand ScaleTicketCommand { get; }
+        public DelegateCommand CancelCommand { get; }
+
+        public TicketScaleViewModel(ApiClient apiClient, BusyService busyService, DialogService dialogService)
         {
             _apiClient = apiClient;
             _busyService = busyService;
             _dialogService = dialogService;
 
             CancelCommand = new DelegateCommand(ExecuteCancel);
-            ResolveTicketCommand = new DelegateCommand(ExecuteResolve);
-            _dialogService = dialogService;
+            ScaleTicketCommand = new DelegateCommand(ExecuteScale);
         }
 
         private void ExecuteCancel()
@@ -69,18 +61,18 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
             RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel));
         }
 
-        private async void ExecuteResolve()
+        private async void ExecuteScale()
         {
-            if (string.IsNullOrWhiteSpace(Motivo) || Motivo.Length < 20)
+            if (string.IsNullOrWhiteSpace(Motivo) || Motivo.Length < 10)
             {
-                MessageBox.Show("Motivo deve ter pelo menos 20 caracteres!");
+                MessageBox.Show("Motivo deve ter pelo menos 10 caracteres!");
                 return;
             }
 
             // dialog confirmação
             var confirmParams = new DialogParameters
             {
-                { "message", $"Confirmar resolução do chamado #{TicketId}?\n\nMotivo: {Motivo}" }
+                { "message", $"Confirmar escalonamento do chamado #{TicketId}?\n\nMotivo: {Motivo}" }
             };
 
             _busyService.IsBusy = true;
@@ -89,34 +81,20 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
             {
                 if (r.Result == ButtonResult.OK)
                 {
-                    _busyService.IsBusy = true;
-
                     try
                     {
-                        // objeto anônimo para relatório de resolução
-                        // com as propriedades do backend pro json serializar
-                        var reportBody = new
-                        {
-                            id_chamado = TicketId,
-                            relatorio_resposta = Motivo,
-                            id_usuario_abertura = App.LoggedUser.IdPerfilUsuario.Id
-                        };
+                        await _apiClient.ScaleTicketAsync(TicketId, Motivo);
 
-                        await _apiClient.ResolveTicketWithReportAsync(reportBody);
-
-                        await _apiClient.ResolveTicketAsync(TicketId);
-
-                        // fecha com OK (TicketsViewModel recarrega lista)
                         RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
 
                         _dialogService.ShowDialog("ResultDialog", new DialogParameters
                         {
-                            { "message", $"Chamado #{TicketId} resolvido com sucesso!" }
-                        }, null); 
+                            { "message", $"Chamado #{TicketId} escalado com sucesso!" }
+                        }, null);
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Erro ao resolver: {ex.Message}");
+                        MessageBox.Show($"Erro ao escalar: {ex.Message}");
                     }
                     finally
                     {
@@ -124,10 +102,8 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
                     }
                 }
             });
-
-
         }
-
+        
 
         public event Action<IDialogResult> RequestClose;
 
@@ -137,21 +113,10 @@ namespace sistecDesktopRefactored.ViewModels.Tickets
 
         public void OnDialogOpened(IDialogParameters parameters)
         {
+            Title = parameters.GetValue<string>("title") ?? "Confirmação";
+
             if (parameters.ContainsKey("ticketId"))
                 TicketId = parameters.GetValue<int>("ticketId");
-
-            if (parameters.ContainsKey("category"))
-            {
-                TicketCategory = parameters.GetValue<string>("category");
-                Console.WriteLine($"DEBUG Category: '{TicketCategory}'");
-            }
-
-
-            if (parameters.ContainsKey("problem"))
-            {
-                TicketProblem = parameters.GetValue<string>("problem");
-                Console.WriteLine($"DEBUG Problem: '{TicketProblem}'");
-            }
         }
     }
 }
